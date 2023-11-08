@@ -163,7 +163,4 @@ const FollowingBox = styled.p`
   line-height: normal;
   margin-right: 10px;
   cursor: pointer;
-  &:hover {
-    color: #37d15d;
-  }
 `;
