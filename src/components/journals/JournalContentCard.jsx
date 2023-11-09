@@ -86,13 +86,14 @@ const Button = styled.div`
 
     svg {
         color: #000;
-        cursor: pointer;
         &:hover {
-          color: #f5f5f5;
+            cursor: pointer;
+            color: #f5f5f5;
         }
       }
     
       &:hover {
+        cursor: pointer;
         background-color: #f5f5f5;
       }
 `
@@ -110,13 +111,14 @@ const Button2 = styled.button`
 
     svg {
         color: #000;
-        cursor: pointer;
         &:hover {
-          color: #f5f5f5;
+            cursor: pointer;
+            color: #f5f5f5;
         }
     }
     
     &:hover {
+        cursor: pointer;
         background-color: #f5f5f5;
     }
 `
