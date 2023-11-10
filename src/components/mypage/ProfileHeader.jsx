@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 function ProfileHeader(props) {
   const navigate = useNavigate();
   const [profile, setProfile] = useRecoilState(profileState);
+  const [UserName, SetUserName] = useState('감자');
 
   const goMyProfileEditPage = () => {
     navigate("/edit");
@@ -21,20 +22,13 @@ function ProfileHeader(props) {
             <ProfileImage src={userprofile} alt="userprofile" />
           </div>
           <div>
-            <ProfileName>감자 님의 개인서재</ProfileName>
+          <ProfileNameDirectM>
+            <ProfileName><UserNameColor>{UserName}</UserNameColor> 님의 개인서재</ProfileName>
+            <DisrectMDiv>쪽지 목록</DisrectMDiv>
+          </ProfileNameDirectM>
             <MyTag>판타지</MyTag>
           </div>
         </ProfileLeftContainer>
-
-        <div>
-          <EditProfileButton
-            onClick={() => {
-              goMyProfileEditPage();
-            }}
-          >
-            프로필 편집
-          </EditProfileButton>
-        </div>
       </ProfileSection>
       <FollowAndFollower>
         <FollowAndFollowerText>팔로워</FollowAndFollowerText>
@@ -68,15 +62,28 @@ const ProfileImage = styled.img`
   margin-right: 20px;
 `;
 
+const ProfileNameDirectM = styled.div`
+  display: flex;
+`
+
 const ProfileName = styled.h2`
   color: #000;
-  font-family: Inter;
   font-size: 26px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   margin-bottom: 10px;
 `;
+
+const DisrectMDiv = styled.div`
+  width: 160px;
+  height: 35px;
+  border: 1px solid #BABABA;
+  border-radius: 43px;
+  text-align: center;
+  line-height: 35px;
+  margin-left: 15px;
+`
 
 const MyTag = styled.p`
   border-radius: 43px;
@@ -155,3 +162,8 @@ const FollowAndFollowerNumberText = styled.p`
   line-height: 109.867%;
   letter-spacing: -0.14px;
 `;
+
+const UserNameColor = styled.span`
+  color: #344A39;
+  font-weight: 1000;
+`

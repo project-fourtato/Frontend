@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Search from "./Search";
 import logo from "../../assets/logo.png";
-import profileimg from "../../assets/profile.png";
+import profileimg from "../../assets/Star-change.png";
 import { useRecoilState } from "recoil";
 import { loginState, profileState } from "../../recoil/atom";
 import swal from "sweetalert";
@@ -13,6 +13,8 @@ import { BiMessageRounded } from "react-icons/bi";
 import { LuBell } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { AiOutlineProfile } from "react-icons/ai";
+import "../../../src/App.css";
+
 const Header = () => {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [profile, setProfile] = useRecoilState(profileState);
@@ -25,6 +27,7 @@ const Header = () => {
     profile === "setting" && location.pathname === "/edit";
   const isLoginPage = location.pathname === "/login";
   const isSignupPage = location.pathname === "/signup";
+  const isMainPage = (location.pathname === "/");
 
   const isUrl = isLoginPage || isSignupPage;
 
@@ -82,7 +85,10 @@ const Header = () => {
     <>
       <HeaderWrapper isLogin={hideBorder}>
         <LinkStyle to="/">
-          <img src={logo} alt="logo" />
+          <LogoOutDiv>
+            <StarImage src={logo} alt="logo" />
+            <LogoTitle>BOOKER</LogoTitle>
+          </LogoOutDiv>
         </LinkStyle>
 
         <HeaderRight>
@@ -207,14 +213,15 @@ const HeaderWrapper = styled.div`
   /* border-radius: 20px; */
   /* border-bottom: 1px solid #b8b8b8; */
   border-bottom: ${(props) => (props.isLogin ? "none" : "1px solid #b8b8b8")};
-  background: #fff;
+  background: ${(props) => (props.isMainPage ? "#FDF9EF" : "#FDF9EF")};
   /* box-shadow: 0px 4px 2px 0px rgba(165, 165, 165, 0.25); */
   /* z-index: 10; */
   /* position: fixed; */
   /* top: 0;
   left: 0; */
-  width: ${(props) => (props.isLogin ? "90vw" : "96vw")};
-  padding: ${(props) => (props.isLogin ? "0 6vw" : "0 2vw")};
+  /*width: ${(props) => (props.isLogin ? "90vw" : "96vw")};*/
+  padding: 0.3rem 6vw /*${(props) => (props.isLogin ? "0 6vw" : "0 2vw")}*/;
+  /*padding-top: 0.9rem*/
 `;
 
 const HeaderRight = styled.div`
@@ -223,6 +230,22 @@ const HeaderRight = styled.div`
   align-items: center;
   margin-left: 200px;
 `;
+
+const LogoOutDiv = styled.div`
+  display: flex;
+`
+
+const StarImage = styled.img`
+  width: 25px;
+  height: 25px;
+`
+
+const LogoTitle = styled.div`
+  color: #1E3F48;
+  font-size: 25px;
+  margin-left: 18px;
+  font-family: NanumEBold;
+`
 
 const LinkStyle = styled(Link)`
   text-decoration: none;
@@ -241,7 +264,8 @@ const LinkStyle = styled(Link)`
 
 const CustomBtn = styled.button`
   height: 3rem;
-  margin-left: 2rem;
+  width: 12rem;
+  margin-left: 1.5rem;
   margin-right: 1rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -250,22 +274,23 @@ const CustomBtn = styled.button`
   outline: none;
   font-weight: bold;
   word-break: keep-all;
-  background: #f8f9fa;
-  border: 1px solid #344a39;
-  color: #344a39;
+  background: #FDFDFD;
+  border: 1px solid #C1C1C1;
+  color: #142343;
   transition: all 0.125s ease-in 0s;
   cursor: pointer;
-  font-family: Inter;
+  font-family: nanum;
   font-size: 20px;
   font-style: normal;
   &:hover {
-    background: #344a39;
+    background: #142343;
     color: #fff;
   }
   /* 미디어쿼리 */
   @media (max-width: 768px) {
     display: none;
   }
+  padding-top: 0.2rem;
 `;
 
 const InfoRound = styled.img`
@@ -291,13 +316,13 @@ const HeaderMenuContainer = styled.div`
 `;
 
 const HeaderMenuText = styled.p`
-  color: #344a39;
-  font-family: Inter;
-  font-size: 24px;
+  color: #142343;
+  /*font-family: Inter;*/
+  font-size: 23px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-left: 30px;
+  margin-left: 25px;
   cursor: pointer;
   &:hover {
     color: #212529;
@@ -342,7 +367,7 @@ const DropdownItem = styled.div`
   width: 120px;
   display: flex;
   align-items: center;
-  font-family: Inter;
+  /*font-family: Inter;*/
   font-size: 14px;
   font-style: normal;
   font-weight: 700;

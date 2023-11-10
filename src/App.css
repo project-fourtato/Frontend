@@ -1,0 +1,19 @@
+@font-face {
+    font-family: "Nanum";
+    src: url("./fonts/NanumSquareRoundR.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "NanumBold";
+    src: url("./fonts/NanumSquareRoundB.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "NanumEBold";
+    src: url("./fonts/NanumSquareRoundEB.ttf") format("truetype");
+}
+
+body, html, :root {
+    font-family: "Nanum";
+}
+  

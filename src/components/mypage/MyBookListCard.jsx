@@ -85,7 +85,6 @@ const LeftBox = styled.div`
 
 const LeftBoxText = styled.h5`
   color: #fff;
-  font-family: Inter;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;

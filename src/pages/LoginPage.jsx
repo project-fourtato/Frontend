@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import SignInCard from "../components/login/SignInCard";
+import "../App.css";
 
 function LoginPage(props) {
   return (
@@ -17,7 +18,8 @@ const LoginContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 6rem;
+  margin-top: 2.5rem;
   height: 100%;
   width: 100%;
+  color: #142343;
 `;

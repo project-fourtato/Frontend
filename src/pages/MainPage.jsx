@@ -1,11 +1,12 @@
 import React from "react";
 import backgoundimg from "../assets/backgroundimg.png";
-import styled from "styled-components";
+import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
 import { loginState } from "../recoil/atom";
 import userprofile from "../assets/userprofile.png";
 import BookListCard from "../components/main/BookListCard";
 import MyPersonListCard from "../components/main/MyPersonListCard";
+import "../../src/App.css";
 
 function MainPage(props) {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
@@ -28,6 +29,9 @@ function MainPage(props) {
       ) : (
         <>
           <Backgoundimg src={backgoundimg} alt="backgroundimg" />
+          <BackgroundImgeOutDiv>
+          <Backgoundimg src={backgoundimg} type="video/mp4"/>
+          </BackgroundImgeOutDiv>
         </>
       )}
     </>
@@ -36,10 +40,25 @@ function MainPage(props) {
 
 export default MainPage;
 
-const Backgoundimg = styled.img`
+const GlobalStyle = createGlobalStyle`
+#root,
+html,
+body {
+    background: #FDF9EF;
+}
+`
+
+const BackgroundImgeOutDiv = styled.div`
+  background-color: #FDF9EF;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  text-align: center;
+`
+
+const Backgoundimg = styled.img`
+background-color: rgb(248, 249, 193);
+display: inline-block;
+width: 55%;
+margin-top: 3.5%;
 `;
 
 const MainContainer = styled.div`

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUserAlt } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import swal from "sweetalert";
+import "../../App.css";
 
 function SignInCard(props) {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
@@ -72,8 +73,6 @@ const TitleHeaderContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #344a39;
-  font-family: Inter;
   font-size: 30px;
   font-style: normal;
   font-weight: 800;
@@ -83,7 +82,6 @@ const Title = styled.h1`
 
 const Subtitle = styled.p`
   color: #000;
-  font-family: Inter;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -118,8 +116,6 @@ const SignUpTextContainer = styled.div`
   width: 100%;
   margin-bottom: 20px;
   > p {
-    /* color: #344a39; */
-    font-family: Inter;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -170,10 +166,10 @@ const ButtonStyle = styled.button`
 `;
 
 const LoginBtn = styled(ButtonStyle)`
-  background-color: #DBE8D9;
-  color: #000000;
-  font-size: 20px;
-  font-weight: bold;
+  background-color: #32497B;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
   line-height: normal;
   margin-bottom: 20px;
 `;
