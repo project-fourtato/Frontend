@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import {styled} from "styled-components";
 import Search from "./Search";
-import logo from "../../assets/logo.png";
-import profileimg from "../../assets/Star-change.png";
+import logo from "../../assets/Star-change.png";
+import profileimg from "../../assets/profile.png";
 import { useRecoilState } from "recoil";
 import { loginState, profileState } from "../../recoil/atom";
 import swal from "sweetalert";
@@ -37,7 +37,7 @@ const Header = () => {
 
   const goReadingPage = () => {
     if (isLogin.isLogin) {
-      navigate("/userbook");
+      navigate("/books");
     } else {
       swal({
         title: "로그인이 필요합니다.",
@@ -212,7 +212,7 @@ const HeaderWrapper = styled.div`
   height: 78px;
   /* border-radius: 20px; */
   /* border-bottom: 1px solid #b8b8b8; */
-  border-bottom: ${(props) => (props.isLogin ? "none" : "1px solid #b8b8b8")};
+  border-bottom: ${(props) => (props.isLogin ? "none" : "1px solid #D9D9D9")};
   background: ${(props) => (props.isMainPage ? "#FDF9EF" : "#FDF9EF")};
   /* box-shadow: 0px 4px 2px 0px rgba(165, 165, 165, 0.25); */
   /* z-index: 10; */
@@ -220,8 +220,8 @@ const HeaderWrapper = styled.div`
   /* top: 0;
   left: 0; */
   /*width: ${(props) => (props.isLogin ? "90vw" : "96vw")};*/
-  padding: 0.3rem 6vw /*${(props) => (props.isLogin ? "0 6vw" : "0 2vw")}*/;
-  /*padding-top: 0.9rem*/
+  padding: 0.3rem 6vw /*${(props) => (props.isLogin ? "0.9rem 0 6vw" : "0 1vw")}*/;
+  /*padding-top: 0.9rem;*/ 
 `;
 
 const HeaderRight = styled.div`
