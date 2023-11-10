@@ -12,11 +12,19 @@ function NickName(props) {
   const fileInputRef = React.useRef(null);
 
   const handleNicknameChange = (e) => {
-    if (e.target.value.length > 11) {
-      swal("Oops!", "닉네임은 11자리를 넘을 수 없습니다.", "error");
+    const inputValue = e.target.value;
+    
+    if (inputValue.includes(' ')) {
+      swal("경고", "닉네임에 띄어쓰기를 사용할 수 없어요.", "error");
       return;
     }
-    setNickname(e.target.value);
+  
+    if (inputValue.length > 11) {
+      swal("경고", "닉네임은 11자를 초과할 수 없어요.", "error");
+      return;
+    }
+  
+    setNickname(inputValue);
   };
 
   const handleDescriptionChange = (e) => {
