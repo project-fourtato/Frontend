@@ -1,5 +1,5 @@
 import React from "react";
-import backgoundimg from "../assets/backgroundimg.png";
+import backgoundimg from "../assets/booker-main2.gif";
 import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
 import { loginState } from "../recoil/atom";
@@ -28,10 +28,10 @@ function MainPage(props) {
         </>
       ) : (
         <>
-          <Backgoundimg src={backgoundimg} alt="backgroundimg" />
-          <BackgroundImgeOutDiv>
-          <Backgoundimg src={backgoundimg} type="video/mp4"/>
-          </BackgroundImgeOutDiv>
+        <GlobalStyle></GlobalStyle>
+        <BackgroundImgeOutDiv>
+        <Backgoundimg src={backgoundimg} type="video/mp4"/>
+        </BackgroundImgeOutDiv>
         </>
       )}
     </>
