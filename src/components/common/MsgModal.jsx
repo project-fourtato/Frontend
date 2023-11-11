@@ -32,7 +32,7 @@ function MsgModal({setShowMsgModal}) {
                 }).then((willSend) => {
                 if (willSend) {
                     swal({
-                        title:"쪽지가 전송되었습니다!", 
+                        title:"쪽지가 전송되었습니다.", 
                         icon: "success",
                     });
                     setShowMsgModal(false)
@@ -55,7 +55,7 @@ function MsgModal({setShowMsgModal}) {
             }).then((willDelete) => {
             if (willDelete) {
                 swal({
-                    title:"쪽지가 삭제되었습니다!", 
+                    title:"쪽지가 삭제되었습니다.", 
                     icon: "success",
                 });
             } else {
