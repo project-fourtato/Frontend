@@ -5,7 +5,7 @@ import porfile2 from '../../assets/profile2.png';
 function SearchUserCard(props) {
     return (
         <AnnouncementBox>
-        <AnnouncementTitle>BOOKER의 유저 중 교환하실 책을 가지고 있거나 있으신가요!</AnnouncementTitle>
+        <AnnouncementTitle>BOOKER의 유저 중 검색하신 책을 가진 유저가 있어요!</AnnouncementTitle>
         
         <CardBoxContainer>
 

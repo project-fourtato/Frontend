@@ -5,7 +5,7 @@ import bboo from "../../assets/bboo.png";
 import profile2 from "../../assets/profile2.png";
 import userprofile from "../../assets/userprofile.png";
 
-function UserBookCard(props) {
+function FollowerCard(props) {
   return (
     <>
       <BookListCardContainer>   
@@ -22,16 +22,6 @@ function UserBookCard(props) {
             <LeftBoxText>저는 해리포터 좋아해요!</LeftBoxText>
           </LeftBox>
         </BookListCardHeader>
-        {/* 책 리스트 */}
-        <BookListBodyContainer>
-          {myBookList.map((book) => {
-            return (
-              <>
-                <BookimgBox src={book.img} />
-              </>
-            );
-          })}
-        </BookListBodyContainer>
       </BookListCardContainer>
 
       <BookListCardContainer>
@@ -47,20 +37,18 @@ function UserBookCard(props) {
             </LeftBoxText>
           </LeftBox>
         </BookListCardHeader>
-        {/* 책 리스트 */}
-        <BookListBodyContainer>
-          <BookimgBox src={bboo} />
-        </BookListBodyContainer>
       </BookListCardContainer>
     </>
   );
 }
 
-export default UserBookCard;
+export default FollowerCard;
 
 const BookListCardContainer = styled.div`
   width: 1200px;
   margin-bottom: 55px;
+  border-bottom: 1px solid #c1c1c1;
+
 `;
 
 const ProfileLeftContainer = styled.div`
@@ -123,29 +111,13 @@ const LeftBoxText = styled.h5`
   letter-spacing: -0.17px;
 `;
 
-const BookListBodyContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid #c1c1c1;
-  margin-bottom: 30px;
-  height: 200px;
-`;
-
-const BookimgBox = styled.img`
-  width: 120px;
-  height: 180px;
-  margin-right: 15px;
-  cursor: pointer;
-`;
-
 const FollowingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 30px;
+  margin-top : -50px;
 `;
 
 const FollowingBox = styled.p`

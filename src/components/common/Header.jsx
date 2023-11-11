@@ -264,7 +264,7 @@ const LinkStyle = styled(Link)`
 
 const CustomBtn = styled.button`
   height: 3rem;
-  width: 12rem;
+  min-width: 8rem;
   margin-left: 1.5rem;
   margin-right: 1rem;
   padding-left: 1.5rem;
