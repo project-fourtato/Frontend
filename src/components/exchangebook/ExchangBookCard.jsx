@@ -3,16 +3,67 @@ import styled from 'styled-components';
 import {BsCaretDownFill} from "react-icons/bs";
 import {FaMapMarkerAlt} from "react-icons/fa";
 import searchmap from "../../assets/searchmap.png";
+import {regions, cities} from '../../data/regiondata';
+import { useState } from 'react';
+
 function ExchangBookCard(props) {
-    return (
-        <>
+  const [selectedRegion, setSelectedRegion] = useState(regions[0]);
+  const [selectedCity, setSelectedCity] = useState(cities[regions[0].code][0]);
+  const [regionMenuOpen, setRegionMenuOpen] = useState(false);
+  const [cityMenuOpen, setCityMenuOpen] = useState(false);
+
+  const handleRegionChange = (selectedRegion) => {
+    setSelectedRegion(selectedRegion);
+    setSelectedCity(cities[selectedRegion.code][0]);
+    setRegionMenuOpen(false);
+  };
+
+  const handleCityChange = (selectedCity) => {
+    setSelectedCity(selectedCity);
+    setCityMenuOpen(false);
+  };
+
+  const toggleRegionMenu = () => {
+    setRegionMenuOpen(!regionMenuOpen);
+    setCityMenuOpen(false);
+  };
+
+  const toggleCityMenu = () => {
+    setCityMenuOpen(!cityMenuOpen);
+    setRegionMenuOpen(false);
+  };
+
+  return (
+    <>
       <ContentArea>
-  
-            <HeaderSelectContainer>
-            <SelectBoxContainer>
-                <SelectBox><p>강원도</p><StyledDownIcon/></SelectBox>
-                <SelectBox><p>춘천</p><StyledDownIcon/></SelectBox>
-            </SelectBoxContainer>
+        <HeaderSelectContainer>
+          <SelectBoxContainer>
+            <SelectBox onClick={toggleRegionMenu}>
+              <p>{selectedRegion.name}</p><StyledDownIcon />
+              {regionMenuOpen && (
+                <Menu>
+                  {regions.map((region) => (
+                    <MenuItem key={region.code} onClick={() => handleRegionChange(region)}>
+                      {region.name}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              )}
+            </SelectBox>
+            <SelectBox onClick={toggleCityMenu}>
+              <p>{selectedCity.name}</p><StyledDownIcon />
+              {cityMenuOpen && (
+                <Menu>
+                  {cities[selectedRegion.code].map((city) => (
+                    <MenuItem key={city.code} onClick={() => handleCityChange(city)}>
+                      {city.name}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              )}
+            </SelectBox>
+          </SelectBoxContainer>
+
           <Title>지역의 해당 도서관에 검색하신 책이 있어요!</Title>
             </HeaderSelectContainer>
 
@@ -80,24 +131,45 @@ const SelectBoxContainer = styled.div`
 `;
 
 const SelectBox = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content:space-between;
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: 1px solid #828282;
-    background: #FFF;
-    width :140px;  
->p{
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #828282;
+  background: #FFF;
+  width: 140px;
+  > p {
     color: #000;
-font-family: NanumGothic;
-font-size: 16px;
-font-style: normal;
-font-weight: 700;
-line-height: 24px; /* 96% */
-letter-spacing: 0.44px;
-}
-`
+    font-family: NanumGothic;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.44px;
+  }
+`;
+
+const Menu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #FFF;
+  border: 1px solid #828282;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  z-index: 1;
+`;
+
+const MenuItem = styled.div`
+  padding: 10px 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: #F5F5F5;
+  }
+`;
 
 const ExchangeInfo = styled.div`
   margin-left: 20px;
