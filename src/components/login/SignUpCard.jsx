@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
@@ -8,25 +8,169 @@ import { FaUserAlt } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import {MdEmail} from "react-icons/md";
 import {MdOutlineDateRange} from "react-icons/md";
+import swal from "sweetalert";
+import axios from "axios";
 function SignUpCard(props) {
+  //api
+  let posts = "hello";
+  let [emailCheck, setEmailCheck] = useState(0); //email형식 맞지X
+  useEffect(() => {
+
+  }, [emailCheck])
+  
+  let [DuplicatedIdCheck, setDuplicatedIdCheck] = useState(0); //아이디 중복체크 시 1로 바뀜
+  useEffect(() => {
+
+  }, [DuplicatedIdCheck])
+  const [idValue, setId] = useState('');
+  const [pwValue, setPw] = useState('');
+  const [emailValue, setEmail] = useState('');
+  const [birthValue, setBirth] = useState('');
+  const saveUserId = event => {
+    setId(event.target.value);
+  };
+  const saveUserPw = event => {
+    setPw(event.target.value);
+  };
+
+  // 이메일 형식을 확인하는 정규표현식
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+// 이메일 값이 정규표현식과 일치하는지 확인하는 함수
+  const isEmailValid = (email) => emailRegex.test(email);
+  const saveUserEmail = event => {
+    const newValue = event.target.value;
+  
+  // 새로운 값이 정규표현식과 일치하면 setEmail을 호출하여 상태 업데이트
+    if (isEmailValid(newValue)) {
+      setEmail(newValue);
+      setEmailCheck(1);
+      console.log("되는데 왜 안된다그래")
+    }
+    else { 
+      setEmail(newValue);
+      setEmailCheck(0);
+    }
+  };
+  const saveUserBirth = event => {
+    setBirth(event.target.value);
+  };
+  
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [profile, setProfile] = useRecoilState(profileState);
   const navigate = useNavigate();
 
+  
   const goSignInPage = () => {
     navigate("/login");
   };
 
-  const handleCheckDuplicate = () => {
+  useEffect(() => {
+    // emailCheck가 변경될 때 수행할 동작
+    console.log("emailCheck 값이 변경되었습니다.", emailCheck);
+  }, [emailCheck]);
+  
+  useEffect(() => {
+    // DuplicatedIdCheck가 변경될 때 수행할 동작
+    console.log("DuplicatedIdCheck 값이 변경되었습니다.", DuplicatedIdCheck);
+  }, [DuplicatedIdCheck]);
+  
+
+  const handleCheckDuplicate =( ) => { //중복 확인 버튼 눌렀을 시
     // 중복 확인 로직을 여기에 구현
-    console.log("중복 확인!");
+    (async() => {
+      try{
+        if (idValue.includes(' ')) {
+          swal("경고", "닉네임에 띄어쓰기를 사용할 수 없어요.", "error");
+          return;
+        }
+        const url = 'http://localhost:8080/login/checkId/'+idValue;
+        const response = await axios.get(url);
+        posts = response.data.data;
+        
+        
+        if(posts === false){
+          console.log("중복임")
+          swal("경고", "다른 아이디를 입력해주세요.", "error")
+          .then(() => {
+            setDuplicatedIdCheck(0);
+            navigate("/signup");
+          })
+        }
+        else{
+          console.log("중복아님")
+          swal({
+            title: "사용 가능한 아이디입니다.",
+            icon: "success",
+            buttons: "확인",
+          }).then(() => {
+            setDuplicatedIdCheck(1);
+            navigate("/signup");
+          })      
+        }
+
+        
+      } catch(error) {
+        console.log(error)
+      }
+    }) ();
   };
 
-  const handleNextBtn = () => {
-    navigate("/edit");
+  const handleNextBtn = () => { //다음으로 버튼 눌렀을 시
+    (async() => {
+      if(idValue=='' || pwValue=='' || emailValue=='' || birthValue==''){
+        swal({
+          title: "모든 항목에 값을 기입해주세요.",
+          icon: "warning",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/signup");
+        })
+      }
+      else if(DuplicatedIdCheck ==0){
+        swal({
+          title: "아이디 중복확인을 해주세요.",
+          icon: "warning",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/signup");
+        })
+      }
+      else if(emailCheck == 0){
+        console.log(emailCheck);
+        swal({
+          title: "이메일을 다시 확인해주세요.",
+          icon: "warning",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/signup");
+        })
+      }
+      else { //로그인 성공
+      try{
+        console.log(emailCheck);
+        const url = 'http://localhost:8080/login/new';
+        console.log(url);
+        const response = await axios.post(url, {
+          uid : idValue,
+          pw : pwValue,
+          email : emailValue,
+          birth : birthValue
+        });
+        posts = response.data;
+        console.log(response.data.data);
+        console.log(posts.data);
+        if(posts.data ===  "Register login Success"){
+          navigate("/edit");
+        }
+      } catch(error) {
+        console.log(error)
+      }
+    }
+    }) ();
     setProfile('setting')
   };
   
+
 
   return (
     <LoginCardbox>
@@ -36,23 +180,23 @@ function SignUpCard(props) {
       </TitleHeaderContainer>
       <IconInputContainer>
         <StyledIconFaUserAlt />
-        <AuthInput placeholder="아이디를 입력하세요." />
+        <AuthInput placeholder="아이디를 입력하세요." value={idValue} onChange={saveUserId}/>
         <CheckButton onClick={handleCheckDuplicate}>중복확인</CheckButton>
       </IconInputContainer>
 
       <IconInputContainer>
         <StyledIconFaLock />
-        <AuthInput placeholder="비밀번호를 입력하세요." />
+        <AuthInput placeholder="비밀번호를 입력하세요." value={pwValue} onChange={saveUserPw}/>
       </IconInputContainer>
 
       <IconInputContainer>
         <StyledIconMdEmail />
-        <AuthInput placeholder="이메일을 입력하세요." />
+        <AuthInput placeholder="이메일을 입력하세요." value={emailValue} onChange={saveUserEmail}/>
       </IconInputContainer>
 
       <IconInputContainer>
         <StyledIconDate />
-        <AuthInput placeholder="생일을 입력해 주세요." />
+        <AuthInput type="date" placeholder="생일을 입력해 주세요." value={birthValue} onChange={saveUserBirth}/>
       </IconInputContainer>
 
       <LoginBtn onClick={handleNextBtn}>다음으로</LoginBtn>
