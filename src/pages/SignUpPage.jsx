@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import SignUpCard from "../components/login/SignUpCard";
+import "../App.css"
 
 function SignUpPage(props) {
   return (
@@ -17,7 +18,7 @@ const SignUpContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 6rem;
   height: 100%;
   width: 100%;
+  margin-top: 5px;
 `;

@@ -63,7 +63,7 @@ export default BookListCard;
 const CardContainer = styled.div`
   border-radius: 40px;
   background: #f9f9f9;
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);  //1px 1px 2px 0px rgba(0, 0, 0, 0.3);
   width: 700px;
   padding: 40px 60px;
   margin-bottom: 50px;

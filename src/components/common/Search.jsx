@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 function Search(props) {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ function Search(props) {
         goSearchPage();
       }}
     >
-      <FiSearch />
+      <FontAwesomeIcon icon={faMagnifyingGlass} />
       <input placeholder="찾고 싶은 책을 검색해 보세요!" />
     </SearchWrapper>
   );
@@ -30,10 +32,10 @@ const SearchWrapper = styled.div`
   background: #fff;
   width: 230px;
   padding: 12px 0px 12px 32px;
+  margin-left: 5px;
   border-radius: 50px;
   border: 1px solid #e5e5e5;
   color: #71717a;
-  margin-left: 100px;
   &:hover {
     border: 1px solid #344a39;
   }

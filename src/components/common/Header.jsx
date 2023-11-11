@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
-import {styled} from "styled-components";
+import {styled, createGlobalStyle} from "styled-components";
 import Search from "./Search";
-import logo from "../../assets/Star-change.png";
+import logo from "../../assets/14.png";
 import profileimg from "../../assets/profile.png";
 import { useRecoilState } from "recoil";
 import { loginState, profileState } from "../../recoil/atom";
@@ -27,13 +27,14 @@ const Header = () => {
     profile === "setting" && location.pathname === "/edit";
   const isLoginPage = location.pathname === "/login";
   const isSignupPage = location.pathname === "/signup";
-  const isMainPage = (location.pathname === "/");
+  const isMainPage = location.pathname === "/";
 
   const isUrl = isLoginPage || isSignupPage;
+  const isMain = isMainPage && !isLogin.isLogin;
 
-  const hideBorder = isLogin.isLogin || location.pathname === "/";
+  const hideBorder = isLogin.isLogin || isMainPage;
 
-  console.log("hideBorder", isUrl);
+  //console.log("hideBorder", isUrl);
 
   const goReadingPage = () => {
     if (isLogin.isLogin) {
@@ -83,12 +84,13 @@ const Header = () => {
 
   return (
     <>
-      <HeaderWrapper isLogin={hideBorder}>
+      <HeaderWrapper isLogin={hideBorder} isMainPage={isMain} isLoginPage={isLoginPage}>
         <LinkStyle to="/">
-          <LogoOutDiv>
-            <StarImage src={logo} alt="logo" />
-            <LogoTitle>BOOKER</LogoTitle>
-          </LogoOutDiv>
+        { isMain ? null : 
+        <LogoOutDiv>
+          <StarImage src={logo} alt="logo" />
+        </LogoOutDiv>
+        }
         </LinkStyle>
 
         <HeaderRight>
@@ -98,23 +100,17 @@ const Header = () => {
                 onClick={() => {
                   goReadingPage();
                 }}
-              >
-                개인서재
-              </HeaderMenuText>
+              >개인서재</HeaderMenuText>
               <HeaderMenuText
                 onClick={() => {
                   goRecommendPage();
                 }}
-              >
-                책 추천
-              </HeaderMenuText>
+              >책 추천</HeaderMenuText>
               <HeaderMenuText
                 onClick={() => {
                   goExchangePage();
                 }}
-              >
-                책 교환
-              </HeaderMenuText>
+              >책 교환</HeaderMenuText>
             </HeaderMenuContainer>
           )}
           {isLogin.isLogin ? <Search /> : null}
@@ -188,6 +184,7 @@ const Header = () => {
               )}
             </IconContainer>
           ) : (
+            <>
             <CustomBtn
               onClick={() => {
                 navigate("/login");
@@ -195,6 +192,7 @@ const Header = () => {
             >
               로그인
             </CustomBtn>
+            </>
           )}
         </HeaderRight>
       </HeaderWrapper>
@@ -205,6 +203,14 @@ const Header = () => {
 
 export default Header;
 
+const GlobalStyle = createGlobalStyle`
+#root,
+html,
+body {
+    background: #FDF9EF;
+}
+`
+
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -213,14 +219,14 @@ const HeaderWrapper = styled.div`
   /* border-radius: 20px; */
   /* border-bottom: 1px solid #b8b8b8; */
   border-bottom: ${(props) => (props.isLogin ? "none" : "1px solid #D9D9D9")};
-  background: ${(props) => (props.isMainPage ? "#FDF9EF" : "#FDF9EF")};
+  background: ${(props) => (props.isMainPage ? "#FDF9EF" : "white")};
   /* box-shadow: 0px 4px 2px 0px rgba(165, 165, 165, 0.25); */
   /* z-index: 10; */
   /* position: fixed; */
   /* top: 0;
   left: 0; */
   /*width: ${(props) => (props.isLogin ? "90vw" : "96vw")};*/
-  padding: 0.3rem 6vw /*${(props) => (props.isLogin ? "0.9rem 0 6vw" : "0 1vw")}*/;
+  padding: 0.3rem 3.5vw /*${(props) => (props.isLogin ? "0.9rem 0 6vw" : "0 1vw")}*/;
   /*padding-top: 0.9rem;*/ 
 `;
 
@@ -236,15 +242,8 @@ const LogoOutDiv = styled.div`
 `
 
 const StarImage = styled.img`
-  width: 25px;
-  height: 25px;
-`
-
-const LogoTitle = styled.div`
-  color: #1E3F48;
-  font-size: 25px;
-  margin-left: 18px;
-  font-family: NanumEBold;
+  width: 118px;
+  margin-top: 2px;
 `
 
 const LinkStyle = styled(Link)`
@@ -264,6 +263,7 @@ const LinkStyle = styled(Link)`
 
 const CustomBtn = styled.button`
   height: 3rem;
+  max-width: 8rem;
   width: 12rem;
   margin-left: 1.5rem;
   margin-right: 1rem;
@@ -279,7 +279,6 @@ const CustomBtn = styled.button`
   color: #142343;
   transition: all 0.125s ease-in 0s;
   cursor: pointer;
-  font-family: nanum;
   font-size: 20px;
   font-style: normal;
   &:hover {
@@ -308,7 +307,7 @@ const HeaderMenuContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 21rem;
   margin-right: 2rem;
   @media (max-width: 1068px) {
     display: none;
@@ -317,12 +316,11 @@ const HeaderMenuContainer = styled.div`
 
 const HeaderMenuText = styled.p`
   color: #142343;
-  /*font-family: Inter;*/
   font-size: 23px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-left: 25px;
+  margin-left: 30px;
   cursor: pointer;
   &:hover {
     color: #212529;
@@ -367,7 +365,6 @@ const DropdownItem = styled.div`
   width: 120px;
   display: flex;
   align-items: center;
-  /*font-family: Inter;*/
   font-size: 14px;
   font-style: normal;
   font-weight: 700;

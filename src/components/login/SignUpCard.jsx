@@ -82,8 +82,7 @@ const TitleHeaderContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #344a39;
-  font-family: Inter;
+  color: #142343;
   font-size: 30px;
   font-style: normal;
   font-weight: 800;
@@ -93,7 +92,6 @@ const Title = styled.h1`
 
 const Subtitle = styled.p`
   color: #000;
-  font-family: Inter;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -111,9 +109,9 @@ const AuthInput = styled.input`
   border: 1px solid #b4b4b4;
   border-radius: 5px;
   width: 100%;
-  height: 60px;
+  height: 53px;
   padding-left: 50px;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 500;
   line-height: normal;
   &:focus {
@@ -129,7 +127,6 @@ const SignUpTextContainer = styled.div`
   margin-bottom: 20px;
   > p {
     /* color: #344a39; */
-    font-family: Inter;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -198,12 +195,13 @@ const ButtonStyle = styled.button`
 `;
 
 const LoginBtn = styled(ButtonStyle)`
-  background-color: #DBE8D9;
-  color: #000000;
-  font-size: 20px;
-  font-weight: bold;
+  background-color: #32497B;
+  color: white;
+  font-weight : bold;
+  font-size: 18px;
   line-height: normal;
   margin-bottom: 20px;
+  height: 53px;
 `;
 
 const CheckButton = styled.button`
@@ -211,9 +209,8 @@ const CheckButton = styled.button`
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #DBE8D9;
-  font-weight : bold;
-  color: #000000;
+  background-color: #32497B;
+  color: white;
   border: none;
   border-radius: 5px;
   padding: 10px 15px;

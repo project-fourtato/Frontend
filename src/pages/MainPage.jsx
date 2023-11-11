@@ -1,5 +1,5 @@
 import React from "react";
-import backgoundimg from "../assets/booker-main2.gif";
+import backgoundimg from "../assets/booker-main-v3.gif";
 import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
 import { loginState } from "../recoil/atom";
@@ -55,10 +55,9 @@ const BackgroundImgeOutDiv = styled.div`
 `
 
 const Backgoundimg = styled.img`
-background-color: rgb(248, 249, 193);
-display: inline-block;
-width: 55%;
-margin-top: 3.5%;
+  background-color: rgb(248, 249, 193);
+  display: inline-block;
+  width: 70%;
 `;
 
 const MainContainer = styled.div`
@@ -66,7 +65,7 @@ const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 6rem;
+  margin-top: 3rem;
   height: 100%;
   width: 100%;
   color: #000000;
