@@ -79,4 +79,11 @@ button {
     border-radius: 50%;
     margin-right: 20px;
 }
+
+.icon-bestbook-arrow {
+    position: sticky;
+    bottom: 1%;
+    left: 50%;
+    color: #6e6e6e;
+}
   
