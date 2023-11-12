@@ -161,6 +161,8 @@ const Menu = styled.div`
   border-top: none;
   border-radius: 0 0 10px 10px;
   z-index: 1;
+  max-height: 220px;
+  overflow-y: auto; 
 `;
 
 const MenuItem = styled.div`
@@ -234,5 +236,3 @@ font-weight: 400;
 line-height: 24px;
 letter-spacing: 0.44px;
 `;
-
-
