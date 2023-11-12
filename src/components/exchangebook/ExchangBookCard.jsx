@@ -161,7 +161,11 @@ const Menu = styled.div`
   border-top: none;
   border-radius: 0 0 10px 10px;
   z-index: 1;
+<<<<<<< HEAD
+  max-height: 220px;
+=======
   max-height: 200px;
+>>>>>>> 36adaf2e795143ae2de988007e188e2d0f38bfcb
   overflow-y: auto; 
 `;
 
@@ -236,5 +240,3 @@ font-weight: 400;
 line-height: 24px;
 letter-spacing: 0.44px;
 `;
-
-
