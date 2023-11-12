@@ -36,7 +36,7 @@ const Header = () => {
 
   const goReadingPage = () => {
     if (isLogin.isLogin) {
-      navigate("/books");
+      navigate("/mypage");
     } else {
       swal({
         title: "로그인이 필요합니다.",
@@ -127,7 +127,7 @@ const Header = () => {
                   <DropdownItem
                     onClick={() => {
                       setDropdownVisible(false);
-                      navigate("/mypage");
+                      navigate("/edit");
                     }}
                   >
                     <FontAwesomeIcon icon={faAddressCard} className="icon-modal-profile"/>프로필 편집
