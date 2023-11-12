@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import backgoundimg from "../assets/booker-main-v3.gif";
 import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
@@ -10,6 +10,8 @@ import "../../src/App.css";
 
 function MainPage(props) {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const [nickname, setNickname] = useState('감자');
+
   console.log('isLogin',isLogin)
   return (
     <>
@@ -18,7 +20,7 @@ function MainPage(props) {
           <MainContainer>
             <MainTitleContainer>
               <ProfileImg src={userprofile} />
-              <MainTitleText>감자님, 안녕하세요!</MainTitleText>
+              <MainTitleText><NicknameSpan>{nickname}</NicknameSpan> 님, 안녕하세요!</MainTitleText>
             </MainTitleContainer>
           </MainContainer>
           <MainContentContainer>
@@ -65,11 +67,11 @@ const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
   height: 100%;
   width: 100%;
   color: #000000;
-  font-size: 2.5rem;
   font-weight: 600;
 `;
 
@@ -83,8 +85,8 @@ const MainContentContainer = styled.div`
 const MainTitleContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 5rem;
+  justify-content: flex-start;
+  width: 46rem;
 `;
 
 const ProfileImg = styled.img`
@@ -95,6 +97,10 @@ const ProfileImg = styled.img`
 `;
 
 const MainTitleText = styled.h5`
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 600;
 `;
+
+const NicknameSpan = styled.span`
+  color: #5F749F;
+`

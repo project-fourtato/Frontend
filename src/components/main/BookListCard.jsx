@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { mainBookList } from "../../data/maindata";
-import bookicon from "../../assets/bookicon.png";
 import downarrow from "../../assets/downarrow.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookOpenReader } from "@fortawesome/free-solid-svg-icons";
+import DropDownCard from "./DropDownCard"
+import "../../App.css";
+
 function BookListCard(props) {
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -16,10 +20,11 @@ function BookListCard(props) {
       setActiveDropdownId(id);
     }
   };
+
   return (
     <CardContainer>
       <MainTitleContainer>
-        <CardIcon src={bookicon} />
+        <FontAwesomeIcon icon={faBookOpenReader} className="icon-main-read-book"/>
         <CardTitle>읽고 있는 책 목록</CardTitle>
       </MainTitleContainer>
 
@@ -31,23 +36,10 @@ function BookListCard(props) {
         <BookListContent>
           <ContentTitleText>{book.title}</ContentTitleText>
           <ContentText>{book.contents}</ContentText>
-
           <SubBtnBox>
-            <SubBtn onClick={()=>toggleDropdown(book.id)}>
-              나와 같이 읽는 사람
-              <DownArrowImg src={downarrow} />
-            </SubBtn>
+            <DropDownCard></DropDownCard>
           </SubBtnBox>
         </BookListContent>
-        {activeDropdownId === book.id && (
-          <Dropdown>
-            <DropdownItem>이름 1</DropdownItem>
-            <DropdownItem>이름 2</DropdownItem>
-            <DropdownItem>이름 3</DropdownItem>
-            <DropdownItem>이름 4</DropdownItem>
-            <DropdownItem>이름 5</DropdownItem>
-          </Dropdown>
-        )}
       </BookDetailContainer>
     </BookListContainer>
   );
@@ -62,30 +54,23 @@ export default BookListCard;
 
 const CardContainer = styled.div`
   border-radius: 40px;
-  background: #f9f9f9;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);  //1px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  background: white;
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
   width: 700px;
-  padding: 40px 60px;
+  padding: 40px 60px 21px 60px;
   margin-bottom: 50px;
 `;
 
 const MainTitleContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 60px;
-`;
-
-const CardIcon = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 20px;
+  margin-top: 0.2rem;
+  margin-bottom: 2rem;
 `;
 
 const CardTitle = styled.p`
   color: #000;
-  font-family: Inter;
-  font-size: 25px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -93,26 +78,27 @@ const CardTitle = styled.p`
 
 const BookListContainer = styled.div`
   display: flex;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
   align-items: start;
 `;
 
 const BookImage = styled.img`
-  width: 150px;
+  width: 100px;
   height: auto;
   flex-shrink: 0;
+  border-radius: 2px;
 `;
 
 const BookListContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
+  margin-left: 22px;
+  margin-top: 4px;
 `;
 
 const ContentTitleText = styled.p`
   color: #000;
-  font-family: Inter;
-  font-size: 22px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -121,8 +107,7 @@ const ContentTitleText = styled.p`
 const ContentText = styled.p`
   margin-top: 10px;
   color: #000;
-  font-family: Inter;
-  font-size: 16px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -131,7 +116,7 @@ const ContentText = styled.p`
 const SubBtnBox = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 12px;
   cursor: pointer;
   :active {
     scale: 0.99;
@@ -146,7 +131,6 @@ const DownArrowImg = styled.img`
 
 const SubBtn = styled.button`
   color: #000;
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 900;
@@ -181,7 +165,6 @@ const Dropdown = styled.div`
 
 const DropdownItem = styled.div`
   padding: 10px;
-  font-family: Inter;
   font-size: 14px;
   font-weight: 500;
   border-bottom: 1px solid #ddd;

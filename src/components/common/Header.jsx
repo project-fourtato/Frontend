@@ -4,15 +4,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {styled, createGlobalStyle} from "styled-components";
 import Search from "./Search";
 import logo from "../../assets/14.png";
-import profileimg from "../../assets/profile.png";
 import { useRecoilState } from "recoil";
 import { loginState, profileState } from "../../recoil/atom";
 import swal from "sweetalert";
 import MsgModal from "./MsgModal";
-import { BiMessageRounded } from "react-icons/bi";
-import { LuBell } from "react-icons/lu";
-import { FiLogOut } from "react-icons/fi";
-import { AiOutlineProfile } from "react-icons/ai";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faAddressCard, faBell } from "@fortawesome/free-regular-svg-icons";
 import "../../../src/App.css";
 
 const Header = () => {
@@ -117,11 +115,12 @@ const Header = () => {
 
           {isLogin.isLogin ? (
             <IconContainer>
-              <InfoRound
-                src={profileimg}
+              <FontAwesomeIcon
+                icon={faCircleUser}
                 onClick={() => {
                   toggleDropdown();
                 }}
+                className="icon-circle-user"
               />
               {dropdownVisible && (
                 <DropdownMenu>
@@ -131,12 +130,7 @@ const Header = () => {
                       navigate("/mypage");
                     }}
                   >
-                    <AiOutlineProfile
-                      size={18}
-                      color="#fff"
-                      style={{ marginRight: "10px" }}
-                    />
-                    프로필 편집
+                    <FontAwesomeIcon icon={faAddressCard} className="icon-modal-profile"/>프로필 편집
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {
@@ -144,12 +138,7 @@ const Header = () => {
                       setDropdownVisible(false);
                     }}
                   >
-                    <BiMessageRounded
-                      size={18}
-                      color="#fff"
-                      style={{ marginRight: "10px" }}
-                    />
-                    쪽지 목록
+                    <FontAwesomeIcon icon={faComment} className="icon-modal-directM"/>쪽지 목록
                   </DropdownItem>
 
                   <DropdownItem
@@ -159,12 +148,7 @@ const Header = () => {
                       navigate("/");
                     }}
                   >
-                    <FiLogOut
-                      size={18}
-                      color="#fff"
-                      style={{ marginRight: "10px" }}
-                    />
-                    로그아웃
+                    <FontAwesomeIcon icon={faArrowRightFromBracket} className="icon-modal-logout" />로그아웃
                   </DropdownItem>
 
                   <DropdownItem
@@ -173,11 +157,7 @@ const Header = () => {
                       navigate("/declaration");
                     }}
                   >
-                    <LuBell
-                      size={14}
-                      color="#fff"
-                      style={{ marginRight: "10px" }}
-                    />
+                    <FontAwesomeIcon icon={faBell} className="icon-modal-bell" />
                     신고하기
                   </DropdownItem>
                 </DropdownMenu>
@@ -219,7 +199,7 @@ const HeaderWrapper = styled.div`
   /* border-radius: 20px; */
   /* border-bottom: 1px solid #b8b8b8; */
   border-bottom: ${(props) => (props.isLogin ? "none" : "1px solid #D9D9D9")};
-  background: ${(props) => (props.isMainPage ? "#FDF9EF" : "white")};
+  background: ${(props) => (props.isMainPage ? "#FDF9EF" : "#f9f9f9")};
   /* box-shadow: 0px 4px 2px 0px rgba(165, 165, 165, 0.25); */
   /* z-index: 10; */
   /* position: fixed; */
@@ -292,17 +272,6 @@ const CustomBtn = styled.button`
   padding-top: 0.2rem;
 `;
 
-const InfoRound = styled.img`
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  margin-left: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
 const HeaderMenuContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -323,7 +292,7 @@ const HeaderMenuText = styled.p`
   margin-left: 30px;
   cursor: pointer;
   &:hover {
-    color: #212529;
+    color: #5F749F;
   }
 `;
 
@@ -337,50 +306,82 @@ const DropdownMenu = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  top: 65px;
-  right: -15px;
-  width: 188px;
+  top: 75px;
+  right: -18.5px;
+  width: 190px;
+  height: 205px;
   border: 1px solid #b8b8b8;
-  background-color: #a2b29f;
-  border-radius: 15px;
-  box-shadow: 0px 4px 2px 0px rgba(165, 165, 165, 0.25);
+  background-color: white; //#32497B
+  border-radius: 10px;
+  box-shadow: 2.5px 2.5px #DDDDDD;
   z-index: 20;
-  &::after {
+  /*&::after {
     content: "";
     position: absolute;
     top: 0;
-    left: 60%;
+    left: 81%;
     width: 0;
     height: 0;
     border: 16px solid transparent;
-    border-bottom-color: #a2b29f;
+    border-bottom-color: #32497B;
     border-top: 0;
     margin-left: 0px;
     margin-top: -16px;
-  }
+  }*/
+
+  &::after 
+	{
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 0 16px 20px 15.5px;
+	border-color: #FFFFFF transparent;
+	display: block;
+	width: 0;
+	z-index: 1;
+	top: -18.5px; 
+	left: 135px; 
+	}
+
+  &::before 
+	{
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 0 16px 20px 15.5px;
+	border-color: #b8b8b8 transparent;
+	display: block;
+	width: 0;
+	z-index: 0;
+	top: -20px;
+	left: 135px;
+	}
 `;
 
 const DropdownItem = styled.div`
   padding: 15px 20px;
-  width: 120px;
   display: flex;
   align-items: center;
+  width: 120px;
+  border-bottom: 1px solid #C6C6C6;
+  justify-content: center;
   font-size: 14px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: bold;
   line-height: normal;
-  color: #fff;
+  color: black;
+  margin: 2px 0;
   cursor: pointer;
-  border-bottom: 1px solid #fff;
-  /* &:hover {
-    background-color: #212529;
-  } */
+  &:hover {
+    color: #5F749F;
+  }
   &:last-child {
     border-bottom: none;
     font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 15px 0px;
+    padding: 10px 0px;
+    margin-right: -18px;
   }
 `;

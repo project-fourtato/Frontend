@@ -1,0 +1,97 @@
+@keyframes slide-fade-in-dropdown-animation {
+    0% {
+      transform: translateY(-100%);
+    }
+  
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .slide-fade-in-dropdown {
+    overflow: hidden;
+  }
+  
+  .slide-fade-in-dropdown > ul {
+    animation: slide-fade-in-dropdown-animation .4s ease;
+  }
+  
+  /* fade out */
+  
+  @keyframes slide-fade-out-dropdown-animation {
+    0% {
+      transform: translateY(0);
+    }
+  
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+  
+.slide-fade-out-dropdown {
+    overflow: hidden;
+}
+  
+.slide-fade-out-dropdown > ul {
+    animation: slide-fade-out-dropdown-animation 0.4s ease;
+    animation-fill-mode: forwards;
+}
+
+.components-dropdown {
+    margin-top: 2px;
+}
+
+.components-dropdown > ul {
+    position: relative;
+    margin-top: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    list-style: none;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.components-dropdown > ul > li {
+    padding-top : 11px;
+    padding-bottom: 10px;
+    height: 1.5rem;
+    line-height: 1.3rem;
+    padding-left: 5%;
+    margin-left: 10%;
+    display: flex;
+    width: 75%;
+    text-align: center;
+}
+
+.components-dropdown > ul > li:not(:last-of-type) {
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.components-dropdown > ul > li:hover {
+    opacity: 0.7;
+}
+
+.components-dropdown > ul > li > img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.app {
+    font-size: 13px;
+    width: 9.8rem;
+    height: 2.2rem;
+    background-color: #f9f9f9;
+    text-align: center;
+    line-height: 2.2rem;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 2px 2px #DDDDDD;
+    border: 1px solid #ddddddb0;
+}
+
+.icon-dropdown {
+    margin-left: 7px;
+}
+

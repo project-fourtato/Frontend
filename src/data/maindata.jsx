@@ -22,17 +22,17 @@ export const mainBookList = [
 export const mainPersonList = [
   {
     id: 0,
-    name: "내 꿈은 고구마 님",
+    name: "내 꿈은 고구마",
     contents: '"진짜 내가 사는 곳은 높은 벽에 둘러싸인 도시 안이야."',
     img: profile1,
-    subtitle: " -도시와 그 불확실한 벽 56페이지",
+    subtitle: "2023.11.12 12:29",
   },
   {
     id: 1,
-    name: "치즈케이크 님",
+    name: "치즈케이크",
     contents:
       '때로 목화는 "많이 죽었어"라는 말 외에는 꺼내지 못했다. 그럴 때 목수는 "한 명을 살렸다"라고 기록했다.',
     img: profile2,
-    subtitle: " -단 한 사람 100페이지",
+    subtitle: "2023.11.10 08:21",
   },
 ];
