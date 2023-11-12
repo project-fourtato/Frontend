@@ -23,6 +23,9 @@ function BookDetailPage(props) {
             <h5>{contents}</h5>
             <p>{auther}</p>
             <p>{publisher}</p>
+          <ProgressContainer>
+            <ProgressBox>읽는 중</ProgressBox>
+          </ProgressContainer>
           </BookDetailTextBox>
         </BookDetailInnerContainer>
         <IntroAndIndexFooter />
@@ -94,4 +97,30 @@ const BookDetailTextBox = styled.div`
     font-weight: 400;
     line-height: normal;
   }
+`;
+
+const ProgressContainer = styled.div`
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 30px;
+  margin-top : 20px;
+`;
+
+const ProgressBox = styled.p`
+  border-radius: 10px;
+  border: 1px solid #c1c1c1;
+  background: #fff;
+  text-align: center;
+  padding: 12px 20px;
+  min-width: 140px;
+  color: #000;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-right: 10px;
+  cursor: pointer;
 `;
