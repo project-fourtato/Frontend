@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom";
@@ -7,17 +7,66 @@ import { FaUserAlt } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import swal from "sweetalert";
 import "../../App.css";
+import axios from "axios";
+import { async } from "q";
+
 
 function SignInCard(props) {
+
+  //api
+  let posts = "hello";
+  const [idValue, setId] = useState('');
+  const [pwValue, setPw] = useState('');
+  const saveUserId = event => {
+    setId(event.target.value);
+  };
+  const saveUserPw = event => {
+    setPw(event.target.value);
+  };
+  const useEffect = () => {
+    (async() => {
+      try{
+        const url = 'http://localhost:8080/login/uid='+idValue+'&pw='+pwValue;
+        const response = await axios.get(url);
+        posts = response.data.uid;
+        
+
+        if(typeof posts === "undefined"){
+          swal({
+            title: "로그인 실패했습니다.",
+            icon: "warning",
+            buttons: "확인",
+          }).then(() => {
+            setIsLogin({ isLogin: false });
+            navigate("/login");
+          })
+        }
+        else{
+          handleLogin();      
+        }
+
+        
+      } catch(error) {
+        console.log(error)
+      }
+    }) ();
+    
+
+  };
+
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const navigate = useNavigate();
+
+  
 
   const goSignUpPage = () => {
     navigate("/signup");
   };
 
   const handleLogin = () => {
+    
     // 로그인 로직을 여기에 구현
+    
     console.log("로그인!");
     swal({
       title: "로그인 되었습니다.",
@@ -38,15 +87,15 @@ function SignInCard(props) {
       </TitleHeaderContainer>
       <IconInputContainer>
         <StyledIconFaUserAlt />
-        <AuthInput placeholder="아이디를 입력하세요." />
+        <AuthInput placeholder="아이디를 입력하세요." value={idValue} onChange={saveUserId}/>
       </IconInputContainer>
 
       <IconInputContainer>
         <StyledIconFaLock />
-        <AuthInput placeholder="비밀번호를 입력하세요." />
+        <AuthInput placeholder="비밀번호를 입력하세요." value={pwValue} onChange={saveUserPw}/>
       </IconInputContainer>
 
-      <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
+      <LoginBtn onClick={useEffect}>로그인</LoginBtn>
       <SignUpTextContainer>
         <p onClick={goSignUpPage}>회원가입</p>
       </SignUpTextContainer>
