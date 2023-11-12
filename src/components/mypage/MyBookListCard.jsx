@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { FaPlus } from "react-icons/fa";
 import { myBookList } from "../../data/mypagedata";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 function MyBookListCard(props) {
   const navigate = useNavigate();
 
@@ -20,7 +23,7 @@ function MyBookListCard(props) {
           <LeftBoxText>저는 해리포터 좋아해요!</LeftBoxText>
         </LeftBox>
         <AddBookButton>
-          <FaPlus />책 추가
+          <FontAwesomeIcon icon={faPlus} />책 추가
         </AddBookButton>
       </BookListCardHeader>
       {/* 책 리스트 */}
@@ -58,7 +61,7 @@ const BookListCardContainer = styled.div`
 
 const BookListCardHeader = styled.div`
   display: flex;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   justify-content: space-between;
 `;
 
@@ -67,11 +70,12 @@ const LeftBox = styled.div`
   background: #37d15d;
   border-radius: 1em;
   padding: 1em 5em;
+  height: 10px;
   &::after {
     content: "";
     position: absolute;
     left: 0;
-    top: 70%;
+    top: 65%;
     width: 0;
     height: 0;
     border: 1.719em solid transparent;
@@ -85,10 +89,10 @@ const LeftBox = styled.div`
 
 const LeftBoxText = styled.h5`
   color: #fff;
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 600;
-  line-height: 109.867%;
+  line-height: 70%;
   letter-spacing: -0.17px;
 `;
 
@@ -98,15 +102,14 @@ const AddBookButton = styled.button`
   background: #fff;
   cursor: pointer;
   padding: 10px 20px;
-  width: 150px;
-  height: 50px;
+  width: 140px;
+  height: 42px;
+  line-height: 4px;
   transform: rotate(-0.001deg);
   color: #000;
-  font-family: Inter;
-  font-size: 20px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,7 +117,7 @@ const AddBookButton = styled.button`
     margin-right: 10px;
   }
   &:hover {
-    background: #344a39;
+    background: #5F749F;
     color: #fff;
   }
 `;
@@ -126,12 +129,12 @@ const BookListBodyContainer = styled.div`
   border-radius: 10px;
   border: 1px solid #c1c1c1;
   margin-bottom: 30px;
-  height: 200px;
+  height: 150px;
 `;
 
 const BookimgBox = styled.img`
-  width: 120px;
-  height: 180px;
+  width: 80px;
+  height: 140px;
   margin-right: 15px;
   cursor: pointer;
 `;
