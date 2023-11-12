@@ -2,12 +2,15 @@ import React from "react";
 import { FaUserTag } from "react-icons/fa";
 import styled from "styled-components";
 import { usersearchList } from "../../data/recommenddata";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCheck, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import "../../App.css"
 
 function BestUserCard(props) {
   return (
     <Container>
       <TitleText>
-        <FaUserTag />
+        <FontAwesomeIcon icon={faUserCheck} />
         취향이 비슷한 유저
       </TitleText>
 
@@ -15,20 +18,20 @@ function BestUserCard(props) {
         return (
           <UserListBox key={user.id}>
             <UserImgBox>
-              <img src={user.img} />
+              <UserImg src={user.img} />
             </UserImgBox>
-            <div>
-              <UserTitleText>{user.name}</UserTitleText>
-
+            <UserInfoOutDiv>
+              <UserTitleText><NicknameSpan>{user.name}</NicknameSpan> 님</UserTitleText>
               <TagContainer>
                 {user.tag.map((tag) => {
                   return <Tagbox>{tag}</Tagbox>;
                 })}
               </TagContainer>
-            </div>
+            </UserInfoOutDiv>
           </UserListBox>
         );
       })}
+      { (usersearchList.length == 4) ? <FontAwesomeIcon icon={faChevronDown} className="icon-bestbook-arrow" size="lg" /> : "" }
     </Container>
   );
 }
@@ -36,31 +39,45 @@ function BestUserCard(props) {
 export default BestUserCard;
 
 const Container = styled.div`
-  width: 620px;
+  width: 35%;
+  height: 27rem;
+  background-color: white;
+  padding: 45px 50px;
+  border-radius: 40px;
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TitleText = styled.h5`
   color: #000;
-  font-family: Inter;
-  font-size: 22px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-bottom: 5px;
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
   svg {
-    margin-right: 13px;
-    width: 30px;
-    height: 30px;
+    margin-right: 15px;
+    width: 25px;
+    height: 25px;
   }
 `;
 
 const UserListBox = styled.div`
   display: flex;
   border-bottom: 2px solid #e0e0e0;
-  margin-bottom: 40px;
+  padding-left: 8px;
+  margin-bottom: 25px;
+  margin-top: 20px;
+  cursor: pointer;
+  height: 5.6rem;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const UserImgBox = styled.div`
@@ -68,10 +85,17 @@ const UserImgBox = styled.div`
   margin-bottom: 40px;
 `;
 
+const UserImg = styled.img`
+  width: 4.2rem;
+`
+
+const UserInfoOutDiv = styled.div`
+  margin-top: 4px;
+`
+
 const UserTitleText = styled.h5`
   color: #000;
-  font-family: Inter;
-  font-size: 20px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 600;
   line-height: 109.867%; /* 37.37px */
@@ -79,10 +103,16 @@ const UserTitleText = styled.h5`
   margin-bottom: 10px;
 `;
 
+const NicknameSpan = styled.span`
+  color: #7283A6;
+`
+
 const TagContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 2.1rem;
+  padding-bottom: 0.3rem;
 `;
 
 const Tagbox = styled.p`
@@ -91,16 +121,10 @@ const Tagbox = styled.p`
   background: #fff;
   text-align: center;
   padding: 10px 10px;
-  width: 80px;
+  width: 70px;
   color: #000;
-  font-family: Inter;
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
   margin-right: 10px;
-  cursor: pointer;
-  &:hover {
-    color: #37d15d;
-  }
 `;

@@ -17,7 +17,7 @@ export default BookRecommendPage;
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  /*margin-top: 6rem;*/
+  margin-top: 1.5rem;
   height: 100%;
   width: 100%;
 `;

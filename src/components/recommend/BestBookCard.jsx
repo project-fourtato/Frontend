@@ -2,27 +2,30 @@ import React from "react";
 import { FaBookMedical } from "react-icons/fa";
 import { booksearchList } from "../../data/recommenddata";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookBookmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import "../../App.css";
+
 function BestBookCard(props) {
   return (
     <Container>
       <TitleText>
-        <FaBookMedical /> 베스트 셀러
+        <FontAwesomeIcon icon={faBookBookmark} /> 베스트 셀러
       </TitleText>
 
       {booksearchList.map((book) => {
         return (
           <BookListBox key={book.id}>
-            <BookImgBox>
-              <img src={book.img} />
-            </BookImgBox>
-            <div>
+            <BookImg src={book.img} />
+            <BookInfoOutDiv>
               <BookTitleText>{book.title}</BookTitleText>
               <BookSubText>{book.author}</BookSubText>
               <BookSubText>{book.publisher}</BookSubText>
-            </div>
+            </BookInfoOutDiv>
           </BookListBox>
         );
       })}
+      { (booksearchList.length == 3) ? <FontAwesomeIcon icon={faChevronDown} className="icon-bestbook-arrow" size="lg" /> : "" }
     </Container>
   );
 }
@@ -30,54 +33,70 @@ function BestBookCard(props) {
 export default BestBookCard;
 
 const Container = styled.div`
-  width: 620px;
+  width: 35%;
+  height: 27rem;
   margin-right: 50px;
+  background-color: white;
+  padding: 45px 50px;
+  border-radius: 40px;
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TitleText = styled.h5`
   color: #000;
-  font-family: Inter;
-  font-size: 22px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-bottom: 5px;
+  margin-bottom: 28px;
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
   svg {
-    margin-right: 13px;
-    width: 30px;
-    height: 30px;
+    margin-right: 15px;
+    width: 24px;
+    height: 24px;
   }
 `;
 
 const BookListBox = styled.div`
   display: flex;
   border-bottom: 2px solid #e0e0e0;
-  margin-bottom: 40px;
+  padding-left: 8px;
+  padding-bottom: 25px;
+  margin-top: 20px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
-const BookImgBox = styled.div`
-  margin-right: 25px;
-  margin-bottom: 40px;
-`;
+const BookImg = styled.img`
+  width: 6rem;
+  border-radius: 2px;
+`
+
+const BookInfoOutDiv = styled.div`
+  padding-top: 5px;
+  margin-left: 20px;
+`
 
 const BookTitleText = styled.h5`
   color: #000;
-  font-family: Inter;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 109.867%; /* 37.37px */
   letter-spacing: -0.17px;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
 `;
 
 const BookSubText = styled.p`
   color: #000;
-  font-family: Inter;
-  font-size: 18px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
