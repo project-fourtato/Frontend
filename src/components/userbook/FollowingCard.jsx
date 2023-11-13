@@ -1,11 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { myBookList } from "../../data/mypagedata";
-import bboo from "../../assets/bboo.png";
 import profile2 from "../../assets/profile2.png";
 import userprofile from "../../assets/userprofile.png";
 
-function FollowerCard(props) {
+function FollowingCard(props) {
   return (
     <>
       <BookListCardContainer>   
@@ -42,7 +40,7 @@ function FollowerCard(props) {
   );
 }
 
-export default FollowerCard;
+export default FollowingCard;
 
 const BookListCardContainer = styled.div`
   width: 1200px;

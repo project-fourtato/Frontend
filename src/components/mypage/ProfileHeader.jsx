@@ -6,16 +6,22 @@ import {profileState} from "../../recoil/atom";
 import { useRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import MsgModal from "../common/MsgModal";
 
 function ProfileHeader(props) {
   const navigate = useNavigate();
   const [profile, setProfile] = useRecoilState(profileState);
   const [UserName, setUserName] = useState('감자');
   const [UserInterest, setUserInterest] = useState(['판타지', '추리', '감자', '네알', '안녕']);
+  const [showMsgModal, setShowMsgModal] = useState(false);
 
-  const goMyProfileEditPage = () => {
-    navigate("/edit");
-    setProfile('edit');
+  const followerPage = () => {
+    navigate("/follower");
+    setProfile('aa');
+  };
+  const followingPage = () => {
+    navigate("/following");
+    setProfile('bb');
   };
 
   return (
@@ -41,7 +47,7 @@ function ProfileHeader(props) {
         <div>
           <EditProfileButton
             onClick={() => {
-              goMyProfileEditPage();
+              setShowMsgModal(true);
             }}
           >
             <FontAwesomeIcon icon={faPaperPlane} className="icon-mypage-paper-plane" />쪽지 목록
@@ -49,12 +55,19 @@ function ProfileHeader(props) {
         </div>
       </ProfileSection>
       <FollowAndFollower>
-        <FollowAndFollowerText>팔로워</FollowAndFollowerText>
+        <FollowAndFollowerText
+                    onClick={() => {
+                      followerPage();
+                    }}>팔로워</FollowAndFollowerText>
         <FollowAndFollowerNumberText>10</FollowAndFollowerNumberText>
         <Dot>•</Dot>
-        <FollowAndFollowerText>팔로잉</FollowAndFollowerText>
+        <FollowAndFollowerText
+                     onClick={() => {
+                      followingPage();
+                    }}>팔로잉</FollowAndFollowerText>
         <FollowAndFollowerNumberText>15</FollowAndFollowerNumberText>
       </FollowAndFollower>
+      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
     </>
   );
 }

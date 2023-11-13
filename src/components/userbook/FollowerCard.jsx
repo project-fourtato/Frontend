@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { myBookList } from "../../data/mypagedata";
-import bboo from "../../assets/bboo.png";
 import profile2 from "../../assets/profile2.png";
 import userprofile from "../../assets/userprofile.png";
 
