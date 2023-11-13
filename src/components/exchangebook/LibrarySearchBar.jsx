@@ -107,7 +107,6 @@ const SelectBox = styled.div`
   height: 1.4rem;
   > p {
     color: #000;
-    font-family: NanumGothic;
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
@@ -126,12 +125,12 @@ const Menu = styled.div`
   border-top: none;
   border-radius: 0 0 10px 10px;
   z-index: 1;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto; 
 `;
 
 const MenuItem = styled.div`
-  padding: 10px 15px;
+  padding: 0px 15px;
   cursor: pointer;
   &:hover {
     background-color: #F5F5F5;

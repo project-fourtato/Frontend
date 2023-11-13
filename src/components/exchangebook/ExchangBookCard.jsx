@@ -25,7 +25,7 @@ function ExchangBookCard(props) {
         zoom: 16,
       });
 
-      const markerInstance = new window.google.maps.Marker({
+  const markerInstance = new window.google.maps.Marker({
         position: { lat, lng },
         map: newMap,
         title: '도서관 위치',
@@ -43,44 +43,44 @@ function ExchangBookCard(props) {
   return (
     <>
       <ContentArea>
-          {msgList.map((mapdata) => {
+        {msgList.map((mapdata) => {
             let latitude = parseFloat(mapdata.latitude);
             let longitude = parseFloat(mapdata.longitude);
 
             return (
-              <LibraryInfo>
-                <Wrapper apiKey={"AIzaSyCkxnfE1Y-05ue4N_q5ba4gEstlkg-0iF4"} 
+          <LibraryInfo>
+            <Wrapper apiKey={"AIzaSyCkxnfE1Y-05ue4N_q5ba4gEstlkg-0iF4"} 
                         render={render}
                         options={{disableDefaultUI: true}}>
                   <YourComponent lat={latitude} lng={longitude} />
-                </Wrapper>
+            </Wrapper>
 
-                <ExchangeInfo>
-                  <LibraryName><FontAwesomeIcon icon={faLocationDot} className='icon-library-marker' />{mapdata.libName}</LibraryName>
-                  <div>
-                    <InfoTextTitle>주소</InfoTextTitle>
-                    <InfoText>{mapdata.address}</InfoText>
-                  </div>
-                  <div>
-                    <InfoTextTitle>전화</InfoTextTitle>
-                    <InfoText>{mapdata.tel}</InfoText>
-                  </div>
-                  <div>
-                    <InfoTextTitle>운영시간</InfoTextTitle>
-                    <InfoText>{mapdata.operatingTime}</InfoText>
-                  </div>
-                  <div>
-                    <InfoTextTitle>휴관일</InfoTextTitle>
-                    <InfoText>{mapdata.closed}</InfoText>
+            <ExchangeInfo>
+            <LibraryName><FontAwesomeIcon icon={faLocationDot} className='icon-library-marker' />{mapdata.libName}</LibraryName>
+            <div>
+            <InfoTextTitle>주소</InfoTextTitle>
+            <InfoText>{mapdata.address}</InfoText>
+            </div>
+            <div>
+            <InfoTextTitle>전화</InfoTextTitle>
+            <InfoText>{mapdata.tel}</InfoText>
+            </div>
+            <div>
+            <InfoTextTitle>운영시간</InfoTextTitle>
+            <InfoText>{mapdata.operatingTime}</InfoText>
+            </div>
+            <div>
+            <InfoTextTitle>휴관일</InfoTextTitle>
+            <InfoText>{mapdata.closed}</InfoText>
 
-                  </div>
-                </ExchangeInfo>
-              </LibraryInfo>
-              )})}
-
+            </div>
+            </ExchangeInfo>
+          </LibraryInfo>
+)})}
+     
       </ContentArea>
-    </>
-  );
+        </>
+    );
 }
 
 export default ExchangBookCard;
@@ -108,7 +108,7 @@ const ExchangeInfo = styled.div`
 
 const LibraryInfo = styled.div`
   display: flex;
-  margin-bottom: 10px;
+margin-bottom: 10px;
 `;
 
 const LibraryName = styled.h2`
