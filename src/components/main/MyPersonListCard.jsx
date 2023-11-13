@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { mainPersonList } from "../../data/maindata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
+import texticon from "../../assets/texticon.png";
+import Session from 'react-session-api';
+import axios from "axios";
 
 function MyPersonListCard(props) {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
+  const [ProfileResponse, setProfileResponse] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = 'http://localhost:8080/follow/followingsLatestJournals/' + p.uid;
+        const response = JSON.parse((await axios.get(url)).request.response).followData;
+        setProfileResponse(response);        
+      } catch(error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   return (
     <CardContainer>
       <MainTitleContainer>
@@ -12,16 +33,19 @@ function MyPersonListCard(props) {
         <CardTitle>내가 구독한 사람들의 현재 활동</CardTitle>
       </MainTitleContainer>
 
-      {mainPersonList.map((book) => {
+      {ProfileResponse.map((book) => {
         return (
-          <BookListContainer key={book.id}>
-            <ProfileImage src={book.img} alt="bookimg" />
+        <a href="/mypage" style={{ textDecoration: 'none' }}>
+          <BookListContainer key={book.toUserId}>
+            
+            <ProfileImage src={book.userimageUrl} alt="bookimg" />
             <BookListContent>
-              <ContentTitleText><NicknameSpan>{book.name}</NicknameSpan> 님</ContentTitleText>
-              <ContentText>{book.contents}</ContentText>
-              <SubText>{book.subtitle}</SubText>
+              <ContentTitleText><NicknameSpan>{book.nickname}</NicknameSpan> 님</ContentTitleText>
+              <ContentText>{book.pcontents}</ContentText>
+              <SubText>{book.pdatetime.split("T")[0]+" "+book.pdatetime.split("T")[1]}</SubText>
             </BookListContent>
           </BookListContainer>
+          </a>
         );
       })}
     </CardContainer>

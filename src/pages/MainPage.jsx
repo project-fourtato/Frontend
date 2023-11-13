@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import backgoundimg from "../assets/booker-main-v3.gif";
 import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState } from "recoil";
@@ -6,11 +6,32 @@ import { loginState } from "../recoil/atom";
 import userprofile from "../assets/userprofile.png";
 import BookListCard from "../components/main/BookListCard";
 import MyPersonListCard from "../components/main/MyPersonListCard";
+import axios from "axios";
 import "../../src/App.css";
+import Session from 'react-session-api';
 
 function MainPage(props) {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
+  //api
   const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const [nickname, setNickname] = useState('감자');
+  const [nickname, setNickname] = useState('');
+  const [useriamgeUrl, setUseriamgeUrl] = useState('');
+
+  useEffect(() => {
+    (async() => {
+      try{
+        const url = 'http://localhost:8080/profile/'+p.uid;
+        const response = await axios.get(url);
+        setNickname(response.data.nickname);
+        setUseriamgeUrl(response.data.useriamgeUrl);
+      } catch(error) {
+        console.log(error)
+      }
+    }) ();
+  }, [nickname]);
+
+
 
   console.log('isLogin',isLogin)
   return (
@@ -19,7 +40,7 @@ function MainPage(props) {
         <>
           <MainContainer>
             <MainTitleContainer>
-              <ProfileImg src={userprofile} />
+              <ProfileImg src={useriamgeUrl} />
               <MainTitleText><NicknameSpan>{nickname}</NicknameSpan> 님, 안녕하세요!</MainTitleText>
             </MainTitleContainer>
           </MainContainer>

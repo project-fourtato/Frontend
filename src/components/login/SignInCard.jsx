@@ -9,6 +9,7 @@ import swal from "sweetalert";
 import "../../App.css";
 import axios from "axios";
 import { async } from "q";
+import Session from 'react-session-api';
 
 
 function SignInCard(props) {
@@ -73,6 +74,8 @@ function SignInCard(props) {
       icon: "success",
       buttons: "확인",
     }).then(() => {
+      let profile = {"uid": idValue};
+      sessionStorage.setItem("profile", JSON.stringify(profile)); // 여기가 session 전달하는 부분
       setIsLogin({ isLogin: true });
       navigate("/");
     })
@@ -92,7 +95,7 @@ function SignInCard(props) {
 
       <IconInputContainer>
         <StyledIconFaLock />
-        <AuthInput placeholder="비밀번호를 입력하세요." value={pwValue} onChange={saveUserPw}/>
+        <AuthInput placeholder="비밀번호를 입력하세요." value={pwValue} onChange={saveUserPw} type="password"/>
       </IconInputContainer>
 
       <LoginBtn onClick={useEffect}>로그인</LoginBtn>

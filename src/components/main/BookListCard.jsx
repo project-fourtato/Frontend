@@ -1,17 +1,93 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { mainBookList } from "../../data/maindata";
 import downarrow from "../../assets/downarrow.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookOpenReader } from "@fortawesome/free-solid-svg-icons";
-import DropDownCard from "./DropDownCard"
+import { faBookOpenReader, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import "../../App.css";
+import Session from 'react-session-api';
+import axios from "axios";
+import userimage from "../../assets/searchimg/su1.png";
+import "../../assets/dropdown.css";
+
+
 
 function BookListCard(props) {
+  
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeDropdownId, setActiveDropdownId] = useState(null);
+  const [bookListResponse, setBookListResponse] = useState([]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = 'http://localhost:8080/booksList/' + p.uid;
+        const response = await axios.get(url);
+        const responseData = JSON.parse(response.request.responseText).data;
+        setBookListResponse(responseData);
+        // console.log(responseData);
+        
+      } catch(error) {
+        console.log(error);
+      }
+    };
 
+    fetchData();
+  }, []);
+
+
+  const Dropdown = props => {
+    const [visibilityAnimation, setVisibilityAnimation] = React.useState(false);
+    const [repeat, setRepeat] = React.useState(null);
+
+    React.useEffect(() => {                                 {/* ← add */}
+        if (props.visibility) {
+            clearTimeout(repeat);
+            setRepeat(null);
+            setVisibilityAnimation(true);
+        } else {
+            setTimeout(() => {
+                setVisibilityAnimation(false);
+            }, 400);
+        }
+    }, [props.visibility]);
+
+    return (
+        <article className={`components-dropdown ${props.visibility ? 'slide-fade-in-dropdown' : 'slide-fade-out-dropdown'}`}>
+            { visibilityAnimation && props.children }       {/* ← modify */}
+        </article>
+    )
+  };
+  const DropDownApp = ({ profiles }) => {
+    const [dropdownVisibility, setDropdownVisibility] = useState(false);
+  
+    return (
+      <div>
+        <div className="app" onClick={() => setDropdownVisibility(!dropdownVisibility)}>
+          {dropdownVisibility ? '나와 같이 읽는 사람' : '나와 같이 읽는 사람'}
+          {dropdownVisibility ? (
+            <FontAwesomeIcon className="icon-dropdown" icon={faCaretUp} />
+          ) : (
+            <FontAwesomeIcon className="icon-dropdown" icon={faCaretDown} />
+          )}
+        </div>
+        <Dropdown visibility={dropdownVisibility}>
+          <ul>
+            {profiles.map((user, index) => (
+              <li key={index}>
+                <img src={user.useriamgeUrl} alt="user" />
+                <p>{user.nickname}</p>
+              </li>
+            ))}
+          </ul>
+        </Dropdown>
+      </div>
+    );
+  };
+  
   
   const toggleDropdown = (id) => {
     if (activeDropdownId === id) {
@@ -20,35 +96,32 @@ function BookListCard(props) {
       setActiveDropdownId(id);
     }
   };
-
+  
   return (
     <CardContainer>
       <MainTitleContainer>
         <FontAwesomeIcon icon={faBookOpenReader} className="icon-main-read-book"/>
         <CardTitle>읽고 있는 책 목록</CardTitle>
-      </MainTitleContainer>
-
-      {mainBookList.map((book) => {
-  return (
-    <BookListContainer key={book.id}>
-      <BookImage src={book.img} alt="bookimg" />
-      <BookDetailContainer>
-        <BookListContent>
-          <ContentTitleText>{book.title}</ContentTitleText>
-          <ContentText>{book.contents}</ContentText>
-          <SubBtnBox>
-            <DropDownCard></DropDownCard>
-          </SubBtnBox>
-        </BookListContent>
-      </BookDetailContainer>
-    </BookListContainer>
-  );
-})}
-
-
+      </MainTitleContainer>  
+      {bookListResponse.map((book) => (
+        <BookListContainer key={book.uid}>
+          <BookImage src={book.cover} alt="bookimg" />
+          <BookDetailContainer>
+            <BookListContent>
+              <ContentTitleText>{book.title}</ContentTitleText>
+              <ContentText>{book.author}{book.publisher}</ContentText>
+              <SubBtnBox>
+                {/* DropDownApp 구성 요소를 사용자 프로필에 통합 */}
+                <DropDownApp profiles={book.profile} />
+              </SubBtnBox>
+            </BookListContent>
+          </BookDetailContainer>
+        </BookListContainer>
+      ))}
     </CardContainer>
   );
 }
+
 
 export default BookListCard;
 
