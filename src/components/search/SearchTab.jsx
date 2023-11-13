@@ -45,7 +45,7 @@ const SearchTabContainer = styled.div`
   /* height: 100%; */
   display: flex;
   flex-direction: column;
-  margin-top: 6rem;
+  margin-top: 4.5rem;
 `;
 
 const TabContainer = styled.div`
@@ -54,7 +54,7 @@ const TabContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px solid #dcdcdc;
+  border-bottom: 2px solid #E8E8E8;
   margin-bottom: 3rem;
 `;
 
@@ -65,8 +65,10 @@ const Tab = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 2rem;
-  font-size: 20px;
-  background-color: ${(props) => (props.active ? "#C1D9C6" : "none")};
+  font-size: 18px;
+  font-weight: bold;
+  color: ${(props) => (props.active ? "white" : "black")};
+  background-color: ${(props) => (props.active ? "#5F749F" : "none")};
   border-top-right-radius: 16px;
   border-top-left-radius: 16px;
   font-weight: "bold";

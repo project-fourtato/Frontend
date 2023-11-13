@@ -18,7 +18,7 @@ const SearchContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 6rem;
+  margin-top: 3rem;
   height: 100%;
   width: 100%;
 `;

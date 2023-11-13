@@ -33,7 +33,7 @@ function LibrarySearchBar(props) {
 
     return (
         <SearchBarContainer>
-          <Title>지역</Title>
+          <Title>현재 살고 계신 지역을 알려주세요!</Title>
           <HeaderSelectContainer>
           <SelectBoxContainer>
             <SelectBox onClick={toggleRegionMenu}>
@@ -62,11 +62,7 @@ function LibrarySearchBar(props) {
             </SelectBox>
           </SelectBoxContainer>
             </HeaderSelectContainer>
-        <SearchInput
-            type="text"
-            placeholder="찾고싶은 책을 검색하세요"
-        />
-        <StyledSearchIcon src={searchIcon} />
+            <StyledSearchIcon src={searchIcon} />
       </SearchBarContainer>
     );
 }
@@ -113,6 +109,10 @@ const SelectBox = styled.div`
     line-height: 24px;
     letter-spacing: 0.44px;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Menu = styled.div`
@@ -157,10 +157,8 @@ const SearchBarContainer = styled.div`
 const StyledSearchIcon = styled.img`
   cursor: pointer;
   font-size: 30px;
-  width: 42.5px;
-  height: 42.5px;
-  margin-left: 8px;
-  padding-top: 1px;
+  width: 42px;
+  height: 42px;
 `;
 
 const SearchInput = styled.input`

@@ -13,6 +13,7 @@ import SubUserBookListPage from "../pages/SubUserBookListPage";
 import SignUpPage from "../pages/SignUpPage";
 import DeclarationPage from "../pages/DeclarationPage";
 import JournalsUploadPage from "../pages/JournalsPage";
+import SearchListPage from "../pages/SearchListPage";
 
 function AppRouter() {
   return (
@@ -28,8 +29,9 @@ function AppRouter() {
         <Route path="/edit" element={<MyProfileEditPage />} />
         <Route path="/recommend" element={<BookRecommendPage />} />
         <Route path="/journals" element={<JournalsUploadPage />} />
-        <Route path="/exchange" element={<BookExchangePage />} />
+        <Route path="/exchange/:id" element={<BookExchangePage />} />
         <Route path="/declaration" element={<DeclarationPage/>} />
+        <Route path="/exchange" element={<SearchListPage/>} />
       </Route>
     </Routes>
   );

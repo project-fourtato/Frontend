@@ -30,7 +30,7 @@ const AnnouncementBox = styled.div`
     display: flex;
     flex-direction: column;
     /* justify-content: flex-start; */
-    width: 1050px;
+    width: 100%;
     border-top: 1px solid #B8B8B8;
 `;
 
@@ -47,6 +47,7 @@ const AnnouncementTitle = styled.h2`
 
 const CardBoxContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
 `;
 
 const CordBox = styled.div`
@@ -77,7 +78,7 @@ const CordBox = styled.div`
 `
 
 const CardBoxText = styled.h2`
-    font-size: 18px;
+    font-size: 17px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;

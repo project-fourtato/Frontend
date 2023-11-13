@@ -7,15 +7,13 @@ function UserSearchList(props) {
     <UserListCardContainer>
       {usersearchList.map((user) => (
         <UserListBox key={user.id}>
-          <UserImgBox>
-            <img src={user.img} />
-          </UserImgBox>
-          <div>
-            <UserTitleText>{user.name}</UserTitleText>
+          <UserImgBox src={user.img} />
+          <UserInfoOutDiv>
+            <UserTitleText><span>{user.name}</span> 님</UserTitleText>
             <UserSpeechBox>
               <UserSpeechBoxText>{user.contents}</UserSpeechBoxText>
             </UserSpeechBox>
-          </div>
+          </UserInfoOutDiv>
         </UserListBox>
       ))}
     </UserListCardContainer>
@@ -27,27 +25,41 @@ export default UserSearchList;
 const UserListCardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin-left: 5.5%;
 `;
 
 const UserListBox = styled.div`
   display: flex;
   cursor: pointer;
+  width: 37rem;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
-const UserImgBox = styled.div`
+const UserImgBox = styled.img`
   margin-right: 25px;
   margin-bottom: 40px;
+  width: 85px;
+  height: 85px;
 `;
+
+const UserInfoOutDiv = styled.div`
+  margin-top: 5px;
+  margin-left: 1px;
+`
 
 const UserTitleText = styled.h5`
   color: #000;
-  font-family: Inter;
-  font-size: 20px;
+  font-size: 19px;
   font-style: normal;
   font-weight: 600;
   line-height: 109.867%; /* 37.37px */
   letter-spacing: -0.17px;
   margin-bottom: 10px;
+  >span {
+    color: #32497B
+  }
 `;
 
 const UserSpeechBox = styled.div`
@@ -55,6 +67,7 @@ const UserSpeechBox = styled.div`
   background: #37d15d;
   border-radius: 1em;
   padding: 1em 5em;
+  height: 0.8rem;
   &::after {
     content: "";
     position: absolute;
@@ -66,17 +79,16 @@ const UserSpeechBox = styled.div`
     border-right-color: #37d15d;
     border-left: 0;
     border-bottom: 0;
-    margin-top: -0.959em;
+    margin-top: -1.2em;
     margin-left: -0.519em;
   }
 `;
 
 const UserSpeechBoxText = styled.h5`
   color: #fff;
-  font-family: Inter;
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 600;
-  line-height: 109.867%;
+  line-height: 80%;
   letter-spacing: -0.17px;
 `;

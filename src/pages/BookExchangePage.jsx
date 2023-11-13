@@ -32,8 +32,9 @@ const PageContainer = styled.div`
 
 const PageOutDiv = styled.div`
   background-color: white;
-  padding: 65px 75px;
+  padding: 70px 80px;
   border-radius: 45px;
   box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  width: 60%;
 `
 

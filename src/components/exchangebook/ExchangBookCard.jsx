@@ -90,7 +90,7 @@ const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  width: 1050px;
+  width: 100%;
 `;
 
 const ExchangeInfo = styled.div`

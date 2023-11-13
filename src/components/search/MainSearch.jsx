@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 function MainSearch(props) {
   return (
     <SearchWrapper>
-      <FiSearch />
+      <FontAwesomeIcon icon={faMagnifyingGlass} />
       <input placeholder="검색" />
     </SearchWrapper>
   );
@@ -17,8 +19,9 @@ const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   background: #fff;
-  width: 530px;
-  padding: 22px 0px 22px 32px;
+  width: 500px;
+  height: 8px;
+  padding: 22px 0px 22px 25px;
   border-radius: 50px;
   border: 1px solid #e5e5e5;
   color: #71717a;
@@ -26,9 +29,8 @@ const SearchWrapper = styled.div`
     border: 1px solid #344a39;
   }
   > svg {
-    width: 24px;
-    height: 24px;
-    margin-left: 5px;
+    width: 22px;
+    height: 22px;
     margin-right: 15px;
   }
   > input {
@@ -36,7 +38,7 @@ const SearchWrapper = styled.div`
     margin-left: 5px;
     margin-right: 5px;
     border: none;
-    font-size: 20px;
+    font-size: 17px;
   }
   > input:focus {
     outline: none;

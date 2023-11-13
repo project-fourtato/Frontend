@@ -41,19 +41,19 @@ export const usersearchList = [
   {
     id: 0,
     img: su1,
-    name: "내 꿈은 고구마 님",
+    name: "내 꿈은 고구마",
     contents: "저는 해리포터 좋아해요!",
   },
   {
     id: 1,
     img: su2,
-    name: "백호 님",
+    name: "백호",
     contents: "저는 동물 관련 책을 좋아해요!",
   },
   {
     id: 2,
     img: su3,
-    name: "나SA 님",
+    name: "나SA",
     contents: "저는 우주 관련 책을 좋아해요!",
   },
 ];
