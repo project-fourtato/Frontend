@@ -1,10 +1,12 @@
-import {React, useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import IntroAndIndexFooter from "../components/bookdetail/IntroAndIndexFooter";
 import ReviewBox from "../components/bookdetail/ReviewBox";
-function BookDetailPage(props) {
+
+const BookDetailPage = (props) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const bookimg = location.state.bookimg;
   const title = location.state.title;
   const contents = location.state.contents;
@@ -17,6 +19,10 @@ function BookDetailPage(props) {
   const handleDropdownItemClick = (option) => {
     setSelectedOption(option);
     setIsDropdownVisible(false);
+
+    if (option === "책 삭제하기") {
+      navigate("/mypage");
+    }
   };
 
   return (
