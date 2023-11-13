@@ -1,113 +1,89 @@
-import React from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import {BsCaretDownFill} from "react-icons/bs";
-import {FaMapMarkerAlt} from "react-icons/fa";
-import searchmap from "../../assets/searchmap.png";
-import {regions, cities} from '../../data/regiondata';
-import { useState } from 'react';
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { msgList } from "../../data/mapdata"
 
 function ExchangBookCard(props) {
-  const [selectedRegion, setSelectedRegion] = useState(regions[0]);
-  const [selectedCity, setSelectedCity] = useState(cities[regions[0].code][0]);
-  const [regionMenuOpen, setRegionMenuOpen] = useState(false);
-  const [cityMenuOpen, setCityMenuOpen] = useState(false);
-
-  const handleRegionChange = (selectedRegion) => {
-    setSelectedRegion(selectedRegion);
-    setSelectedCity(cities[selectedRegion.code][0]);
-    setRegionMenuOpen(false);
+  const render = (status) => {
+    return (
+    <>
+    <h1>{status}</h1>
+    </>);
   };
 
-  const handleCityChange = (selectedCity) => {
-    setSelectedCity(selectedCity);
-    setCityMenuOpen(false);
-  };
+  const YourComponent = ({ lat, lng }) => {
+    const [map, setMap] = useState(null);
+    const [marker, setMarker] = useState(null);
+    const ref = useRef();
 
-  const toggleRegionMenu = () => {
-    setRegionMenuOpen(!regionMenuOpen);
-    setCityMenuOpen(false);
-  };
+    useEffect(() => {
+      const newMap = new window.google.maps.Map(ref.current, {
+        center: { lat, lng },
+        zoom: 16,
+      });
 
-  const toggleCityMenu = () => {
-    setCityMenuOpen(!cityMenuOpen);
-    setRegionMenuOpen(false);
-  };
+      const markerInstance = new window.google.maps.Marker({
+        position: { lat, lng },
+        map: newMap,
+        title: '도서관 위치',
+      });
+
+      setMap(newMap);
+      setMarker(markerInstance);
+    }, [])
+
+    return (
+      <div ref={ref} id="map" style={{ width: "300px", height: "300px" }}></div>
+    )
+  }
 
   return (
     <>
       <ContentArea>
-        <HeaderSelectContainer>
-          <SelectBoxContainer>
-            <SelectBox onClick={toggleRegionMenu}>
-              <p>{selectedRegion.name}</p><StyledDownIcon />
-              {regionMenuOpen && (
-                <Menu>
-                  {regions.map((region) => (
-                    <MenuItem key={region.code} onClick={() => handleRegionChange(region)}>
-                      {region.name}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              )}
-            </SelectBox>
-            <SelectBox onClick={toggleCityMenu}>
-              <p>{selectedCity.name}</p><StyledDownIcon />
-              {cityMenuOpen && (
-                <Menu>
-                  {cities[selectedRegion.code].map((city) => (
-                    <MenuItem key={city.code} onClick={() => handleCityChange(city)}>
-                      {city.name}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              )}
-            </SelectBox>
-          </SelectBoxContainer>
+          {msgList.map((mapdata) => {
+            let latitude = parseFloat(mapdata.latitude);
+            let longitude = parseFloat(mapdata.longitude);
 
-          <Title>지역의 해당 도서관에 검색하신 책이 있어요!</Title>
-            </HeaderSelectContainer>
+            return (
+              <LibraryInfo>
+                <Wrapper apiKey={"AIzaSyCkxnfE1Y-05ue4N_q5ba4gEstlkg-0iF4"} 
+                        render={render}
+                        options={{disableDefaultUI: true}}>
+                  <YourComponent lat={latitude} lng={longitude} />
+                </Wrapper>
 
-          <LibraryInfo>
-            <div>
-            <img src={searchmap}/>
-            </div>
-            <ExchangeInfo>
-            <LibraryName><FaMapMarkerAlt/>담작은도서관</LibraryName>
+                <ExchangeInfo>
+                  <LibraryName><FontAwesomeIcon icon={faLocationDot} className='icon-library-marker' />{mapdata.libName}</LibraryName>
+                  <div>
+                    <InfoTextTitle>주소</InfoTextTitle>
+                    <InfoText>{mapdata.address}</InfoText>
+                  </div>
+                  <div>
+                    <InfoTextTitle>전화</InfoTextTitle>
+                    <InfoText>{mapdata.tel}</InfoText>
+                  </div>
+                  <div>
+                    <InfoTextTitle>운영시간</InfoTextTitle>
+                    <InfoText>{mapdata.operatingTime}</InfoText>
+                  </div>
+                  <div>
+                    <InfoTextTitle>휴관일</InfoTextTitle>
+                    <InfoText>{mapdata.closed}</InfoText>
 
-            <div>
-            <InfoTextTitle>주소</InfoTextTitle>
-            <InfoText>강원특별자치도 춘천시 효자문길7번길 10</InfoText>
-            </div>
-            <div>
-            <InfoTextTitle>전화</InfoTextTitle>
-            <InfoText>033-256-6363</InfoText>
-            </div>
-            <div>
-            <InfoTextTitle>운영시간</InfoTextTitle>
-            <InfoText>도서관 이용시간: 09:00~18:00, 북카페: 12:00~17:00</InfoText>
-            </div>
-            <div>
-            <InfoTextTitle>휴관일</InfoTextTitle>
-            <InfoText>매주 월요일 / 「관공서의 공휴일에 관한 규정」에 따른 공휴일(일요일 제외) <br/>/ 근로자의날(5월1일) / 매년 12.30~12.31 </InfoText>
+                  </div>
+                </ExchangeInfo>
+              </LibraryInfo>
+              )})}
 
-            </div>
-            </ExchangeInfo>
-          </LibraryInfo>
-     
       </ContentArea>
-        </>
-    );
+    </>
+  );
 }
 
 export default ExchangBookCard;
-
-
-const StyledDownIcon = styled(BsCaretDownFill)`
-  cursor: pointer;
-  color: #D9D9D9;
-  font-size: 16px;
-  /* margin-left: 15px; */
-`;
 
 
 const ContentArea = styled.div`
@@ -117,66 +93,11 @@ const ContentArea = styled.div`
   width: 1050px;
 `;
 
-const HeaderSelectContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const SelectBoxContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-right: 0px;
-`;
-
-const SelectBox = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-  border-radius: 10px;
-  border: 1px solid #828282;
-  background: #FFF;
-  width: 140px;
-  > p {
-    color: #000;
-    font-family: NanumGothic;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 24px;
-    letter-spacing: 0.44px;
-  }
-`;
-
-const Menu = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #FFF;
-  border: 1px solid #828282;
-  border-top: none;
-  border-radius: 0 0 10px 10px;
-  z-index: 1;
-  max-height: 220px;
-  overflow-y: auto; 
-`;
-
-const MenuItem = styled.div`
-  padding: 10px 15px;
-  cursor: pointer;
-  &:hover {
-    background-color: #F5F5F5;
-  }
-`;
-
 const ExchangeInfo = styled.div`
-  margin-left: 20px;
+  margin-left: 30px;
+  margin-top: 10px;
   >div{
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     display: flex;
     align-items : center;
     &:last-child{
@@ -185,40 +106,27 @@ const ExchangeInfo = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  color: #000;
-font-family: NanumGothic;
-font-size: 18px;
-font-style: normal;
-font-weight: 700;
-line-height: 24px;
-letter-spacing: 0.44px;
-margin-left: 60px;
-`;
-
 const LibraryInfo = styled.div`
   display: flex;
+  margin-bottom: 10px;
 `;
 
 const LibraryName = styled.h2`
   display: flex;
     align-items: center;
-    gap: 10px;
-    color: #344A39;
-font-family: NanumGothic;
-font-size: 20px;
+    color: #142343;
+font-size: 18px;
 font-style: normal;
-font-weight: 700;
+font-weight: bold;
 line-height: 24px; 
 letter-spacing: 0.44px;
-margin-bottom: 30px;
+margin-bottom: 20px;
 `;
 
 const InfoTextTitle = styled.h2`
 margin-right: 10px;
 color: #000;
-font-family: NanumGothic;
-font-size: 18px;
+font-size: 16px;
 font-style: normal;
 font-weight: 700;
 line-height: 24px;
@@ -228,9 +136,7 @@ width: 90px;
 
 const InfoText = styled.p`
 color: #000;
-
-font-family: NanumGothic;
-font-size: 16px;
+font-size: 15px;
 font-style: normal;
 font-weight: 400;
 line-height: 24px;

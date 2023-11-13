@@ -8,8 +8,10 @@ function BookExchangePage(props) {
   return (
     <PageContainer>
       <LibrarySearchBar />
+      <PageOutDiv>
         <ExchangBookCard/>
         <SearchUserCard />
+      </PageOutDiv>
     </PageContainer>
   );
 }
@@ -18,13 +20,20 @@ export default BookExchangePage;
 
 
 const PageContainer = styled.div`
-  margin-top: 20px;
   width: 100%;
-  padding: 2rem;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 40px;
+  margin-bottom: 80px;
 `;
+
+const PageOutDiv = styled.div`
+  background-color: white;
+  padding: 65px 75px;
+  border-radius: 45px;
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+`
 

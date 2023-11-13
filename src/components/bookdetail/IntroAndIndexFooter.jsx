@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import styled from "styled-components";
 import { FaRegFolder } from "react-icons/fa";
 import { BiSolidBookAlt } from "react-icons/bi";
@@ -8,6 +8,14 @@ import { faFolder, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import "../../App.css"
 
 function IntroAndIndexFooter(props) {
+
+  const [isIntroExpanded, setIsIntroExpanded] = useState(false);
+  const [isIndexExpanded, setIsIndexExpanded] = useState(false);
+
+  const introContent = props.introContent || "책 소개 내용이 없습니다.";
+  const indexContent = props.indexContent || "목차 내용이 없습니다.";
+
+  
   return (
     <IntroBoxContainer>
       <CategoryBox>
@@ -21,17 +29,19 @@ function IntroAndIndexFooter(props) {
       </CategoryBox>
 
       <IntroBookBox>
-        <TitleText>
+        <TitleText onClick={() => setIsIntroExpanded(!isIntroExpanded)}>
           <FontAwesomeIcon icon={faChevronRight} className="icon-bookdetail-modal" />
-          책소개
+          책 소개
         </TitleText>
+        {isIntroExpanded && <ContentText>{introContent}</ContentText>}
       </IntroBookBox>
 
       <IndexBox>
-        <TitleText>
+        <TitleText onClick={() => setIsIndexExpanded(!isIndexExpanded)}>
         <FontAwesomeIcon icon={faChevronRight} className="icon-bookdetail-modal" />
           목차
         </TitleText>
+        {isIndexExpanded && <ContentText>{indexContent}</ContentText>}
       </IndexBox>
     </IntroBoxContainer>
   );
@@ -53,6 +63,7 @@ const TitleText = styled.h5`
   margin-bottom: 5px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const CategoryBox = styled.div`
@@ -62,7 +73,6 @@ const CategoryBox = styled.div`
 
 const CategoryText = styled.p`
   margin-top: 10px;
-  padding-left: 6.2%;
   color: #000;
   font-size: 16px;
   font-style: normal;
@@ -76,3 +86,13 @@ const IntroBookBox = styled.div`
 `;
 
 const IndexBox = styled.div``;
+
+const ContentText = styled.p`
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 10px;
+`;

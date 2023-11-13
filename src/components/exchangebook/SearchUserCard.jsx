@@ -1,32 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import porfile1 from '../../assets/profile1.png';
 import porfile2 from '../../assets/profile2.png';
 function SearchUserCard(props) {
+    const [haveabookuser, setHaveabookuser] = useState([{"name" : "고구마가되고싶어고구마", "img" : porfile1}, 
+    {"name" : "치크케이크", "img" : porfile2}]);
     return (
         <AnnouncementBox>
-        <AnnouncementTitle>BOOKER의 유저 중 검색하신 책을 가진 유저가 있어요!</AnnouncementTitle>
-        
-        <CardBoxContainer>
+            <AnnouncementTitle>BOOKER의 유저 중 검색하신 책을 가진 유저가 있어요!</AnnouncementTitle>
 
-        <CordBox>
-            <img src={porfile1}/>
-            <CardBoxText>고구마가 되고 싶어 님</CardBoxText>
-        </CordBox>
-        <CordBox>
-            <img src={porfile2}/>
-            <CardBoxText>치즈케이크 님</CardBoxText>
-        </CordBox>
-        </CardBoxContainer>
-      </AnnouncementBox>
+            <CardBoxContainer>
+                {haveabookuser.map((bookeruser) => {
+                    return (
+                        <CordBox>
+                            <img src={bookeruser.img} />
+                            <CardBoxText><span>{bookeruser.name}</span> 님</CardBoxText>
+                        </CordBox>
+                    )
+                })}
+            </CardBoxContainer>
+        </AnnouncementBox>
     );
 }
 
 export default SearchUserCard;
 
 const AnnouncementBox = styled.div`
-  margin-top: 50px;
-  display: flex;
+    margin-top: 40px;
+    display: flex;
     flex-direction: column;
     /* justify-content: flex-start; */
     width: 1050px;
@@ -35,14 +36,13 @@ const AnnouncementBox = styled.div`
 
 const AnnouncementTitle = styled.h2`
     color: #000;
-font-family: NanumGothic;
-font-size: 18px;
-font-style: normal;
-font-weight: 700;
-line-height: 24px;
-letter-spacing: 0.44px;
-margin-top: 30px;
-margin-bottom: 50px;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.44px;
+    margin-top: 40px;
+    margin-bottom: 30px;
 `;
 
 const CardBoxContainer = styled.div`
@@ -55,19 +55,31 @@ const CordBox = styled.div`
     justify-content: center;
     margin-right: 20px;
     border-radius: 10px;
-border: 1px solid #828282;
-padding: 20px 30px;
-background: #FFF;
-width: 300px;
+    border: 1px solid #B8B8B8;
+    padding: 15px 30px;
+    background: #FFF;
+    >img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    &:hover{
+        cursor: pointer;
+        background-color: #32497B;
+        color: white;
+        span {
+            color: white;
+        }
+    }
+    span {
+        color: #32497B;
+    }
 `
-    
 
 const CardBoxText = styled.h2`
-color: #344A39;
-font-family: Inter;
-font-size: 20px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-margin-left: 20px;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 20px;
 `

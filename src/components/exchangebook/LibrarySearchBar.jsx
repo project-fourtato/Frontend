@@ -1,54 +1,176 @@
-import React from 'react';
+import { React, useState } from 'react';
 import styled from 'styled-components';
-import {HiOutlineSearch} from "react-icons/hi";
+import searchIcon from "../../assets/searchIcon.png";
+import {regions, cities} from '../../data/regiondata';
+import {BsCaretDownFill} from "react-icons/bs";
 
 function LibrarySearchBar(props) {
+  const [selectedRegion, setSelectedRegion] = useState(regions[0]);
+  const [selectedCity, setSelectedCity] = useState(cities[regions[0].code][0]);
+  const [regionMenuOpen, setRegionMenuOpen] = useState(false);
+  const [cityMenuOpen, setCityMenuOpen] = useState(false);
+
+  const handleRegionChange = (selectedRegion) => {
+    setSelectedRegion(selectedRegion);
+    setSelectedCity(cities[selectedRegion.code][0]);
+    setRegionMenuOpen(false);
+  };
+
+  const handleCityChange = (selectedCity) => {
+    setSelectedCity(selectedCity);
+    setCityMenuOpen(false);
+  };
+
+  const toggleRegionMenu = () => {
+    setRegionMenuOpen(!regionMenuOpen);
+    setCityMenuOpen(false);
+  };
+
+  const toggleCityMenu = () => {
+    setCityMenuOpen(!cityMenuOpen);
+    setRegionMenuOpen(false);
+  };
+
     return (
         <SearchBarContainer>
+          <Title>지역</Title>
+          <HeaderSelectContainer>
+          <SelectBoxContainer>
+            <SelectBox onClick={toggleRegionMenu}>
+              <p>{selectedRegion.name}</p><StyledDownIcon />
+              {regionMenuOpen && (
+                <Menu>
+                  {regions.map((region) => (
+                    <MenuItem key={region.code} onClick={() => handleRegionChange(region)}>
+                      {region.name}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              )}
+            </SelectBox>
+            <SelectBox onClick={toggleCityMenu}>
+              <p>{selectedCity.name}</p><StyledDownIcon />
+              {cityMenuOpen && (
+                <Menu>
+                  {cities[selectedRegion.code].map((city) => (
+                    <MenuItem key={city.code} onClick={() => handleCityChange(city)}>
+                      {city.name}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              )}
+            </SelectBox>
+          </SelectBoxContainer>
+            </HeaderSelectContainer>
         <SearchInput
             type="text"
-            placeholder="지역을 입력하세요"
+            placeholder="찾고싶은 책을 검색하세요"
         />
-        <div>
-        <StyledSearchIcon/>
-        </div>
+        <StyledSearchIcon src={searchIcon} />
       </SearchBarContainer>
     );
 }
 
 export default LibrarySearchBar;
 
+const StyledDownIcon = styled(BsCaretDownFill)`
+  cursor: pointer;
+  color: #D9D9D9;
+  font-size: 16px;
+  /* margin-left: 15px; */
+`;
+
+const HeaderSelectContainer = styled.div`
+  display: flex;
+  /*align-items: center;
+  margin-bottom: 10px;*/
+`;
+
+const SelectBoxContainer = styled.div`
+  display: flex;
+  /*align-items: center;*/
+  line-height: 50px;
+  gap: 0.5rem;
+  margin-right: 10px;
+`;
+
+const SelectBox = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #828282;
+  background: #FFF;
+  width: 100px;
+  height: 1.4rem;
+  > p {
+    color: #000;
+    font-family: NanumGothic;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.44px;
+  }
+`;
+
+const Menu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #FFF;
+  border: 1px solid #828282;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  z-index: 1;
+  max-height: 220px;
+  overflow-y: auto; 
+`;
+
+const MenuItem = styled.div`
+  padding: 10px 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: #F5F5F5;
+  }
+`;
+
+const Title = styled.h1`
+  color: #000;
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: 24px;
+letter-spacing: 0.44px;
+margin-right: 25px;
+`;
+
 const SearchBarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
-  >div{
-    margin-left: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: #A2B29F;
-    color: #fff;
-    border-radius: 10px;
-  }
+  margin-bottom: 4rem;
 `;
 
-const StyledSearchIcon = styled(HiOutlineSearch)`
+const StyledSearchIcon = styled.img`
   cursor: pointer;
-  color: #fff;
   font-size: 30px;
+  width: 42.5px;
+  height: 42.5px;
+  margin-left: 8px;
+  padding-top: 1px;
 `;
 
 const SearchInput = styled.input`
   border-radius: 10px;
+  border: 1px solid gray;
   width: 400px;
-background: #FFF;
-height:22px;
-padding: 10px 10px 10px 15px;
-box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+  background: #FFF;
+  height:22px;
+  padding: 10px 10px 10px 15px;
   ::placeholder{
     color:#828282;
   }

@@ -105,7 +105,7 @@ button {
 .icon-bookdetail-modal {
     color: #142343;
     width: 20px;
-    height: 20px;
+    height: 17px;
     margin-right: 16px;
 }
 
@@ -113,5 +113,9 @@ button {
     color: #142343;
     margin-right: 10px;
     margin-left: 5px;
+}
+
+.icon-library-marker {
+    margin-right: 10px;
 }
   
