@@ -1,15 +1,15 @@
 import React from "react";
-import UserBookCard from "../components/userbook/UserBookCard";
+import FollowerCard from "../components/userbook/FollowerCard";
 import styled from "styled-components";
-function SubUserBookListPage(props) {
+function FollowerPage(props) {
   return (
     <Container>
-      <UserBookCard />
+      <FollowerCard />
     </Container>
   );
 }
 
-export default SubUserBookListPage;
+export default FollowerPage;
 
 const Container = styled.div`
   display: flex;

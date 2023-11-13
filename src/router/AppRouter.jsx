@@ -9,7 +9,8 @@ import BookExchangePage from "../pages/BookExchangePage";
 import MyProfileEditPage from "../pages/MyProfileEditPage";
 import BookDetailPage from "../pages/BookDetailPage";
 import SearchPage from "../pages/SearchPage";
-import SubUserBookListPage from "../pages/SubUserBookListPage";
+import FollowerPage from "../pages/FollowerPage";
+import FollowingPage from "../pages/FollowingPage";
 import SignUpPage from "../pages/SignUpPage";
 import DeclarationPage from "../pages/DeclarationPage";
 import JournalsUploadPage from "../pages/JournalsPage";
@@ -22,7 +23,8 @@ function AppRouter() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/userbook" element={<SubUserBookListPage />} />
+        <Route path="/follower" element={<FollowerPage />} />
+        <Route path="/following" element={<FollowingPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail/:id" element={<BookDetailPage />} />
         <Route path="/edit" element={<MyProfileEditPage />} />
