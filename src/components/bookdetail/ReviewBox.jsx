@@ -1,23 +1,25 @@
-import React from "react";
+import { React, useState } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { reviewList } from "../../data/reviewpage";
+import "../../App.css"
+
 function ReviewBox(props) {
   return (
     <ReviewBoxContainer>
-      <ReviewTitleText>내가 남긴 감상평</ReviewTitleText>
-      <ReviewBoxText>
-        변혁적 관계를 맺으라는 건 서로에 대해 계산기를 두드리지 말라는 말이다.
-        변혁적 관계에는 서로 돕고 지원하려는 진정한 열망만 있다. 변혁적 관계의
-        목적이자 방식은 변화다. 베풂과 감사, 성장에 초점을 맞춘 변화가 변혁적
-        관계의 핵심이다.‘나에게 무슨 유익이 있지?’라는 생각에 사로잡히지 말고
-        ‘그들에게 무슨 유익이 있지?’라는 질문을 해야 한다. 먼저 다른 사람이
-        목표를 이룰 수 있게 도와라. 거기서 출발해 관계를 구축해야 한다.
-      </ReviewBoxText>
-      <PageText>-page 80</PageText>
-      <SubReviewBoxText>
-        미래의 나와 연결되는 순간 새로운 세계가 열린다현재 삶의 판단 기준이
-        생기고, 어떤게 살아야 성공한 삶을 살수있는지 이정표를 준다.미래에 나를
-        사랑하고 투자해라. 모든 순간이 축복이다
-      </SubReviewBoxText>
+      <ReviewTitleText><FontAwesomeIcon icon={faPenToSquare} className="icon-review-box" />내가 남긴 감상평</ReviewTitleText>
+      <JournalListOutDiv>
+      {reviewList.map((journal) => {
+        return (
+          <ReviewBoxOutDiv>
+            <JournalTitleText>{journal.title}</JournalTitleText>
+            <JournalDateText>{journal.date}</JournalDateText>
+          </ReviewBoxOutDiv>
+        )
+      })}
+      </JournalListOutDiv>
+      <JournalAddButton>독서록 추가</JournalAddButton>
     </ReviewBoxContainer>
   );
 }
@@ -26,52 +28,65 @@ export default ReviewBox;
 
 const ReviewBoxContainer = styled.div`
   border-radius: 40px;
-  background: #f9f9f9;
-  box-shadow: 3px 3px 2px 0px rgba(0, 0, 0, 0.3);
-  width: 470px;
-  height: 580px;
-  padding: 40px 60px;
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  width: 460px;
+  height: 470px;
+  padding: 45px 55px;
+  background-color: white;
 `;
 
 const ReviewTitleText = styled.h3`
   color: #000;
-  font-family: Inter;
-  font-size: 28px;
+  font-size: 21px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 `;
 
-const ReviewBoxText = styled.p`
+const JournalListOutDiv = styled.div`
+  overflow: auto;
+  height: 81%;
+`
+
+const JournalTitleText = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+`
+
+const JournalDateText = styled.p`
   color: #000;
-  font-family: Inter;
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
 `;
 
-const PageText = styled.p`
-  color: #000;
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: normal;
+const ReviewBoxOutDiv = styled.div`
   display: flex;
-  justify-content: flex-end;
-`;
+  justify-content: space-between;
+  border-bottom: 1px solid #CDCDCD;
+  padding: 20px 15px;
+  &:hover {
+    background-color: #EEEEEE;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+`
 
-const SubReviewBoxText = styled.p`
-  color: #000;
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  border-top: 1px solid #a8a8a8;
-  border-bottom: 1px solid #a8a8a8;
-  padding: 20px 0;
-  margin-top: 30px;
-`;
+const JournalAddButton = styled.div`
+  width: 150px;
+  height: 50px;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 17px;
+  text-align: center;
+  line-height: 50px;
+  box-shadow: 2.5px 2.5px rgba(0,0,0,0.23);
+  margin-left: 70%;
+  margin-top: 13px;
+  &:hover {
+    cursor: pointer;
+  }
+`

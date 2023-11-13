@@ -90,4 +90,28 @@ button {
 .icon-mypage-paper-plane {
     margin-right: 10px;
 }
+
+.icon-review-box {
+    margin-right: 15px;
+}
+
+.icon-bookdetail-category {
+    color: #142343;
+    margin-right: 16px;
+    width: 20px;
+    height: 20px;
+}
+
+.icon-bookdetail-modal {
+    color: #142343;
+    width: 20px;
+    height: 20px;
+    margin-right: 16px;
+}
+
+.icon-journal-pencil {
+    color: #142343;
+    margin-right: 10px;
+    margin-left: 5px;
+}
   

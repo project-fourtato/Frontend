@@ -3,12 +3,16 @@ import styled from "styled-components";
 import { FaRegFolder } from "react-icons/fa";
 import { BiSolidBookAlt } from "react-icons/bi";
 import { GrFormNext } from "react-icons/gr";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolder, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import "../../App.css"
+
 function IntroAndIndexFooter(props) {
   return (
     <IntroBoxContainer>
       <CategoryBox>
         <TitleText>
-          <FaRegFolder />
+          <FontAwesomeIcon icon={faFolder} className="icon-bookdetail-category" />
           카테고리
         </TitleText>
         <CategoryText>
@@ -18,14 +22,14 @@ function IntroAndIndexFooter(props) {
 
       <IntroBookBox>
         <TitleText>
-          <BiSolidBookAlt />
+          <FontAwesomeIcon icon={faChevronRight} className="icon-bookdetail-modal" />
           책소개
         </TitleText>
       </IntroBookBox>
 
       <IndexBox>
         <TitleText>
-          <GrFormNext />
+        <FontAwesomeIcon icon={faChevronRight} className="icon-bookdetail-modal" />
           목차
         </TitleText>
       </IndexBox>
@@ -38,24 +42,17 @@ export default IntroAndIndexFooter;
 const IntroBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 35px;
 `;
 const TitleText = styled.h5`
   color: #000;
-  font-family: Inter;
-  font-size: 22px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
-  svg {
-    margin-right: 13px;
-    width: 30px;
-    height: 30px;
-    color: #344a39;
-  }
 `;
 
 const CategoryBox = styled.div`
@@ -65,17 +62,17 @@ const CategoryBox = styled.div`
 
 const CategoryText = styled.p`
   margin-top: 10px;
+  padding-left: 6.2%;
   color: #000;
-  font-family: Inter;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
 `;
 
 const IntroBookBox = styled.div`
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 const IndexBox = styled.div``;

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { mainPersonList } from "../../data/maindata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
-import texticon from "../../assets/texticon.png";
 
 function MyPersonListCard(props) {
   return (
@@ -34,7 +33,7 @@ export default MyPersonListCard;
 const CardContainer = styled.div`
   border-radius: 40px;
   background: white;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);  //1px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23); 
   width: 700px;
   padding: 48px 60px 21px 60px;
   margin-bottom: 40px;

@@ -74,16 +74,17 @@ const ProfileLeftContainer = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  width: 85px;
-  height: 85px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   margin-right: 20px;
 `;
 
 const ProfileNameDirectM = styled.div`
   display: flex;
-  margin-top: 10px;
+  margin-top: 12px;
   margin-left: 6px;
+  margin-bottom: 1px;
 `
 const InterestOutDiv = styled.div`
   display: flex;
@@ -92,7 +93,7 @@ const InterestOutDiv = styled.div`
 
 const ProfileName = styled.h2`
   color: #000;
-  font-size: 22px;
+  font-size: 23px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

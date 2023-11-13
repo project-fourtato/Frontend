@@ -23,8 +23,7 @@ function ImageUploadCard(props) {
         {selectedImage ? (
             <ImagePreview src={selectedImage} alt="Selected profile"/>
         ) : (
-            <UploadContainer>
-            </UploadContainer>
+            <UploadContainer>사진을 업로드 해주세요!</UploadContainer>
         )}
         <HiddenFileInput 
             ref={fileInputRef}
@@ -59,6 +58,11 @@ const UploadContainer = styled.div`
     margin-left: 120px;
     margin-top: 39px;
     border-radius: 5px;
+    background-color: white;
+    text-align: center;
+    line-height: 550px;
+    font-weight: bold;
+    font-size: 20px;
 `;
 
 const HiddenFileInput = styled.input`

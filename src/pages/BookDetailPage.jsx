@@ -15,9 +15,7 @@ function BookDetailPage(props) {
     <BookDetailContainer>
       <BookDetailBox>
         <BookDetailInnerContainer>
-          <BookDetailImg>
-            <img src={bookimg} alt="책 이미지" />
-          </BookDetailImg>
+          <BookImg src={bookimg} alt="책 이미지"/>
           <BookDetailTextBox>
             <h2>{title}</h2>
             <h5>{contents}</h5>
@@ -39,7 +37,7 @@ export default BookDetailPage;
 
 const BookDetailContainer = styled.div`
   display: flex;
-  margin-top: 5rem;
+  margin-top: 1.2rem;
   /* padding: 0 7rem; */
   width: 100%;
   justify-content: center;
@@ -48,22 +46,26 @@ const BookDetailContainer = styled.div`
 
 const BookDetailInnerContainer = styled.div`
   display: flex;
-  margin-bottom: 30px;
+
 `;
 
 const BookDetailBox = styled.div`
   display: flex;
   flex-direction: column;
   /* margin-left: 50px; */
+  margin-right: 50px;
+  height: 29.4rem;
+  width: 30rem;
+  background-color: white;
+  border-radius: 40px;
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  padding: 45px 55px;
 `;
 
-const BookDetailImg = styled.div`
-  margin-right: 1.3rem;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`;
+const BookImg = styled.img`
+  margin-right: 1.6rem;
+  width: 27%;
+`
 
 const BookDetailTextBox = styled.div`
   margin-top: 15px;
@@ -72,9 +74,8 @@ const BookDetailTextBox = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   > h2 {
-    color: #344a39;
-    font-family: Inter;
-    font-size: 24px;
+    color: #142343;
+    font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -82,17 +83,15 @@ const BookDetailTextBox = styled.div`
   }
   > h5 {
     color: #000;
-    font-family: Inter;
-    font-size: 20px;
+    font-size: 17px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    margin-bottom: 25px;
+    margin-bottom: 14px;
   }
   > p {
     color: #000;
-    font-family: Inter;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -103,9 +102,7 @@ const ProgressContainer = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
-  width: 100%;
-  margin-bottom: 30px;
-  margin-top : 20px;
+  margin-top : 15px;
 `;
 
 const ProgressBox = styled.p`
@@ -114,9 +111,8 @@ const ProgressBox = styled.p`
   background: #fff;
   text-align: center;
   padding: 12px 20px;
-  min-width: 140px;
+  min-width: 120px;
   color: #000;
-  font-family: Inter;
   font-size: 15px;
   font-style: normal;
   font-weight: 700;

@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate  } from 'react-router-dom';
 import swal from "sweetalert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
 
 function JournalContentCard(props) {
     const fileInputRef = React.useRef(null);
@@ -36,9 +38,9 @@ function JournalContentCard(props) {
             <Button onClick={handleEditButtonClick}><label htmlFor="fileInput"><span>사진 수정</span></label></Button>
         </ImageUploadBtnContainer>
         <ContentDiv>
-            <JournalTitle>제목</JournalTitle>
+            <JournalTitle><FontAwesomeIcon icon={faPencil} className="icon-journal-pencil" />제목</JournalTitle>
             <JournalTitleInput></JournalTitleInput>
-            <JournalContent>독서록</JournalContent>
+            <JournalContent><FontAwesomeIcon icon={faPencil} className="icon-journal-pencil" />독서록</JournalContent>
             <JournalContentInput></JournalContentInput>
         </ContentDiv>
         <UploadBtnContainer>
@@ -77,25 +79,25 @@ const Button = styled.div`
     font-weight: bold;
     border-radius: 45px;
     border: 1px solid #D5D5D5;
-    background-color: #DBE8D9;
+    background-color: #5F749F;
+    color: white;
     box-shadow: 1px 2px #D5D5D5;
     margin-right: 10px;
     margin-bottom: 5px;
     text-align: center;
     line-height: 45px;
+    
+    &:hover {
+        cursor: pointer;
+        background-color: white;
+        color: #5F749F;
+    }
 
-    svg {
-        color: #000;
+    >label {
         &:hover {
             cursor: pointer;
-            color: #f5f5f5;
         }
-      }
-    
-      &:hover {
-        cursor: pointer;
-        background-color: #f5f5f5;
-      }
+    }
 `
 
 const Button2 = styled.button`
@@ -105,21 +107,21 @@ const Button2 = styled.button`
     font-weight: bold;
     border-radius: 45px;
     border: 1px solid #D5D5D5;
-    background-color: #DBE8D9;
+    background-color: #5F749F;
+    color: white;
     box-shadow: 1px 2px #D5D5D5;
     margin-left: 10px;
 
-    svg {
-        color: #000;
-        &:hover {
-            cursor: pointer;
-            color: #f5f5f5;
-        }
-    }
-    
     &:hover {
         cursor: pointer;
-        background-color: #f5f5f5;
+        background-color: white;
+        color: #5F749F;
+    }
+
+    >label {
+        &:hover {
+            cursor: pointer;
+        }
     }
 `
 
@@ -151,7 +153,7 @@ const JournalContent = styled.div`
 
 const JournalContentInput = styled.textarea`
     width: 97%;
-    height: 275px;
+    height: 16.5rem;
     border: 1px solid #CACACA;
     border-radius: 10px;
     resize: none;
