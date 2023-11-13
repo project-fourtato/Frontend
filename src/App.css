@@ -118,4 +118,13 @@ button {
 .icon-library-marker {
     margin-right: 10px;
 }
+
+.icon-bestbook-arrow {
+    opacity: 0.4;
+    transition: all 0.3s ease; 
+  }
   
+  .icon-bestbook-arrow:hover {
+    opacity: 1; 
+    cursor :pointer;
+  }

@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useRef} from "react";
 import { FaBookMedical } from "react-icons/fa";
 import { booksearchList } from "../../data/recommenddata";
 import styled from "styled-components";
@@ -7,6 +7,11 @@ import { faBookBookmark, faChevronDown } from "@fortawesome/free-solid-svg-icons
 import "../../App.css";
 
 function BestBookCard(props) {
+  const scrollRef = useRef(null);
+
+  const handleScrollDown = () => {
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+  };
   return (
     <Container>
       <TitleText>
@@ -25,7 +30,16 @@ function BestBookCard(props) {
           </BookListBox>
         );
       })}
-      { (booksearchList.length == 3) ? <FontAwesomeIcon icon={faChevronDown} className="icon-bestbook-arrow" size="lg" /> : "" }
+      {booksearchList.length === 3 && (
+        <FontAwesomeIcon
+          icon={faChevronDown}
+          className="icon-bestbook-arrow"
+          size="lg"
+          onClick={handleScrollDown}
+        />
+      )}
+
+      <div ref={scrollRef}></div>
     </Container>
   );
 }
