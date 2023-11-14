@@ -149,10 +149,10 @@ const BookListBodyContainer = styled.div`
 `;
 
 const BookimgBox = styled.img`
-  width: 80px;
-  height: 140px;
-  margin-right: 15px;
+  width: 40%;
+  height: 100%;
   cursor: pointer;
+  border-radius: 5px;
 `;
 
 const BookItem = styled.div`
@@ -165,20 +165,23 @@ const BookButtonsContainer = styled.div`
   flex-direction: column;
   margin-left: 10px;
   margin-right: 10px;
+  margin-top: 1px;
 `;
 
 const ActionButton = styled.button`
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: ${({ completed }) => (completed ? '#5F749F' : '#fff')};
   color: ${({ completed }) => (completed ? '#fff' : '#000')};
   cursor: pointer;
-  margin-top: 10px;
+  margin-bottom: 7px;
   padding: 5px;
-  border: 1px solid #000;
-  font-size: 15px;
+  border: 1px solid #BABABA;
+  font-size: 14px;
   font-style: normal;
   font-weight: 700;
   transition: background-color 0.3s, color 0.3s;
+  height: 33px;
+  width: 95px;
 
   &:hover {
     background-color: ${({ completed }) => (completed ? '#5F749F' : '#000')};

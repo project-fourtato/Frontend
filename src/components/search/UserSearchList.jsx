@@ -31,7 +31,6 @@ const UserListCardContainer = styled.div`
 const UserListBox = styled.div`
   display: flex;
   cursor: pointer;
-  width: 37rem;
   &:hover {
     opacity: 0.8;
   }

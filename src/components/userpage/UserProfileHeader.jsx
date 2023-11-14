@@ -158,7 +158,7 @@ const SendMsgButton = styled.button`
   background: #fff;
   cursor: pointer;
   padding: 10px 20px;
-  width: 180px;
+  width: 165px;
   height: 43px;
   transform: rotate(-0.001deg);
   color: #000;

@@ -4,6 +4,7 @@ import { useState } from "react";
 import BooksearchList from "./BooksearchList";
 import UserSearchList from "./UserSearchList";
 import LibrarySearchList from "./LibrarySearchList";
+import MainSearch from "../search/MainSearch"
 
 function SearchTab(props) {
   const [tab, setTab] = useState({
@@ -21,6 +22,8 @@ function SearchTab(props) {
   };
 
   return (
+    <>
+    <MainSearch active={tab.active} />
     <SearchTabContainer>
       <TabContainer>
         <Tab onClick={() => activeTab(0)} active={tab.active === 0}>
@@ -33,8 +36,11 @@ function SearchTab(props) {
           도서관 검색
         </Tab>
       </TabContainer>
-      <TabContent>{tablist[tab.active]}</TabContent>
+      <TabContentOutDiv>
+        <TabContent>{tablist[tab.active]}</TabContent>
+      </TabContentOutDiv>
     </SearchTabContainer>
+    </>
   );
 }
 
@@ -80,4 +86,9 @@ const TabContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 `;
+
+const TabContentOutDiv = styled.div`
+  width: 100%;
+`

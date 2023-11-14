@@ -36,8 +36,6 @@ const AllOutDiv = styled.div`
 const BookListCardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-left: 18%;
-  margin: 0 auto;
 `;
 
 const BookListBox = styled.div`

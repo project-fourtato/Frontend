@@ -85,7 +85,6 @@ function ExchangBookCard(props) {
 
 export default ExchangBookCard;
 
-
 const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
@@ -132,6 +131,7 @@ font-weight: 700;
 line-height: 24px;
 letter-spacing: 0.44px;
 width: 90px;
+text-align: left;
 `
 
 const InfoText = styled.p`

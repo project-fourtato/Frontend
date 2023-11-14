@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom";
@@ -18,13 +18,16 @@ function SignInCard(props) {
   let posts = "hello";
   const [idValue, setId] = useState('');
   const [pwValue, setPw] = useState('');
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const navigate = useNavigate();
+
   const saveUserId = event => {
     setId(event.target.value);
   };
   const saveUserPw = event => {
     setPw(event.target.value);
   };
-  const useEffect = () => {
+  const LoginEffect = () => {
     (async() => {
       try{
         const url = 'http://localhost:8080/login/uid='+idValue+'&pw='+pwValue;
@@ -51,14 +54,21 @@ function SignInCard(props) {
         console.log(error)
       }
     }) ();
-    
-
   };
 
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (idValue && pwValue) {
+      LoginEffect();
+    }
+  }, []);
 
-  
+
+  const handleOnKeyPress = e => {
+    if (e.key === 'Enter') {
+      LoginEffect(); // Enter 입력이 되면 클릭 이벤트 실행
+    }
+  };
+
 
   const goSignUpPage = () => {
     navigate("/signup");
@@ -95,10 +105,10 @@ function SignInCard(props) {
 
       <IconInputContainer>
         <StyledIconFaLock />
-        <AuthInput placeholder="비밀번호를 입력하세요." value={pwValue} onChange={saveUserPw} type="password"/>
+        <AuthInput placeholder="비밀번호를 입력하세요." value={pwValue} onChange={saveUserPw} onKeyDown={handleOnKeyPress} type="password"/>
       </IconInputContainer>
 
-      <LoginBtn onClick={useEffect}>로그인</LoginBtn>
+      <LoginBtn onClick={LoginEffect}>로그인</LoginBtn>
       <SignUpTextContainer>
         <p onClick={goSignUpPage}>회원가입</p>
       </SignUpTextContainer>

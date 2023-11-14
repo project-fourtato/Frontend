@@ -5,7 +5,6 @@ import SearchTab from "../components/search/SearchTab";
 function SearchPage(props) {
   return (
     <SearchContainer>
-      <MainSearch />
       <SearchTab />
     </SearchContainer>
   );
