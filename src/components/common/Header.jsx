@@ -145,6 +145,7 @@ const Header = () => {
                     onClick={() => {
                       setIsLogin(false);
                       setDropdownVisible(false);
+                      sessionStorage.removeItem("profile");
                       navigate("/");
                     }}
                   >

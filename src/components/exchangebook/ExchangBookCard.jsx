@@ -4,9 +4,20 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { msgList } from "../../data/mapdata"
 
 function ExchangBookCard(props) {
+  const [libraryList,setLibraryList] = useState([]);
+  const [region, setSelectedRegion] = useState('');
+  const [city, setSelectedCity] = useState('');
+    useEffect(() => {
+       setLibraryList(props.msgList); 
+       setSelectedRegion(props.region);
+       setSelectedCity(props.city);
+       console.log("확인이..");
+       console.log(region);
+       console.log(libraryList);
+       }, [props.msgList]);
+
   const render = (status) => {
     return (
     <>
@@ -39,11 +50,15 @@ function ExchangBookCard(props) {
       <div ref={ref} id="map" style={{ width: "300px", height: "300px" }}></div>
     )
   }
-
+  let a = "";
+  if(libraryList.length == 0 ){
+    a = "해당 지역의 도서관에는 검색하신 책이 없어요😢";
+  }
   return (
     <>
+      <AnnouncementTitle>{a}</AnnouncementTitle>
       <ContentArea>
-        {msgList.map((mapdata) => {
+        {libraryList.map((mapdata) => {
             let latitude = parseFloat(mapdata.latitude);
             let longitude = parseFloat(mapdata.longitude);
 
@@ -81,11 +96,21 @@ function ExchangBookCard(props) {
       </ContentArea>
         </>
     );
+    
 }
 
 export default ExchangBookCard;
 
-
+const AnnouncementTitle = styled.h2`
+    color: #000;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.44px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+`;
 const ContentArea = styled.div`
   display: flex;
   flex-direction: column;

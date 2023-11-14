@@ -1,25 +1,32 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import searchIcon from "../../assets/searchIcon.png";
 import {regions, cities} from '../../data/regiondata';
 import {BsCaretDownFill} from "react-icons/bs";
 import { ExchangeBookList } from "../../data/booklistdata"
 import { useNavigate } from "react-router-dom";
+import Session from 'react-session-api';
 
 function BookSearchList(props) {
     const navigate = useNavigate();
-
     const goExchangeDetailPage = (id, title) => {
           navigate(`/exchange/${id}`, {
             state: { title }
           });
     }
-
+    
+    const [bookList,setBookList] = useState([]);
+    useEffect(() => {
+       setBookList(props.bookList); 
+       console.log(bookList);
+       }, [props.bookList]);
+    
+    
     return (
         <BookListOutDiv>
-            {ExchangeBookList.map((book) => {
+            {bookList && bookList.map((book) => {
                 return (
-                    <BookInfoOutDiv onClick={() => goExchangeDetailPage(book.id, book.title)}>
+                    <BookInfoOutDiv onClick={() => goExchangeDetailPage(book.isbn, book.title)}>
                         <BookTitle>{book.title}</BookTitle>
                         <div>
                         <BookAuthor>{book.author}</BookAuthor>

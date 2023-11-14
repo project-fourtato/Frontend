@@ -1,14 +1,42 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import searchIcon from "../../assets/searchIcon.png";
 import {regions, cities} from '../../data/regiondata';
 import {BsCaretDownFill} from "react-icons/bs";
+import axios from "axios";
+import Session from 'react-session-api';
+import ExchangeBookCard from '../exchangebook/ExchangBookCard';
+import SearchUserCard from '../exchangebook/SearchUserCard';
+
 
 function LibrarySearchBar(props) {
   const [selectedRegion, setSelectedRegion] = useState(regions[0]);
   const [selectedCity, setSelectedCity] = useState(cities[regions[0].code][0]);
   const [regionMenuOpen, setRegionMenuOpen] = useState(false);
   const [cityMenuOpen, setCityMenuOpen] = useState(false);
+  const [msgList, setMsgList] = useState([]); //도서관 리스트
+
+  // 현재 URL에서 경로 추출
+  const currentPath = window.location.pathname;
+      
+  // 예시: 경로에서 마지막 부분 추출 (마지막 슬래시 이후의 부분)
+  const lastSegment = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+
+  const SearchBtnClick = () => {
+    (async() => {
+      try{
+        const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&isbn='+lastSegment;
+        const response = await axios.get(url);
+        console.log(url);
+        setMsgList(response.data.data);
+        console.log(msgList);
+      } catch(error) {
+        console.log(error)
+      }
+    }) ();
+    
+
+  };
 
   const handleRegionChange = (selectedRegion) => {
     setSelectedRegion(selectedRegion);
@@ -32,6 +60,7 @@ function LibrarySearchBar(props) {
   };
 
     return (
+      <>
         <SearchBarContainer>
           <Title>현재 살고 계신 지역을 알려주세요!</Title>
           <HeaderSelectContainer>
@@ -62,12 +91,23 @@ function LibrarySearchBar(props) {
             </SelectBox>
           </SelectBoxContainer>
             </HeaderSelectContainer>
-            <StyledSearchIcon src={searchIcon} />
+        <StyledSearchIcon src={searchIcon} onClick={SearchBtnClick}/>
       </SearchBarContainer>
+      <PageOutDiv>
+      <ExchangeBookCard msgList={msgList} region={selectedRegion.name} city={selectedCity.name}/>
+      <SearchUserCard/>
+      </PageOutDiv>
+      </>
     );
 }
-
 export default LibrarySearchBar;
+const PageOutDiv = styled.div`
+  background-color: white;
+  padding: 70px 80px;
+  border-radius: 45px;
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  width: 60%;
+`;
 
 const StyledDownIcon = styled(BsCaretDownFill)`
   cursor: pointer;

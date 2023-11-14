@@ -6,7 +6,6 @@ function SearchListPage(props) {
     return (
         <>
         <ExchangeSearchBar />
-        <BookSearchList />
         </>
     );
 }

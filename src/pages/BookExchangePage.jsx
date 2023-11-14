@@ -8,10 +8,6 @@ function BookExchangePage(props) {
   return (
     <PageContainer>
       <LibrarySearchBar />
-      <PageOutDiv>
-        <ExchangBookCard/>
-        <SearchUserCard />
-      </PageOutDiv>
     </PageContainer>
   );
 }
