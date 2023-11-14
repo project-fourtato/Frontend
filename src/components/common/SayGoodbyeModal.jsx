@@ -19,7 +19,6 @@ function SayGoodbyeModal({setShowModal}) {
           buttons: "확인",
         }).then(() => {
           setIsLogin({ isLogin: false });
-          sessionStorage.removeItem("profile");
           navigate("/");
         })
       }

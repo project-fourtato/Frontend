@@ -1,30 +1,37 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import searchIcon from "../../assets/searchIcon.png";
 import {regions, cities} from '../../data/regiondata';
 import {BsCaretDownFill} from "react-icons/bs";
 import { ExchangeBookList } from "../../data/booklistdata"
 import { useNavigate } from "react-router-dom";
+import Session from 'react-session-api';
 
 function BookSearchList(props) {
     const navigate = useNavigate();
-
     const goExchangeDetailPage = (id, title) => {
           navigate(`/exchange/${id}`, {
             state: { title }
           });
     }
-
+    
+    const [bookList,setBookList] = useState([]);
+    useEffect(() => {
+       setBookList(props.bookList); 
+       console.log(bookList);
+       }, [props.bookList]);
+    
+    
     return (
         <BookListOutDiv>
-            {ExchangeBookList.map((book) => {
+            {bookList && bookList.map((book) => {
                 return (
-                    <BookInfoOutDiv onClick={() => goExchangeDetailPage(book.id, book.title)}>
+                    <BookInfoOutDiv onClick={() => goExchangeDetailPage(book.isbn, book.title)}>
                         <BookTitle>{book.title}</BookTitle>
-                        <div>
+                        <RightDivOut>
                         <BookAuthor>{book.author}</BookAuthor>
                         <BookPublisher>{book.publisher}</BookPublisher>
-                        </div>
+                        </RightDivOut>
                     </BookInfoOutDiv>
                 )
             })}
@@ -36,7 +43,7 @@ export default BookSearchList;
 
 const BookListOutDiv = styled.div`
     background-color: white;
-    width: 50%;
+    width: 53%;
     margin: 0 auto;
     border-radius: 45px;
     padding: 50px 70px;
@@ -55,14 +62,26 @@ const BookInfoOutDiv = styled.div`
     }
 `
 
+const RightDivOut = styled.div`
+    text-align: right;
+    width: 45%;
+`
+
 const BookTitle = styled.div`
     font-size: 18px;
     font-weight: bold;
     line-height: 210%;
+    width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `
 const BookAuthor = styled.div`
     font-size: 16px;
     margin-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `
 const BookPublisher = styled.div`
     font-size: 16px;
