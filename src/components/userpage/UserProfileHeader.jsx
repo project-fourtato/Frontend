@@ -1,78 +1,90 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import userprofile from "../../assets/userprofile.png";
-import { useNavigate } from "react-router-dom";
-import {profileState} from "../../recoil/atom";
-import { useRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import MsgModal from "../common/MsgModal";
+import UserBookListCard from "./UserBookListCard";
+import book2 from "../../assets/book2.png";
 
-function ProfileHeader(props) {
-  const navigate = useNavigate();
-  const [profile, setProfile] = useRecoilState(profileState);
-  const [UserName, setUserName] = useState('감자');
-  const [UserInterest, setUserInterest] = useState(['판타지', '추리', '감자', '네알', '안녕']);
+const UserProfileHeader = ({ userProfileData }) => {
   const [showMsgModal, setShowMsgModal] = useState(false);
 
   const followerPage = () => {
-    navigate("/follower");
-    setProfile('aa');
   };
+
   const followingPage = () => {
-    navigate("/following");
-    setProfile('aa');
+  };
+
+  const dummyUserProfileData = {
+    username: "왕감자",
+    userInterest: ["요리", "판타지","여행","에세이"],
+    followerCount: 100,
+    followingCount: 50,
+    myBookList: [ 
+      {
+        id: 1,
+        img: book2,
+        title: "책1",
+        contents: "book.",
+        author: "감자",
+        publisher: "네알",
+      },
+    ],
   };
 
   return (
     <>
-      <ProfileSection>
-        <ProfileLeftContainer>
-          <div>
-            <ProfileImage src={userprofile} alt="userprofile" />
-          </div>
-          <div>
-          <ProfileNameDirectM>
-            <ProfileName><UserNameColor>{UserName}</UserNameColor> 님의 개인서재</ProfileName>
-          </ProfileNameDirectM>
-          <InterestOutDiv>
-            {UserInterest.map((interest) => {
-              return (
-                <MyTag>{interest}</MyTag>
-              );
-            })}
-          </InterestOutDiv>
-          </div>
-        </ProfileLeftContainer>
-        <div>
-          <EditProfileButton
-            onClick={() => {
-              setShowMsgModal(true);
-            }}
-          >
-            <FontAwesomeIcon icon={faPaperPlane} className="icon-mypage-paper-plane" />쪽지 목록
-          </EditProfileButton>
-        </div>
-      </ProfileSection>
-      <FollowAndFollower>
-        <FollowAndFollowerText
-                    onClick={() => {
-                      followerPage();
-                    }}>팔로워</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>10</FollowAndFollowerNumberText>
-        <Dot>•</Dot>
-        <FollowAndFollowerText
-                     onClick={() => {
-                      followingPage();
-                    }}>팔로잉</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>15</FollowAndFollowerNumberText>
-      </FollowAndFollower>
-      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
+      {dummyUserProfileData && dummyUserProfileData.username ? (
+        <>
+          <ProfileSection>
+            <ProfileLeftContainer>
+              <div>
+                <ProfileImage src={userprofile} alt="userprofile" />
+              </div>
+              <div>
+                <ProfileNameDirectM>
+                  <ProfileName>
+                    <UserNameColor>{dummyUserProfileData.username}</UserNameColor> 님의 개인서재
+                  </ProfileName>
+                </ProfileNameDirectM>
+                <InterestOutDiv>
+                  {dummyUserProfileData.userInterest.map((interest) => (
+                    <MyTag key={interest}>{interest}</MyTag>
+                  ))}
+                </InterestOutDiv>
+              </div>
+            </ProfileLeftContainer>
+            <div>
+              <SendMsgButton
+                onClick={() => {
+                  setShowMsgModal(true);
+                }}
+              >
+                <FontAwesomeIcon icon={faPaperPlane} className="icon-mypage-paper-plane" />
+                쪽지 보내기
+              </SendMsgButton>
+            </div>
+          </ProfileSection>
+          <FollowAndFollower>
+            <FollowAndFollowerText onClick={followerPage}>팔로워</FollowAndFollowerText>
+            <FollowAndFollowerNumberText>{dummyUserProfileData.followerCount}</FollowAndFollowerNumberText>
+            <Dot>•</Dot>
+            <FollowAndFollowerText onClick={followingPage}>팔로잉</FollowAndFollowerText>
+            <FollowAndFollowerNumberText>{dummyUserProfileData.followingCount}</FollowAndFollowerNumberText>
+          </FollowAndFollower>
+          {/* UserProfileHeader에서는 해당 사용자의 도서 목록을 표시하는 UserBookListCard 컴포넌트 추가 */}
+          <UserBookListCard myBookList={dummyUserProfileData.myBookList} username={dummyUserProfileData.username} />
+          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
     </>
   );
-}
+};
 
-export default ProfileHeader;
+export default UserProfileHeader;
 
 const ProfileSection = styled.div`
   display: flex;
@@ -98,11 +110,12 @@ const ProfileNameDirectM = styled.div`
   margin-top: 12px;
   margin-left: 6px;
   margin-bottom: 1px;
-`
+`;
+
 const InterestOutDiv = styled.div`
   display: flex;
   margin-left: 6px;
-`
+`;
 
 const ProfileName = styled.h2`
   color: #000;
@@ -121,7 +134,7 @@ const DisrectMDiv = styled.div`
   text-align: center;
   line-height: 35px;
   margin-left: 15px;
-`
+`;
 
 const MyTag = styled.p`
   border-radius: 43px;
@@ -139,13 +152,13 @@ const MyTag = styled.p`
   margin-right: 8px;
 `;
 
-const EditProfileButton = styled.button`
+const SendMsgButton = styled.button`
   border-radius: 43px;
   border: 1px solid #c1c1c1;
   background: #fff;
   cursor: pointer;
   padding: 10px 20px;
-  width: 140px;
+  width: 180px;
   height: 43px;
   transform: rotate(-0.001deg);
   color: #000;
@@ -154,7 +167,7 @@ const EditProfileButton = styled.button`
   font-weight: 700;
   line-height: normal;
   &:hover {
-    background: #5F749F;
+    background: #5f749f;
     color: #fff;
   }
 `;
@@ -199,6 +212,5 @@ const FollowAndFollowerNumberText = styled.p`
 `;
 
 const UserNameColor = styled.span`
-  color: #5F749F;
-  font-weight: 1000;
-`
+  color: #5f749f;
+`;

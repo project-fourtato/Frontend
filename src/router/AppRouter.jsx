@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage";
 import MyPage from "../pages/MyPage";
+import UserPage from "../pages/UserPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../pages/LoginPage";
 import BookRecommendPage from "../pages/BookRecommendPage";
@@ -27,6 +28,7 @@ function AppRouter() {
         <Route path="/follower" element={<FollowerPage />} />
         <Route path="/following" element={<FollowingPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/userpage" element={<UserPage />} />
         <Route path="/detail/:id" element={<BookDetailPage />} />
         <Route path="/edit" element={<MyProfileEditPage />} />
         <Route path="/recommend" element={<BookRecommendPage />} />
