@@ -83,7 +83,7 @@ const BookListCardHeader = styled.div`
 
 const LeftBox = styled.div`
   position: relative;
-  background: #5F749F;
+  background: #6089B7;
   border-radius: 1em;
   padding: 1em 5em;
   height: 10px;
@@ -95,7 +95,7 @@ const LeftBox = styled.div`
     width: 0;
     height: 0;
     border: 1.719em solid transparent;
-    border-right-color: #5F749F;
+    border-right-color: #6089B7;
     border-left: 0;
     border-bottom: 0;
     margin-top: -0.959em;
