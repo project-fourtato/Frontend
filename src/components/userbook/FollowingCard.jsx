@@ -4,12 +4,14 @@ import axios from "axios";
 import userprofile from "../../assets/userprofile.png";
 
 function FollowingCard() {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
   const [followingList, setFollowingList] = useState([]);
 
   useEffect(() => {
     const fetchFollowingList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followingsList/{fromUserId}");
+        const response = await axios.get("http://localhost:8080/follow/followingsList/"+p.uid);
         setFollowingList(response.data.data);
       } catch (error) {
         console.error("팔로잉 목록을 불러오는 중 오류 발생:", error);

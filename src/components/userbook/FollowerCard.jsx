@@ -4,12 +4,15 @@ import axios from "axios";
 import userprofile from "../../assets/userprofile.png";
 
 function FollowerCard() {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
   const [followerList, setFollowerList] = useState([]);
 
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followersList/{toUserId}");
+        const response = await axios.get("http://localhost:8080/follow/followersList/"+p.uid);
+        console.log(response.data);
         setFollowerList(response.data.data);
       } catch (error) {
         console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
