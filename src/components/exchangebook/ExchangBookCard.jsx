@@ -167,4 +167,5 @@ font-style: normal;
 font-weight: 400;
 line-height: 24px;
 letter-spacing: 0.44px;
+max-width: 400px;
 `;
