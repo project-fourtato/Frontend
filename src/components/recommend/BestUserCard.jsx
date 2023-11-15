@@ -1,12 +1,34 @@
-import React from "react";
-import { FaUserTag } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import { usersearchList } from "../../data/recommenddata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import "../../App.css"
 
-function BestUserCard(props) {
+function BestUserCard() {
+  // 프로필 정보는 세션 스토리지에서 가져오기
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
+
+  const [usersearchList, setUsersearchList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('p.uid:', p.uid);
+        const url = 'http://localhost:8080/profile/interests/' + p.uid;
+        const response = await axios.get(url);
+        console.log(response);
+        setUsersearchList(response.data.data);
+        console.log('호잇호잇');
+        console.log(usersearchList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Container>
       <TitleText>
@@ -14,27 +36,34 @@ function BestUserCard(props) {
         취향이 비슷한 유저
       </TitleText>
 
-      {usersearchList.map((user) => {
+      {Array.isArray(usersearchList) && usersearchList.map((user) => {
         return (
-          <UserListBox key={user.id}>
+          <UserListBox key={user.uid}>
             <UserImgBox>
-              <UserImg src={user.img} />
+              <UserImg src={user.useriamgeUrl} />
             </UserImgBox>
             <UserInfoOutDiv>
-              <UserTitleText><NicknameSpan>{user.name}</NicknameSpan> 님</UserTitleText>
+              <UserTitleText><NicknameSpan>{user.nickname}</NicknameSpan> 님</UserTitleText>
               <TagContainer>
-                {user.tag.map((tag) => {
-                  return <Tagbox>{tag}</Tagbox>;
-                })}
+                {[
+                  user.uinterest1,
+                  user.uinterest2,
+                  user.uinterest3,
+                  user.uinterest4,
+                  user.uinterest5,
+                ].map((interest, index) => (
+                  <Tagbox key={index}>{interest}</Tagbox>
+                ))}
               </TagContainer>
             </UserInfoOutDiv>
           </UserListBox>
         );
       })}
-      { (usersearchList.length == 4) ? <FontAwesomeIcon icon={faChevronDown} className="icon-bestbook-arrow" size="lg" /> : "" }
+      {(usersearchList.length == 4) ? <FontAwesomeIcon icon={faChevronDown} className="icon-bestbook-arrow" size="lg" /> : ""}
     </Container>
   );
 }
+
 
 export default BestUserCard;
 
@@ -44,7 +73,7 @@ const Container = styled.div`
   background-color: white;
   padding: 45px 50px;
   border-radius: 40px;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16), 2px 3px 6px rgba(0, 0, 0, 0.23);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -87,11 +116,11 @@ const UserImgBox = styled.div`
 
 const UserImg = styled.img`
   width: 4.2rem;
-`
+`;
 
 const UserInfoOutDiv = styled.div`
   margin-top: 4px;
-`
+`;
 
 const UserTitleText = styled.h5`
   color: #000;
@@ -104,8 +133,8 @@ const UserTitleText = styled.h5`
 `;
 
 const NicknameSpan = styled.span`
-  color: #7283A6;
-`
+  color: #7283a6;
+`;
 
 const TagContainer = styled.div`
   display: flex;

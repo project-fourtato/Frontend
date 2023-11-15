@@ -1,35 +1,62 @@
 import {React, useRef} from "react";
+import { useEffect, useState } from "react";
 import { FaBookMedical } from "react-icons/fa";
 import { booksearchList } from "../../data/recommenddata";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookBookmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import Session from 'react-session-api';
+
 import "../../App.css";
 
 function BestBookCard(props) {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
   const scrollRef = useRef(null);
-
   const handleScrollDown = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  const [booksearchList, setBooksearchList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = 'http://localhost:8080/bestseller';
+        const response = await axios.get(url);
+        console.log(response);
+  
+        // response.data가 이미 배열 형태일 것이므로 추가적인 JSON.parse가 필요하지 않음
+        setBooksearchList(response.data.data);
+        console.log("확인");
+        console.log(booksearchList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+
   return (
     <Container>
       <TitleText>
         <FontAwesomeIcon icon={faBookBookmark} /> 베스트 셀러
       </TitleText>
 
-      {booksearchList.map((book) => {
-        return (
-          <BookListBox key={book.id}>
-            <BookImg src={book.img} />
-            <BookInfoOutDiv>
-              <BookTitleText>{book.title}</BookTitleText>
-              <BookSubText>{book.author}</BookSubText>
-              <BookSubText>{book.publisher}</BookSubText>
-            </BookInfoOutDiv>
-          </BookListBox>
-        );
-      })}
+      {Array.isArray(booksearchList) && booksearchList.map((book) => (
+        <BookListBox key={book.isbn}>
+          <BookImg src={book.cover} />
+          <BookInfoOutDiv>
+            <BookTitleText>{book.bookName}</BookTitleText>
+            <BookSubText>{book.bookAuthor}</BookSubText>
+            <BookSubText>{book.publisher}</BookSubText>
+          </BookInfoOutDiv>
+        </BookListBox>
+      ))}
+
       {booksearchList.length === 3 && (
         <FontAwesomeIcon
           icon={faChevronDown}
