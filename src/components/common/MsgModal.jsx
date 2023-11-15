@@ -13,7 +13,8 @@ import { faTrashCan, faReply, faPaperPlane, faEnvelope } from "@fortawesome/free
 function MsgModal({ setShowMsgModal }) {
 
     // list, detail, write
-    const [msg, setMsg] = useState('mailbox')
+    const [msg, setMsg] = useState('mailbox');
+    const [beforeMsg, setBeforeMsg] = useState('mailbox');
     const [currentMsgId, setCurrentMsgId] = useState(null);
     const [currentMsg, setCurrentMsg] = useState(null);
     const [readMsg, setReadMsg] = useState([{
@@ -29,6 +30,7 @@ function MsgModal({ setShowMsgModal }) {
         const selectedMessage = msgList.find(msg => msg.id === id);
         setCurrentMsgId(id);
         setCurrentMsg(selectedMessage);
+        setBeforeMsg(msg);
         setMsg('detail');
     }
 
@@ -81,8 +83,8 @@ function MsgModal({ setShowMsgModal }) {
     }
 
     /*const handleReadMsg = (msgId, readState) => { /* readState 상태 변경 함수 -> 함수에서 무한루프 발생 */
-        /*setReadMsg(readMsg => ({ ...readMsg, readState: 1 }));
-    }*/
+    /*setReadMsg(readMsg => ({ ...readMsg, readState: 1 }));
+}*/
     return (
         <ModalBackground>
             <ModalContainer>
@@ -102,14 +104,18 @@ function MsgModal({ setShowMsgModal }) {
                     msg === 'write' && (<Title>쪽지 보내기</Title>)
                 }
                 <MessageList>
-                    <OptionShowMessageList>
-                        <MailboxOutDiv onClick={() => setMsg('mailbox')}>
-                            <FontAwesomeIcon icon={faEnvelope} /><span>받은 쪽지</span>
-                        </MailboxOutDiv>
-                        <SendboxOutDiv onClick={() => setMsg('sendbox')}>
-                            <FontAwesomeIcon icon={faPaperPlane} /><span>보낸 쪽지</span>
-                        </SendboxOutDiv>
-                    </OptionShowMessageList>
+                    {
+                        ((msg === 'mailbox') || (msg === 'sendbox')) && (
+                            <OptionShowMessageList>
+                                <MailboxOutDiv onClick={() => setMsg('mailbox')}>
+                                    <FontAwesomeIcon icon={faEnvelope} /><span>받은 쪽지</span>
+                                </MailboxOutDiv>
+                                <SendboxOutDiv onClick={() => setMsg('sendbox')}>
+                                    <FontAwesomeIcon icon={faPaperPlane} /><span>보낸 쪽지</span>
+                                </SendboxOutDiv>
+                            </OptionShowMessageList>
+                        )
+                    }
                     {
                         msg === 'mailbox' && msgList.map((msg) => {
                             return (
@@ -176,8 +182,19 @@ function MsgModal({ setShowMsgModal }) {
                                 <MainTextMsg>{currentMsg.maintext}</MainTextMsg>
 
                                 <ButtonContainer>
-                                    <Button onClick={() => setMsg('list')}><FontAwesomeIcon icon={faReply} />목록 리스트</Button>
-                                    <Button onClick={() => setMsg('write')}><FontAwesomeIcon icon={faPaperPlane} />답장 전송</Button>
+                                    {
+                                        beforeMsg === 'mailbox' && (
+                                            <>
+                                            <Button onClick={() => setMsg('mailbox')}><FontAwesomeIcon icon={faReply} />목록 리스트</Button>
+                                            <Button onClick={() => setMsg('write')}><FontAwesomeIcon icon={faPaperPlane} />답장 전송</Button>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        beforeMsg === 'sendbox' && (
+                                            <Button onClick={() => setMsg('sendbox')}><FontAwesomeIcon icon={faReply} />목록 리스트</Button>
+                                        )
+                                    }
                                 </ButtonContainer>
                             </DetailContainer>
                         </>
@@ -205,7 +222,7 @@ function MsgModal({ setShowMsgModal }) {
 
 
                                 <ButtonContainer>
-                                    <Button onClick={() => setMsg('list')}>전송 취소</Button>
+                                    <Button onClick={() => setMsg('mailbox')}>전송 취소</Button>
                                     <Button onClick={handleSendMsg}><StyledSendIcon />쪽지 전송</Button>
                                 </ButtonContainer>
                             </DetailContainer>
