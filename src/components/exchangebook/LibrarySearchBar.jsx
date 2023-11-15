@@ -12,11 +12,11 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 
 function LibrarySearchBar(props) {
-  const [selectedRegion, setSelectedRegion] = useState(regions[0]);
-  const [selectedCity, setSelectedCity] = useState(cities[regions[0].code][0]);
+  const [selectedRegion, setSelectedRegion] = useState({ code: 'default', name: '지역' });
+  const [selectedCity, setSelectedCity] = useState({ code: 'default', name: '도시' }); 
   const [regionMenuOpen, setRegionMenuOpen] = useState(false);
   const [cityMenuOpen, setCityMenuOpen] = useState(false);
-  const [msgList, setMsgList] = useState([]); //도서관 리스트
+const [msgList, setMsgList] = useState([]); //도서관 리스트
 
   // 현재 URL에서 경로 추출
   const currentPath = window.location.pathname;
@@ -50,7 +50,7 @@ function LibrarySearchBar(props) {
     setSelectedCity(selectedCity);
     setCityMenuOpen(false);
   };
-
+  
   const toggleRegionMenu = () => {
     setRegionMenuOpen(!regionMenuOpen);
     setCityMenuOpen(false);
@@ -62,7 +62,7 @@ function LibrarySearchBar(props) {
   };
 
     return (
-      <>
+<>
         <SearchBarContainer>
           <Title>현재 거주 중이신 지역을 알려주세요!</Title>
           <HeaderSelectContainer>
@@ -95,9 +95,9 @@ function LibrarySearchBar(props) {
             </HeaderSelectContainer>
         <StyledSearchIcon src={searchIcon} onClick={SearchBtnClick}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </StyledSearchIcon>
+</StyledSearchIcon>
       </SearchBarContainer>
-      <PageOutDiv>
+<PageOutDiv>
       <ExchangeBookCard msgList={msgList} region={selectedRegion.name} city={selectedCity.name}/>
       <SearchUserCard/>
       </PageOutDiv>
