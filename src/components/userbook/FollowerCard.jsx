@@ -1,41 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import profile2 from "../../assets/profile2.png";
+import axios from "axios";
 import userprofile from "../../assets/userprofile.png";
 
-function FollowerCard(props) {
+function FollowerCard() {
+  const [followerList, setFollowerList] = useState([]);
+
+  useEffect(() => {
+    const fetchFollowerList = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/follow/followersList/{toUserId}");
+        setFollowerList(response.data.data);
+      } catch (error) {
+        console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchFollowerList();
+  }, []);
+
   return (
     <>
-      <BookListCardContainer>   
-        <FollowingContainer>
-          <FollowingBox>팔로워</FollowingBox>
-        </FollowingContainer>     
-        <ProfileLeftContainer>
-          <ProfileImage src={userprofile} />
-          <ProfileName>감자 님의 개인서재</ProfileName>
-        </ProfileLeftContainer>
-        {/* 헤더 */}
-        <BookListCardHeader>
-          <LeftBox>
-            <LeftBoxText>저는 해리포터 좋아해요!</LeftBoxText>
-          </LeftBox>
-        </BookListCardHeader>
-      </BookListCardContainer>
-
-      <BookListCardContainer>
-        <ProfileLeftContainer>
-          <ProfileImage src={profile2} />
-          <ProfileName>고구마가 되고 싶어 님의 개인서재</ProfileName>
-        </ProfileLeftContainer>
-        {/* 헤더 */}
-        <BookListCardHeader>
-          <LeftBox>
-            <LeftBoxText>
-              저는 판타지랑 액션을 좋아합니당 재미있는 책 있으면 추천해주세요!
-            </LeftBoxText>
-          </LeftBox>
-        </BookListCardHeader>
-      </BookListCardContainer>
+      {followerList.map((follower, index) => (
+        <BookListCardContainer key={index}>
+          <ProfileLeftContainer>
+            <ProfileImage src={follower.userimageUrl || userprofile} alt="프로필 사진" />
+            <ProfileName>{follower.nickname} 님의 개인서재</ProfileName>
+          </ProfileLeftContainer>
+          <BookListCardHeader>
+            <LeftBox>
+              <LeftBoxText>{follower.toUserId} 님을 팔로우 중</LeftBoxText>
+            </LeftBox>
+          </BookListCardHeader>
+        </BookListCardContainer>
+      ))}
     </>
   );
 }

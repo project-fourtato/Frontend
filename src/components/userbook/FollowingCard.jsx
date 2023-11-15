@@ -1,46 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import profile2 from "../../assets/profile2.png";
+import axios from "axios";
 import userprofile from "../../assets/userprofile.png";
 
-function FollowingCard(props) {
+function FollowingCard() {
+  const [followingList, setFollowingList] = useState([]);
+
+  useEffect(() => {
+    const fetchFollowingList = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/follow/followingsList/{fromUserId}");
+        setFollowingList(response.data.data);
+      } catch (error) {
+        console.error("팔로잉 목록을 불러오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchFollowingList();
+  }, []);
+
   return (
     <>
-      <BookListCardContainer>   
-        <FollowingContainer>
-          <FollowingBox>팔로잉</FollowingBox>
-        </FollowingContainer>     
-        <ProfileLeftContainer>
-          <ProfileImage src={userprofile} />
-          <ProfileName>감자 님의 개인서재</ProfileName>
-        </ProfileLeftContainer>
-        {/* 헤더 */}
-        <BookListCardHeader>
-          <LeftBox>
-            <LeftBoxText>저는 해리포터 좋아해요!</LeftBoxText>
-          </LeftBox>
-        </BookListCardHeader>
-      </BookListCardContainer>
-
-      <BookListCardContainer>
-        <ProfileLeftContainer>
-          <ProfileImage src={profile2} />
-          <ProfileName>고구마가 되고 싶어 님의 개인서재</ProfileName>
-        </ProfileLeftContainer>
-        {/* 헤더 */}
-        <BookListCardHeader>
-          <LeftBox>
-            <LeftBoxText>
-              저는 판타지랑 액션을 좋아합니당 재미있는 책 있으면 추천해주세요!
-            </LeftBoxText>
-          </LeftBox>
-        </BookListCardHeader>
-      </BookListCardContainer>
+      {followingList.map((following, index) => (
+        <BookListCardContainer key={index}>
+          <FollowingContainer>
+            <FollowingBox>팔로잉</FollowingBox>
+          </FollowingContainer>
+          <ProfileLeftContainer>
+            <ProfileImage src={following.userimageUrl || userprofile} alt="프로필 사진" />
+            <ProfileName>{following.nickname} 님의 개인서재</ProfileName>
+          </ProfileLeftContainer>
+          <BookListCardHeader>
+            <LeftBox>
+              <LeftBoxText>{following.toUserId} 님을 팔로우 중</LeftBoxText>
+            </LeftBox>
+          </BookListCardHeader>
+        </BookListCardContainer>
+      ))}
     </>
   );
 }
 
 export default FollowingCard;
+
 
 const BookListCardContainer = styled.div`
   width: 1200px;
