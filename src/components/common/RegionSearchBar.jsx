@@ -4,8 +4,8 @@ import {regions, cities} from '../../data/regiondata';
 import {BsCaretDownFill} from "react-icons/bs";
 
 function RegionSearchBar(props) {
-  const [selectedRegion, setSelectedRegion] = useState(regions[0]);
-  const [selectedCity, setSelectedCity] = useState(cities[regions[0].code][0]);
+  const [selectedRegion, setSelectedRegion] = useState({ code: 'default', name: '지역' });
+  const [selectedCity, setSelectedCity] = useState({ code: 'default', name: '도시' }); 
   const [regionMenuOpen, setRegionMenuOpen] = useState(false);
   const [cityMenuOpen, setCityMenuOpen] = useState(false);
 
