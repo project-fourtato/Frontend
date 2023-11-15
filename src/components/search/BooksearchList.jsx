@@ -1,23 +1,55 @@
-import React from "react";
+import {React, useEffect, useState } from "react";
 import styled from "styled-components";
 import { booksearchList } from "../../data/searchdata";
 import "../../App.css"
+import axios from "axios";
+import Session from 'react-session-api';
 
 function BooksearchList(props) {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
+  const [searchValue, setSearch] = useState('');
+  const [booksearchList, setBooksearchList] = useState([])
+  useEffect(() => {
+    const a = props.searchValue;
+    setSearch(a);
+  },[props.searchValue]);
+
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // console.log(searchValue);
+        const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
+        const url = 'http://localhost:8080/books/search/uid='+p.uid+'&searchOne='+stringWithoutSpaces;
+        // console.log(url);
+        const response = await axios.get(url);
+        const responseData = JSON.parse(response.request.responseText);
+        setBooksearchList(responseData.data);
+        // console.log(responseData);
+        
+      } catch(error) {
+        console.log(error);
+      }
+    };
+    if(props.searchValue){
+    fetchData();
+    }
+  }, [searchValue]);
+
   return (
     <AllOutDiv>
     <BookListCardContainer>
 
       {booksearchList.map((book) => (
-        <BookListBox key={book.id}>
-          <BookImgBox src={book.img} />
+        <BookListBox key={book.uid}>
+          <BookImgBox src={book.cover} />
           <BookInfoOutDiv>  
-            <BookTitleText>{book.title}</BookTitleText>
-            <BookSubText>{book.author}</BookSubText>
+            <BookTitleText>{book.bookName}</BookTitleText>
+            <BookSubText>{book.bookAuthor}</BookSubText>
             <BookSubText>{book.publisher}</BookSubText>
-            <AddbookBox>책 추가하기</AddbookBox>
           </BookInfoOutDiv>
-          
+
         </BookListBox>
         
       ))}

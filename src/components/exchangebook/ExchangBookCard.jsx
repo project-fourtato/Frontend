@@ -51,14 +51,14 @@ function ExchangBookCard(props) {
     )
   }
   let a = "";
-  if(libraryList.length == 0 ){
-    a = "해당 지역의 도서관에는 검색하신 책이 없어요😢";
-  }
+  // if(libraryList.length == 0 ){
+  //   a = "해당 지역의 도서관에는 검색하신 책이 없어요😢";
+  // }
   return (
     <>
       <AnnouncementTitle>{a}</AnnouncementTitle>
       <ContentArea>
-        {libraryList.map((mapdata) => {
+        {libraryList && libraryList.map((mapdata) => {
             let latitude = parseFloat(mapdata.latitude);
             let longitude = parseFloat(mapdata.longitude);
 
@@ -71,7 +71,7 @@ function ExchangBookCard(props) {
             </Wrapper>
 
             <ExchangeInfo>
-            <LibraryName><FontAwesomeIcon icon={faLocationDot} className='icon-library-marker' />{mapdata.libName}</LibraryName>
+            <LibraryName><FontAwesomeIcon icon={faLocationDot} className='icon-library-marker' /><a href={mapdata.homepage} target={'_blank'} style={{ textDecoration: 'none', color:'#142343' }}>{mapdata.libName}</a></LibraryName>
             <div>
             <InfoTextTitle>주소</InfoTextTitle>
             <InfoText>{mapdata.address}</InfoText>

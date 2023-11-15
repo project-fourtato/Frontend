@@ -1,20 +1,55 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import RegionSearchBar from "../common/RegionSearchBar"
+import RegionSearchBar from "./RegionSearchBar"
 
 function MainSearch(props) {
+  const [selectedRegion, setSelectedRegion] = useState([]);
+  const [selectedCity, setSelectedCity] = useState([]);
+  const [searchValue, setSearch] = useState('');
+  const saveSearchValue = event => {
+    setSearch(event.target.value);
+  };
+
+  useEffect(() => { 
+    // console.log("선택된 지역2");
+    // console.log(selectedRegion);
+    props.setSelectedRegion(selectedRegion); //mainSearch -> SearchTab
+    }, [selectedRegion]);
+  useEffect(() => { 
+    // console.log("선택된 도시2");
+    // console.log(selectedCity);
+    props.setSelectedCity(selectedCity);
+    }, [selectedCity]);
+
+
+
+  const handleOnKeyPress = e => {
+    if (e.key === 'Enter') {
+      // console.log("handleonkeyPress 함수 실행");
+      // console.log(searchValue);
+      props.setSearch(searchValue);
+    }
+  };
+
+
   return (
     <SearchBarOutDiv>
-      <SearchWrapper activeTabProps={props.active}>
-        <FontAwesomeIcon icon={faMagnifyingGlass} />
-        <input placeholder="책, 유저, 도서관을 검색해 보세요!" />
-      </SearchWrapper>
+      
       <RegionSearchBarOutDiv>
-      {props.active == 2 ? <RegionSearchBar /> : ""}
+      {props.active == 2 ? <RegionSearchBar setSelectedRegion={setSelectedRegion} setSelectedCity={setSelectedCity}/> : ""}
       </RegionSearchBarOutDiv>
+      <SearchWrapper activeTabProps={props.active}>
+        <input placeholder="책, 유저, 도서관을 검색해 보세요!" 
+          onKeyDown={handleOnKeyPress}
+          onChange={saveSearchValue}
+          value={searchValue}
+          type="text"
+          />
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+      </SearchWrapper>
     </SearchBarOutDiv>
   );
 }

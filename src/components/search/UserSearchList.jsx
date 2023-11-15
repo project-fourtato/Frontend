@@ -1,17 +1,49 @@
-import React from "react";
+import {React, useState, useEffect} from "react";
 import styled from "styled-components";
-import { usersearchList } from "../../data/searchdata";
+// import { usersearchList } from "../../data/searchdata";
+import axios from "axios";
+import Session from 'react-session-api';
 
 function UserSearchList(props) {
+  const [searchValue, setSearch] = useState('');
+  const [usersearchList, setUsersearchList] = useState([])
+  useEffect(() => {
+    const a = props.searchValue;
+    setSearch(a);
+  },[props.searchValue]);
+
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // console.log(searchValue);
+        const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
+        const url = 'http://localhost:8080/profile/search/'+stringWithoutSpaces;
+        console.log(url);
+        const response = await axios.get(url);
+        const responseData = JSON.parse(response.request.responseText);
+        setUsersearchList(responseData.data);
+        // console.log(responseData);
+        
+      } catch(error) {
+        console.log(error);
+      }
+    };
+    if(props.searchValue){
+    fetchData();
+    }
+  }, [searchValue]);
+
+
   return (
     <UserListCardContainer>
       {usersearchList.map((user) => (
-        <UserListBox key={user.id}>
-          <UserImgBox src={user.img} />
+        <UserListBox key={user.uid}>
+          <UserImgBox src={user.useriamgeUrl} />
           <UserInfoOutDiv>
-            <UserTitleText><span>{user.name}</span> 님</UserTitleText>
+            <UserTitleText><span>{user.nickname}</span> 님</UserTitleText>
             <UserSpeechBox>
-              <UserSpeechBoxText>{user.contents}</UserSpeechBoxText>
+              <UserSpeechBoxText>{user.usermessage}</UserSpeechBoxText>
             </UserSpeechBox>
           </UserInfoOutDiv>
         </UserListBox>

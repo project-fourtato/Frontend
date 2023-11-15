@@ -16,8 +16,11 @@ function LibrarySearchBar(props) {
   const [selectedCity, setSelectedCity] = useState({ code: 'default', name: '도시' }); 
   const [regionMenuOpen, setRegionMenuOpen] = useState(false);
   const [cityMenuOpen, setCityMenuOpen] = useState(false);
-const [msgList, setMsgList] = useState([]); //도서관 리스트
-
+  const [msgList, setMsgList] = useState([]); //도서관 리스트
+  useEffect(() => { 
+    console.log("변경감지");
+    console.log(msgList);
+  }, [msgList]);
   // 현재 URL에서 경로 추출
   const currentPath = window.location.pathname;
       
@@ -31,7 +34,7 @@ const [msgList, setMsgList] = useState([]); //도서관 리스트
         const response = await axios.get(url);
         console.log(url);
         setMsgList(response.data.data);
-        console.log(msgList);
+        // console.log(msgList);
       } catch(error) {
         console.log(error)
       }

@@ -1,29 +1,99 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import BooksearchList from "./BooksearchList";
 import UserSearchList from "./UserSearchList";
 import LibrarySearchList from "./LibrarySearchList";
 import MainSearch from "../search/MainSearch"
+import swal from "sweetalert";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function SearchTab(props) {
   const [tab, setTab] = useState({
     active: 0,
   });
+  const [selectedRegion, setSelectedRegion] = useState([]);
+  const [selectedCity, setSelectedCity] = useState([]);
+  const [searchValue, setSearch] = useState('');
+  const [msgList,setMsgList] = useState([]);
+  const navigate = useNavigate();
 
-  const tablist = {
-    0: <BooksearchList />,
-    1: <UserSearchList />,
-    2: <LibrarySearchList />,
-  };
+  const SearchBtnClick = () => { //도서관검색 api 연결
+      (async() => {
+        try{
+          const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&searchOne='+searchValue;
+          const response = await axios.get(url);
+          // console.log(url);
+          // console.log(response.data.data);
+          setMsgList(response.data.data);
+          // console.log("list확인");
+        } catch(error) {
+          console.log(error)
+        }
+      }) ();
+    };
+  useEffect(() => {
+    // console.log("SearchTab 변경감지 실행");
+    // console.log(msgList);
+    // console.log(searchValue);
+    let newTablist = {
+      0: <BooksearchList searchValue={searchValue}/>,
+      1: <UserSearchList searchValue={searchValue}/>,
+      2: <LibrarySearchList msgList={msgList}/>
+    };
+    setTablist(newTablist);
+    // console.log(tablist[1]);
+    return () => {
+      console.log("clean up");
+    }
+  },[msgList, searchValue]);
+
+  
+  useEffect(() => {
+    if(searchValue) { //초기에 렌더링되는 문제 이 if문으로 해결함
+      if ((searchValue.length >= 5) && (tab.active == 2) && (selectedRegion !='') && (selectedCity !='')) {
+        SearchBtnClick();
+      }
+      else if((tab.active == 2) &&(selectedRegion =='' || selectedCity =='')){
+        swal({
+          title: "지역도 같이 검색해주세요.",
+          icon: "warning",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/search");
+        })
+      }
+      else if((tab.active == 2) &&(searchValue.length<6)){
+        swal({
+          title: "도서관은 6글자 이상부터 검색 가능합니다.",
+          icon: "warning",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/search");
+        })
+      }
+    }
+    
+  }, [searchValue]);
+
+  const [tablist, setTablist] = useState({
+    0: <BooksearchList searchValue={searchValue}/>,
+    1: <UserSearchList searchValue={searchValue}/>,
+    2: <LibrarySearchList msgList={msgList}/>,
+  });
+
+  useEffect(() => {
+    console.log(tablist);
+  },[tablist]);
 
   const activeTab = (e) => {
     setTab({ active: e });
   };
-
+  
   return (
     <>
-    <MainSearch active={tab.active} />
+    <MainSearch active={tab.active} setSelectedRegion={setSelectedRegion} setSelectedCity={setSelectedCity} setSearch={setSearch}/>
     <SearchTabContainer>
       <TabContainer>
         <Tab onClick={() => activeTab(0)} active={tab.active === 0}>

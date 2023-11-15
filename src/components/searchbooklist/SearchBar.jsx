@@ -21,9 +21,9 @@ function ExchangeSearchBar(props) {
       const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
       const url = 'http://localhost:8080/books/sale/searchOne/' + stringWithoutSpaces;
       const response = (await axios.get(url)).data.data;
-      console.log(url);
-      console.log("왜 안됑");
-      console.log(response);
+      // console.log(url);
+      // console.log("왜 안됑");
+      // console.log(response);
       setBookList(response);
     } catch (error) {
       console.log(error)
@@ -32,7 +32,7 @@ function ExchangeSearchBar(props) {
 
   useEffect(() => { //2. 변경감지 후 함수실행
     fetchData();
-    console.log(bookList);
+    // console.log(bookList);
   }, []);
 
   /*const clickBtn = () => { //1. 버튼 클릭하면 함수실행
@@ -41,24 +41,25 @@ function ExchangeSearchBar(props) {
 
   const handleOnKeyPress = e => {
     if (e.key === 'Enter') {
-      fetchData(); // Enter 입력이 되면 함수실행
+      fetchData(); // 1. Enter 입력이 되면 함수실행
     }
   };
 
   return (
     <>
       <SearchBarContainer>
-        <span>책 이름 : </span>
+        {/* <span>책 이름 : </span> */}
         <SearchBarOutDiv>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
           <SearchInput
             type="text"
-            placeholder="도서관에서 대출하고 싶은 책이나, 교환하고 싶은 책을 검색해보세요!"
+            //도서관에서 대출하고 싶은 책이나, 교환하고 싶은 책을 검색해보세요!
+            placeholder="도서관 소장도서 확인이나 BOOKER 유저와 교환을 원하는 도서의 제목이나 저자를 검색해보세요!"
             value={searchValue}
             onChange={saveSearchValue}
             onKeyDown={handleOnKeyPress}
           />
           {/* <StyledSearchIcon onClick={clickBtn} /> */}
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
         </SearchBarOutDiv>
       </SearchBarContainer>
       <SearchList bookList={bookList} />
@@ -87,9 +88,9 @@ const SearchBarOutDiv = styled.div`
   width: 550px;
   align-items: center;
   background: #fff;
-  width: 540px;
+  width: 700px;
   height: 3px;
-  padding: 22px 0px 22px 25px;
+  padding: 22px 15px 22px 25px;
   border-radius: 50px;
   border: 1px solid #e5e5e5;
   color: #71717a;
