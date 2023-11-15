@@ -18,14 +18,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 6rem;
-  height: 100%;
+  align-items: center;
+  margin-top: 2rem;
+  height: 80%;
   width: 100%;
 `;
 
 const MiddleLine = styled.div`
-  width: 2px;         
-  height: 700px;     
-  background-color: #C1C1C1;
+  width: 0.1rem;         
+  height: 530px;     
+  background-color: #DBDBDB;
   margin: 0 40px; 
 `;

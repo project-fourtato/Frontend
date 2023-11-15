@@ -3,6 +3,9 @@ import { BiSolidUser } from "react-icons/bi";
 import styled from "styled-components";
 import { FiUpload } from "react-icons/fi";
 import { BiSolidMessage } from "react-icons/bi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faUpload, faMessage } from "@fortawesome/free-solid-svg-icons";
+import "../../App.css";
 
 import swal from "sweetalert";
 function NickName(props) {
@@ -59,7 +62,7 @@ function NickName(props) {
           ) : (
             <UploadContainer>
               <label htmlFor="fileInput">
-                <FiUpload size={54} color="#555" />
+                <FontAwesomeIcon icon={faUpload} className="icon-editprofile-upload" />
               </label>
             </UploadContainer>
           )}
@@ -69,30 +72,26 @@ function NickName(props) {
             type="file"
             onChange={handleImageChange}
           />
-          <UploadBtnContainer>
-            <Button onClick={handleEditButtonClick}>업로드</Button>
-            <Button onClick={handleEditButtonClick}>수정</Button>
-          </UploadBtnContainer>
         </UploadWrapper>
 
         <MyNameText>
-          <BiSolidUser /> 닉네임
+          <FontAwesomeIcon icon={faUser} /> 닉네임
         </MyNameText>
         <Subtitle>BOOKER에서 사용하실 닉네임을 알려주세요!</Subtitle>
         <Input
           type="text"
-          placeholder="닉네임을 입력"
+          placeholder="닉네임을 입력해 주세요!"
           value={nickname}
           onChange={handleNicknameChange}
         />
 
         <MyNameText>
-          <BiSolidMessage /> 한줄소개 설정
+          <FontAwesomeIcon icon={faMessage} /> 한줄소개 설정
         </MyNameText>
         <Subtitle>자신을 소개하는 한 줄을 적어보세요!</Subtitle>
         <Input
           type="text"
-          placeholder="힌줄소개 입력"
+          placeholder="힌줄소개를 입력해 주세요!"
           value={description}
           onChange={handleDescriptionChange}
         />
@@ -108,6 +107,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between; */
   /* width: 600px; */
+  margin-right: 10px;
 `;
 
 const UploadWrapper = styled.div`
@@ -120,22 +120,21 @@ const UploadContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 20px;
-  background-color: #d9d9d9;
-  svg {
-    color: #000;
-    cursor: pointer;
-    &:hover {
-      color: #f5f5f5;
-    }
-  }
+  background-color: white;
+  border: 1px solid #DBDBDB;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #5F749F;
+    cursor: pointer;
+    svg {
+      color: white;
+      cursor: pointer;
+    }
   }
 `;
 const UploadBtnContainer = styled.div`
@@ -164,8 +163,8 @@ const HiddenFileInput = styled.input`
 `;
 
 const ImagePreview = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 20px;
@@ -173,40 +172,40 @@ const ImagePreview = styled.img`
 
 const MyNameText = styled.h2`
   color: #000;
-  font-family: Inter;
-  font-size: 26px;
+  font-size: 21px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
-  margin-top: 50px;
+  margin-bottom: 10px;
+  margin-top: 25px;
+  margin-left: 5px;
   svg {
     margin-right: 13px;
-    width: 40px;
-    height: 40px;
+    width: 21px;
+    height: 21px;
   }
 `;
 
 const Subtitle = styled.p`
   color: #000;
-  font-family: Inter;
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-bottom: 30px;
+  margin-bottom: 13px;
+  margin-left: 5px;
 `;
 
 const Input = styled.input`
   width: 400px;
-  height: 50px;
+  height: 42px;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   padding-left: 20px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   color: #000;
   &::placeholder {

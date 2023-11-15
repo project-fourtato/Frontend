@@ -130,3 +130,8 @@ button {
     opacity: 1;
     cursor: pointer;
 }
+
+.icon-editprofile-upload {
+    color: #142343;
+    font-size: 35px;
+}
