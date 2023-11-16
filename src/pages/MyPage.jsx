@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import MyBookListCard from "../components/mypage/MyBookListCard";
 import ProfileHeader from "../components/mypage/ProfileHeader";
+import { myBookList } from "../data/mypagedata"; 
+
 const MyPage = () => {
   return (
     <Container>
       <AllOutDiv>
         <ProfileHeader />
-        <MyBookListCard />
+        <MyBookListCard myBookList={myBookList} /> {/* 데이터를 전달 */}
       </AllOutDiv>
     </Container>
   );
@@ -35,4 +37,4 @@ const AllOutDiv = styled.div`
   padding-top: 70px;
   padding-bottom: 43px;
   box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
-`
+`;
