@@ -3,6 +3,8 @@ import styled from "styled-components";
 // import { usersearchList } from "../../data/searchdata";
 import axios from "axios";
 import Session from 'react-session-api';
+import { useNavigate } from "react-router-dom";
+
 
 function UserSearchList(props) {
   const [searchValue, setSearch] = useState('');
@@ -19,7 +21,7 @@ function UserSearchList(props) {
         // console.log(searchValue);
         const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
         const url = 'http://localhost:8080/profile/search/'+stringWithoutSpaces;
-        console.log(url);
+        // console.log(url);
         const response = await axios.get(url);
         const responseData = JSON.parse(response.request.responseText);
         setUsersearchList(responseData.data);
@@ -34,13 +36,18 @@ function UserSearchList(props) {
     }
   }, [searchValue]);
 
+  const navigate = useNavigate();
+  const studyPage = (uid) => {
+    // console.log(uid);
+    navigate("/studyPage/"+uid);
+  };
 
   return (
     <UserListCardContainer>
       {usersearchList.map((user) => (
-        <UserListBox key={user.uid}>
+        <UserListBox key={user.uid} onClick={() => studyPage(user.uid)}>
           <UserImgBox src={user.useriamgeUrl} />
-          <UserInfoOutDiv>
+          <UserInfoOutDiv> 
             <UserTitleText><span>{user.nickname}</span> 님</UserTitleText>
             <UserSpeechBox>
               <UserSpeechBoxText>{user.usermessage}</UserSpeechBoxText>

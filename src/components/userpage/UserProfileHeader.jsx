@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import userprofile from "../../assets/userprofile.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,51 +6,100 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import MsgModal from "../common/MsgModal";
 import UserBookListCard from "./UserBookListCard";
 import book2 from "../../assets/book2.png";
+import axios from "axios";
+import { profileState } from "../../recoil/atom";
+import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 
-const UserProfileHeader = ({ userProfileData }) => {
+
+const UserProfileHeader = (props) => {
+  const navigate = useNavigate();
+
   const [showMsgModal, setShowMsgModal] = useState(false);
 
+  const p = props.UserUid;
+
+  const [profile, setProfile] = useRecoilState(profileState);
+  const [userData, setUserData] = useState(null);
+  const [followingData, setFollowingData] = useState(0);
+  const [followerData, setFollowerData] = useState(0);
+
+  useEffect(() => {
+    const UserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/profile/`+p);
+        // console.log(response);
+        const data = response.data;
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    UserData();
+  }, []);
+
   const followerPage = () => {
+    navigate("/follower");
+    setProfile('aa');
   };
 
   const followingPage = () => {
+    navigate("/following");
+    setProfile('aa');
   };
 
-  const dummyUserProfileData = {
-    username: "왕감자",
-    userInterest: ["요리", "판타지","여행","에세이"],
-    followerCount: 100,
-    followingCount: 50,
-    myBookList: [ 
-      {
-        id: 1,
-        img: book2,
-        title: "책1",
-        contents: "book.",
-        author: "감자",
-        publisher: "네알",
-      },
-    ],
-  };
+  useEffect(() => {
+    const FollowingData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/follow/followingsCount/`+p);
+        // console.log(response);
+        const data = response.data;
+        setFollowingData(data.fromUserId_Count);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+      try {
+        const response = await axios.get(`http://localhost:8080/follow/followersCount/`+p);
+        // console.log(response);
+        const data = response.data;
+        setFollowerData(data.toUserId_Count);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    FollowingData();
+    // console.log(followingData);
+    // console.log(followerData);
+  }, []);
+
+const [userInterest, setUserInterest] = useState([]);
+  useEffect(() => {
+    if(userData){
+    props.setUsermessage(userData.usermessage);
+    setUserInterest([userData.uinterest1,userData.uinterest2,userData.uinterest3,userData.uinterest4,userData.uinterest5]);
+  }
+  }, [userData]);
 
   return (
     <>
-      {dummyUserProfileData && dummyUserProfileData.username ? (
+      {userData && userData.nickname ? (
         <>
           <ProfileSection>
             <ProfileLeftContainer>
               <div>
-                <ProfileImage src={userprofile} alt="userprofile" />
+                <ProfileImage src={userData.useriamgeUrl} alt="userprofile" />
               </div>
               <div>
                 <ProfileNameDirectM>
                   <ProfileName>
-                    <UserNameColor>{dummyUserProfileData.username}</UserNameColor> 님의 개인서재
+                    <UserNameColor>{userData.nickname}</UserNameColor> 님의 개인서재
                   </ProfileName>
                 </ProfileNameDirectM>
                 <InterestOutDiv>
-                  {dummyUserProfileData.userInterest.map((interest) => (
-                    <MyTag key={interest}>{interest}</MyTag>
+                  {userInterest && userInterest.map((interest) => (
+                    !!interest && <MyTag key={interest}>{interest}</MyTag>
                   ))}
                 </InterestOutDiv>
               </div>
@@ -68,13 +117,11 @@ const UserProfileHeader = ({ userProfileData }) => {
           </ProfileSection>
           <FollowAndFollower>
             <FollowAndFollowerText onClick={followerPage}>팔로워</FollowAndFollowerText>
-            <FollowAndFollowerNumberText>{dummyUserProfileData.followerCount}</FollowAndFollowerNumberText>
+            <FollowAndFollowerNumberText>{followerData}</FollowAndFollowerNumberText>
             <Dot>•</Dot>
             <FollowAndFollowerText onClick={followingPage}>팔로잉</FollowAndFollowerText>
-            <FollowAndFollowerNumberText>{dummyUserProfileData.followingCount}</FollowAndFollowerNumberText>
+            <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
           </FollowAndFollower>
-          {/* UserProfileHeader에서는 해당 사용자의 도서 목록을 표시하는 UserBookListCard 컴포넌트 추가 */}
-          <UserBookListCard myBookList={dummyUserProfileData.myBookList} username={dummyUserProfileData.username} />
           {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
         </>
       ) : (

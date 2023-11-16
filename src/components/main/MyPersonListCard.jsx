@@ -6,6 +6,7 @@ import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
 import texticon from "../../assets/texticon.png";
 import Session from 'react-session-api';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function MyPersonListCard(props) {
   const profile = sessionStorage.getItem("profile");
@@ -26,6 +27,12 @@ function MyPersonListCard(props) {
   }, []);
 
 
+  const navigate = useNavigate();
+  const studyPage = (uid) => {
+    // console.log(uid);
+    navigate("/studyPage/"+uid);
+  };
+
   return (
     <CardContainer>
       <MainTitleContainer>
@@ -35,8 +42,7 @@ function MyPersonListCard(props) {
 
       {ProfileResponse.map((book) => {
         return (
-        <a href="/mypage" style={{ textDecoration: 'none' }}>
-          <BookListContainer key={book.toUserId}>
+          <BookListContainer key={book.toUserId} onClick={() => studyPage(book.toUserId)}>
             
             <ProfileImage src={book.userimageUrl} alt="bookimg" />
             <BookListContent>
@@ -45,7 +51,6 @@ function MyPersonListCard(props) {
               <SubText>{book.pdatetime.split("T")[0]+" "+book.pdatetime.split("T")[1]}</SubText>
             </BookListContent>
           </BookListContainer>
-          </a>
         );
       })}
     </CardContainer>

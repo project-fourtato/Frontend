@@ -9,6 +9,7 @@ import Session from 'react-session-api';
 import axios from "axios";
 import userimage from "../../assets/searchimg/su1.png";
 import "../../assets/dropdown.css";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -64,6 +65,12 @@ function BookListCard(props) {
   const DropDownApp = ({ profiles }) => {
     const [dropdownVisibility, setDropdownVisibility] = useState(false);
   
+    const navigate = useNavigate();
+    const studyPage = (uid) => {
+      console.log(uid);
+      navigate("/studyPage/"+uid);
+    };
+    
     return (
       <div>
         <div className="app" onClick={() => setDropdownVisibility(!dropdownVisibility)}>
@@ -77,7 +84,7 @@ function BookListCard(props) {
         <Dropdown visibility={dropdownVisibility}>
           <ul>
             {profiles.map((user, index) => (
-              <li key={index}>
+              <li key={index} onClick={() => studyPage(user.uid)}>
                 <img src={user.useriamgeUrl} alt="user" />
                 <p>{user.nickname}</p>
               </li>

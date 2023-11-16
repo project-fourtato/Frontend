@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
-const UserBookListCard = ({ myBookList }) => {
-  const [completedBooks, setCompletedBooks] = useState([]);
+const UserBookListCard = (props) => {
+  const navigate = useNavigate();
+  const [usermessage, setUsermessage] = useState('');
+  const [myBookList, setMyBookList] = useState([]);
 
-  const goDetailPage = (id, bookimg, title, contents, auther, publisher) => {
-    console.log("Details not available for other user's books");
+  useEffect(() => {
+    setUsermessage(props.usermessage);
+    // console.log(usermessage);
+  },[props.usermessage]);
+
+  useEffect(() =>{
+    setMyBookList(props.myBookList);
+    // console.log(props.myBookList);
+  },[props.myBookList]);
+
+  const goDetailPage = (uid, isbn, userbid) => {
+    navigate(`/detail`, {
+      state: { uid, isbn, userbid },
+    });
   };
 
   // dummyMyBookList를 myBookList로 변경
@@ -16,56 +32,45 @@ const UserBookListCard = ({ myBookList }) => {
       {/* 헤더 */}
       <BookListCardHeader>
         <LeftBox>
-          <LeftBoxText>저는 해리포터 좋아해요!</LeftBoxText>
+          <LeftBoxText>{usermessage}</LeftBoxText>
         </LeftBox>
         {/* 타인 서재에서는 책 추가 버튼이 필요하지 않을 것이므로 숨김 */}
       </BookListCardHeader>
       {/* 책 리스트 */}
       <BookListBodyContainer>
-        {/* dummyMyBookList 삭제 */}
-        {myBookList && myBookList.length > 0 ? (
-          myBookList.map((book) => (
+        {myBookList && myBookList.map((book) => (
             <BookItem key={book.id}>
               <BookimgBox
-                src={book.img}
+                src={book.cover}
                 onClick={() =>
                   goDetailPage(
-                    book.id,
-                    book.img,
-                    book.title,
-                    book.contents,
-                    book.author,
-                    book.publisher
+                    book.uid,
+                    book.isbn,
+                    book.userbid
                   )
                 }
               />
               <BookButtonsContainer>
                 <ActionButton
-                  completed={completedBooks.includes(book.id)}
-                  onClick={() => handleButtonClick(book.id)}
+                  completed0={book.bookstate} id='book'
                 >
-                  {completedBooks.includes(book.id) ? "독서완료" : "독서중"}
+                  {(book.bookstate === 0 ? "독서전" :
+                    book.bookstate === 1 ? "관심도서" :
+                    book.bookstate === 2 ? "독서중" :
+                    book.bookstate === 3 ? "독서완료" : null)} 
                 </ActionButton>
                 <ActionButton
-                  completed={completedBooks.includes(book.id)}
-                  onClick={() => handleButtonClick(book.id)}
+                  completed1={book.salestate} id='sale' 
                 >
-                  {completedBooks.includes(book.id) ? "거래불가능" : "거래가능"}
+                  {book.salestate ===0 ? "거래불가능" : "거래가능"}
                 </ActionButton>
               </BookButtonsContainer>
             </BookItem>
-          ))
-        ) : (
-          <div>No books available</div>
-        )}
+          ))}
       </BookListBodyContainer>
     </BookListCardContainer>
   );
 
-  // handleButtonClick 함수 추가
-  function handleButtonClick(bookId) {
-    console.log("Status change not allowed for other user's books");
-  }
 };
 
 export default UserBookListCard;
@@ -170,8 +175,32 @@ const BookButtonsContainer = styled.div`
 
 const ActionButton = styled.button`
   border-radius: 8px;
-  background-color: ${({ completed }) => (completed ? '#5F749F' : '#fff')};
-  color: ${({ completed }) => (completed ? '#fff' : '#000')};
+  background-color: ${({ completed0,completed1, id }) => {
+    if (id === 'book') {
+      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+        return "#fff";
+      }
+      else { return "#5f749f";}
+    } else {
+      if ( completed1 === 0){
+        return "#fff";
+      }
+      else { return "#5f749f";}
+    }
+  }};
+  color: ${({ completed0,completed1, id }) => {
+    if (id === 'book') {
+      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+        return "#5f749f";
+      }
+      else { return "#fff";}
+    } else {
+      if ( completed1 === 0){
+        return "#5f749f";
+      }
+      else { return "#fff";}
+    }
+  }};
   cursor: pointer;
   margin-bottom: 7px;
   padding: 5px;
@@ -183,8 +212,4 @@ const ActionButton = styled.button`
   height: 33px;
   width: 95px;
 
-  &:hover {
-    background-color: ${({ completed }) => (completed ? '#5F749F' : '#000')};
-    color: ${({ completed }) => (completed ? '#fff' : '#fff')};
-  }
 `;

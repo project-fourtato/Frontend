@@ -18,8 +18,8 @@ function LibrarySearchBar(props) {
   const [cityMenuOpen, setCityMenuOpen] = useState(false);
   const [msgList, setMsgList] = useState([]); //도서관 리스트
   useEffect(() => { 
-    console.log("변경감지");
-    console.log(msgList);
+    // console.log("변경감지");
+    // console.log(msgList);
   }, [msgList]);
   // 현재 URL에서 경로 추출
   const currentPath = window.location.pathname;

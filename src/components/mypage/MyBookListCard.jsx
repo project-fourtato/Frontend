@@ -1,37 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
-const MyBookListCard = ({ myBookList }) => {
+const MyBookListCard = (props) => {
   const navigate = useNavigate();
+  const [usermessage, setUsermessage] = useState('');
+  const [myBookList, setMyBookList] = useState([]);
 
-  const goDetailPage = (id, bookimg, title, contents, auther, publisher) => {
-    navigate(`/detail/${id}`, {
-      state: { bookimg, title, contents, auther, publisher },
+  useEffect(() => {
+    setUsermessage(props.usermessage);
+    // console.log(usermessage);
+  },[props.usermessage]);
+
+  useEffect(() =>{
+    setMyBookList(props.myBookList);
+    // console.log(props.myBookList);
+  },[props.myBookList]);
+
+  const goDetailPage = (uid, isbn, userbid) => {
+    navigate(`/detail`, {
+      state: { uid, isbn, userbid },
     });
   };
 
   const goaddbook = () => {
     navigate("/search");
   };
+  const [selectedUserbid, SetSeletectedUserbid] = useState(''); 
+  const [selectedSaleState, SetSelectedSaleState] = useState(-1); 
+  const [count, setCount] = useState(0);
+  const handleButtonClick = async () => {
+    if(selectedUserbid){
+    try {
+      // console.log("자식");
+      // console.log(selectedUserbid);
 
-  const handleButtonClick = (bookId) => {
-    if (completedBooks.includes(bookId)) {
-      setCompletedBooks(completedBooks.filter((id) => id !== bookId));
-    } else {
-      setCompletedBooks([...completedBooks, bookId]);
-    }
+      const url = 'http://localhost:8080/books/salestateUpdate/'+selectedUserbid;
+      const response = await axios.put(url, {
+        bookstate: 1, 
+        salestate: selectedSaleState
+    });
+      const responseData = response.data.data;
+      if(responseData==="bookstate update success"){
+        // console.log(responseData);
+        setCount(count+1);
+        props.setCount(count);
+      }
+    } catch(error) {
+      console.log(error);
+    }}
   };
+  
+  function fetchOne(saleState, userbid) {
+    SetSelectedSaleState(saleState==0?1:0);
+    SetSeletectedUserbid(userbid);
+  }
 
-  const [completedBooks, setCompletedBooks] = useState([]);
+  useEffect (() => {
+    // console.log("useEffect 실행");
+    // console.log(selectedSaleState);
+    // console.log(selectedUserbid);
+    handleButtonClick();
+  }, [selectedSaleState, selectedUserbid]);
+
+
+
 
   return (
     <BookListCardContainer>
       <BookListCardHeader>
         <LeftBox>
-          <LeftBoxText>저는 해리포터 좋아해요!</LeftBoxText>
+          <LeftBoxText>{usermessage}</LeftBoxText>
         </LeftBox>
         <AddBookButton onClick={goaddbook}>
           <FontAwesomeIcon icon={faPlus} />
@@ -39,30 +81,30 @@ const MyBookListCard = ({ myBookList }) => {
         </AddBookButton>
       </BookListCardHeader>
       <BookListBodyContainer>
-        {myBookList.map((book) => (
+        {myBookList && myBookList.map((book) => (
           <BookItem key={book.id}>
             <BookimgBox
-              src={book.img}
+              src={book.cover}
               onClick={() =>
                 goDetailPage(
-                  book.id,
-                  book.img,
-                  book.title,
-                  book.contents,
-                  book.author,
-                  book.publisher
+                  book.uid,
+                  book.isbn,
+                  book.userbid
                 )
               }
             />
             <BookButtonsContainer>
-              <ActionButton disabled>
-                읽기 전용
+              <ActionButton completed0={book.bookstate} id='book'>
+              {(book.bookstate === 0 ? "독서전" :
+                book.bookstate === 1 ? "관심도서" :
+                book.bookstate === 2 ? "독서중" :
+                book.bookstate === 3 ? "독서완료" : null)}              
               </ActionButton>
               <ActionButton
-                completed={completedBooks.includes(book.id)}
-                onClick={() => handleButtonClick(book.id)}
+                completed1={book.salestate} id='sale'
+                onClick={() => {fetchOne(book.salestate, book.userbid); }}
               >
-                {completedBooks.includes(book.id) ? "거래불가능" : "거래가능"}
+                {(book.salestate)===0 ? "거래불가능" : "거래가능"}
               </ActionButton>
             </BookButtonsContainer>
           </BookItem>
@@ -172,8 +214,32 @@ const BookButtonsContainer = styled.div`
 
 const ActionButton = styled.button`
   border-radius: 5px;
-  background-color: ${({ completed }) => (completed ? "#5f749f" : "#fff")};
-  color: ${({ completed }) => (completed ? "#fff" : "#000")};
+  background-color: ${({ completed0,completed1, id }) => {
+    if (id === 'book') {
+      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+        return "#fff";
+      }
+      else { return "#5f749f";}
+    } else {
+      if ( completed1 === 0){
+        return "#fff";
+      }
+      else { return "#5f749f";}
+    }
+  }};
+  color: ${({ completed0,completed1, id }) => {
+    if (id === 'book') {
+      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+        return "#5f749f";
+      }
+      else { return "#fff";}
+    } else {
+      if ( completed1 === 0){
+        return "#5f749f";
+      }
+      else { return "#fff";}
+    }
+  }};
   cursor: pointer;
   margin-top: 10px;
   padding: 5px;
@@ -183,8 +249,23 @@ const ActionButton = styled.button`
   font-weight: 700;
   transition: background-color 0.3s, color 0.3s;
 
-  &:hover {
-    background-color: ${({ completed }) => (completed ? "#5f749f" : "#000")};
-    color: ${({ completed }) => (completed ? "#fff" : "#fff")};
+  // &:hover {
+  //   background-color: ${({completed1, id }) => {
+  //     if (id === 'sale') {
+  //       if ( completed1 === 1){
+  //         return "#fff";
+  //       }
+  //       else { return "#5f749f";}
+  //     }
+  //   }};
+  //   color: ${({completed1, id }) => {
+  //     if (id === 'sale') {
+  //       if ( completed1 === 1){
+  //         return "#5f749f";
+  //       }
+  //       else { return "#fff";}
+  //     } 
+  //     }
+    }};
   }
 `;

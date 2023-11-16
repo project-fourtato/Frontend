@@ -2,13 +2,40 @@ import styled from "styled-components";
 import MyBookListCard from "../components/mypage/MyBookListCard";
 import ProfileHeader from "../components/mypage/ProfileHeader";
 import { myBookList } from "../data/mypagedata"; 
+import {useEffect, useState} from "react";
+import axios from "axios";
 
-const MyPage = () => {
+
+const MyPage = (props) => {
+  const [usermessage, setUsermessage] = useState('');
+  const pro = sessionStorage.getItem("profile");
+  const p = JSON.parse(pro); //session uid 가져오기
+  const [myBookList, setMyBookList] = useState([]);
+  useEffect(() => {
+    // console.log(usermessage);
+  },[usermessage]);
+  const [count, setCount] = useState('');
+
+  useEffect(() => {
+    const UserData = async () => {
+      try {
+        // console.log("부모까지왔다");
+        const response = await axios.get(`http://localhost:8080/booksList/`+p.uid);
+        // console.log(response);
+        const data = response.data.data;
+        setMyBookList(data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    UserData();
+  }, [count]);
   return (
     <Container>
       <AllOutDiv>
-        <ProfileHeader />
-        <MyBookListCard myBookList={myBookList} /> {/* 데이터를 전달 */}
+        <ProfileHeader setUsermessage={setUsermessage}/>
+        <MyBookListCard usermessage={usermessage} myBookList={myBookList} setCount={setCount}/> {/* 데이터를 전달 */}
       </AllOutDiv>
     </Container>
   );

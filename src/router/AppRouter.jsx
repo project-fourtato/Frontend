@@ -16,6 +16,7 @@ import SignUpPage from "../pages/SignUpPage";
 import DeclarationPage from "../pages/DeclarationPage";
 import JournalsUploadPage from "../pages/JournalsPage";
 import SearchListPage from "../pages/SearchListPage";
+import StudyPage from "../pages/StudyPage";
 
 function AppRouter() {
   return (
@@ -27,6 +28,7 @@ function AppRouter() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/follower" element={<FollowerPage />} />
         <Route path="/following" element={<FollowingPage />} />
+        <Route path="/studypage/:id" element={<StudyPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/userpage" element={<UserPage />} />
         <Route path="/detail/:id" element={<BookDetailPage />} />

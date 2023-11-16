@@ -1,12 +1,35 @@
 import styled from "styled-components";
 import UserBookListCard from "../components/userpage/UserBookListCard";
 import UserProfileHeader from "../components/userpage/UserProfileHeader";
-const UserPage = () => {
+import {useEffect, useState} from "react";
+import axios from "axios";
+
+const UserPage = (props) => {
+  const [usermessage, setUsermessage] = useState('');
+  const p = props.UserUid;
+
+  const [myBookList, setMyBookList] = useState([]);
+  useEffect(() => {
+    // console.log(usermessage);
+  },[usermessage]);
+  useEffect(() => {
+    const UserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/booksList/`+p);
+        // console.log(response);
+        const data = response.data.data;
+        setMyBookList(data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+    UserData();
+  }, []); 
   return (
     <Container>
       <AllOutDiv>
-        <UserProfileHeader />
-        <UserBookListCard />
+        <UserProfileHeader setUsermessage={setUsermessage} UserUid={p}/>
+        <UserBookListCard usermessage={usermessage} myBookList={myBookList}/>
       </AllOutDiv>
     </Container>
   );

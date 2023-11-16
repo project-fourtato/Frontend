@@ -5,13 +5,14 @@ import IntroAndIndexFooter from "../components/bookdetail/IntroAndIndexFooter";
 import ReviewBox from "../components/bookdetail/ReviewBox";
 
 const BookDetailPage = (props) => {
+
   const location = useLocation();
   const navigate = useNavigate();
-  const bookimg = location.state.bookimg;
-  const title = location.state.title;
-  const contents = location.state.contents;
-  const auther = location.state.auther;
-  const publisher = location.state.publisher;
+  const uid = location.state.uid;
+  const isbn = location.state.isbn;
+  const userbid = location.state.userbid;
+
+  
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("읽는 중");
@@ -25,45 +26,45 @@ const BookDetailPage = (props) => {
     }
   };
 
-  return (
-    <BookDetailContainer>
-      <BookDetailBox>
-        <BookDetailInnerContainer>
-          <BookImg src={bookimg} alt="책 이미지"/>
-          <BookDetailTextBox>
-            <h2>{title}</h2>
-            <h5>{contents}</h5>
-            <p>{auther}</p>
-            <p>{publisher}</p>
-            <ProgressContainer>
-              <ProgressBox onClick={() => setIsDropdownVisible(!isDropdownVisible)}>
-                {selectedOption}
-                {isDropdownVisible && (
-                  <DropdownMenu>
-                    <DropdownItem onClick={() => handleDropdownItemClick("읽고 싶은 책")}>
-                      읽고 싶은 책
-                    </DropdownItem>
-                    <DropdownItem onClick={() => handleDropdownItemClick("읽는 중")}>
-                      읽는 중
-                    </DropdownItem>
-                    <DropdownItem onClick={() => handleDropdownItemClick("독서 완료")}>
-                      독서 완료
-                    </DropdownItem>
-                    <DropdownItem onClick={() => handleDropdownItemClick("책 삭제하기")}>
-                      책 삭제하기
-                    </DropdownItem>
-                  </DropdownMenu>
-                )}
-              </ProgressBox>
-            </ProgressContainer>
+  // return (
+  //   <BookDetailContainer>
+  //     <BookDetailBox>
+  //       <BookDetailInnerContainer>
+  //         <BookImg src={bookimg} alt="책 이미지"/>
+  //         <BookDetailTextBox>
+  //           <h2>{title}</h2>
+  //           <h5>{contents}</h5>
+  //           <p>{auther}</p>
+  //           <p>{publisher}</p>
+  //           <ProgressContainer>
+  //             <ProgressBox onClick={() => setIsDropdownVisible(!isDropdownVisible)}>
+  //               {selectedOption}
+  //               {isDropdownVisible && (
+  //                 <DropdownMenu>
+  //                   <DropdownItem onClick={() => handleDropdownItemClick("읽고 싶은 책")}>
+  //                     읽고 싶은 책
+  //                   </DropdownItem>
+  //                   <DropdownItem onClick={() => handleDropdownItemClick("읽는 중")}>
+  //                     읽는 중
+  //                   </DropdownItem>
+  //                   <DropdownItem onClick={() => handleDropdownItemClick("독서 완료")}>
+  //                     독서 완료
+  //                   </DropdownItem>
+  //                   <DropdownItem onClick={() => handleDropdownItemClick("책 삭제하기")}>
+  //                     책 삭제하기
+  //                   </DropdownItem>
+  //                 </DropdownMenu>
+  //               )}
+  //             </ProgressBox>
+  //           </ProgressContainer>
 
-          </BookDetailTextBox>
-        </BookDetailInnerContainer>
-        <IntroAndIndexFooter />
-      </BookDetailBox>
-      <ReviewBox />
-    </BookDetailContainer>
-  );
+  //         </BookDetailTextBox>
+  //       </BookDetailInnerContainer>
+  //       <IntroAndIndexFooter />
+  //     </BookDetailBox>
+  //     <ReviewBox />
+  //   </BookDetailContainer>
+  // );
 }
 
 export default BookDetailPage;

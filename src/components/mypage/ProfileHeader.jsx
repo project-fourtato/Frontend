@@ -9,16 +9,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import MsgModal from "../common/MsgModal";
 
-function ProfileHeader({ userId }) {
+function ProfileHeader(props) {
+  const pro = sessionStorage.getItem("profile");
+  const p = JSON.parse(pro); //session uid 가져오기
+  
   const navigate = useNavigate();
   const [profile, setProfile] = useRecoilState(profileState);
   const [userData, setUserData] = useState(null);
+  const [followingData, setFollowingData] = useState(0);
+  const [followerData, setFollowerData] = useState(0);
+
   const [showMsgModal, setShowMsgModal] = useState(false);
 
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080//profile/`);
+        const response = await axios.get(`http://localhost:8080/profile/`+p.uid);
+        // console.log(response);
         const data = response.data;
         setUserData(data);
       } catch (error) {
@@ -27,7 +34,39 @@ function ProfileHeader({ userId }) {
     };
 
     UserData();
-  }, [userId]);
+  }, []);
+
+  useEffect(() => {
+    const FollowingData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/follow/followingsCount/`+p.uid);
+        // console.log(response);
+        const data = response.data;
+        setFollowingData(data.fromUserId_Count);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+      try {
+        const response = await axios.get(`http://localhost:8080/follow/followersCount/`+p.uid);
+        // console.log(response);
+        const data = response.data;
+        setFollowerData(data.toUserId_Count);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    FollowingData();
+    // console.log(followingData);
+    // console.log(followerData);
+  }, []);
+
+
+  useEffect(() => {
+    if(userData){
+    props.setUsermessage(userData.usermessage);
+  }
+  }, [userData]);
 
   const followerPage = () => {
     navigate("/follower");
@@ -43,24 +82,23 @@ function ProfileHeader({ userId }) {
     return <div>데이터가 없습니다.</div>;
   }
 
-  const { username, userInterest } = userData;
-
+  const userInterest = [userData.uinterest1,userData.uinterest2,userData.uinterest3,userData.uinterest4,userData.uinterest5];
   return (
     <>
     <ProfileSection>
       <ProfileLeftContainer>
         <div>
-          <ProfileImage src={userprofile} alt="userprofile" />
+          <ProfileImage src={userData.useriamgeUrl} alt="userprofile" />
         </div>
         <div>
           <ProfileNameDirectM>
             <ProfileName>
-              <UserNameColor>{username}</UserNameColor> 님의 개인서재
+              <UserNameColor>{userData.nickname}</UserNameColor> 님의 개인서재
             </ProfileName>
           </ProfileNameDirectM>
           <InterestOutDiv>
-            {userInterest.map((interest) => (
-              <MyTag key={interest}>{interest}</MyTag>
+            {userInterest && userInterest.map((interest) => (
+              !!interest && <MyTag key={interest}>{interest}</MyTag> //관심사 개수에 맞게 띄어주기 위해 쓰임
             ))}
           </InterestOutDiv>
         </div>
@@ -84,13 +122,13 @@ function ProfileHeader({ userId }) {
                     onClick={() => {
                       followerPage();
                     }}>팔로워</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>10</FollowAndFollowerNumberText>
+        <FollowAndFollowerNumberText>{followerData}</FollowAndFollowerNumberText>
         <Dot>•</Dot>
         <FollowAndFollowerText
                      onClick={() => {
                       followingPage();
                     }}>팔로잉</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>15</FollowAndFollowerNumberText>
+        <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
       </FollowAndFollower>
       {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
     </>

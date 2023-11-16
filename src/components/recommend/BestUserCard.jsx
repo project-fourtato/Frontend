@@ -52,7 +52,7 @@ function BestUserCard() {
                   user.uinterest4,
                   user.uinterest5,
                 ].map((interest, index) => (
-                  <Tagbox key={index}>{interest}</Tagbox>
+                  !!interest && <Tagbox key={index}>{interest}</Tagbox>
                 ))}
               </TagContainer>
             </UserInfoOutDiv>
