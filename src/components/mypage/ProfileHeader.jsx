@@ -16,9 +16,9 @@ function ProfileHeader({ userId }) {
   const [showMsgModal, setShowMsgModal] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const UserData = async () => {
       try {
-        const response = await axios.get(`/api/users/${userId}`);
+        const response = await axios.get(`http://localhost:8080//profile/`+p.uid);
         const data = response.data;
         setUserData(data);
       } catch (error) {
@@ -26,7 +26,7 @@ function ProfileHeader({ userId }) {
       }
     };
 
-    fetchUserData();
+    UserData();
   }, [userId]);
 
   const followerPage = () => {
