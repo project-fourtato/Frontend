@@ -18,7 +18,7 @@ function ProfileHeader({ userId }) {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080//profile/`+p.uid);
+        const response = await axios.get(`http://localhost:8080//profile/`);
         const data = response.data;
         setUserData(data);
       } catch (error) {
