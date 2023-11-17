@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { AiOutlineClose } from "react-icons/ai";
-import { msgList } from '../../data/msgdata';
-import { msgsendList } from "../../data/msgsenddata";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsFillSendFill } from "react-icons/bs";
 import { TiArrowBack } from "react-icons/ti";
@@ -60,12 +58,62 @@ function MsgModal({ setShowMsgModal }) {
         setShowMsgModal(false);
     };
 
+    const markMessageAsRead = async (messageId) => {
+        try {
+            // markMessageAsReadUrl를 적절히 수정해주세요.
+            const markMessageAsReadUrl = `http://localhost:8080/directmessages/mcheckUpdate/${messageId}`;
+            // UpdateMcheckRequest 객체를 생성하고 mcheck 값을 설정합니다.
+            const updateMcheckRequest = {
+                mcheck: 1 // 혹은 원하는 값으로 설정해주세요.
+            };
+            // 서버에 PUT 요청을 보냅니다.
+            await axios.put(markMessageAsReadUrl, updateMcheckRequest);
+    
+            // 읽은 상태로 표시한 후, 받은 쪽지와 보낸 쪽지 데이터를 다시 가져오는 작업 진행
+            const allMessagesUrl = 'http://localhost:8080/profile-directm/' + p.uid;
+            const allMessagesResponse = await axios.get(allMessagesUrl);
+    
+            // 받은 쪽지와 보낸 쪽지를 각각의 상태로 설정
+            const received = allMessagesResponse.data.data.filter(msg => msg.recipientuid === p.uid);
+            const sent = allMessagesResponse.data.data.filter(msg => msg.senderuid === p.uid);
+    
+            // 받은 쪽지와 보낸 쪽지를 각각의 상태로 설정합니다.
+            setReceivedMessages(received);
+            setSentMessages(sent);
+        } catch (error) {
+            console.error("쪽지를 읽은 상태로 변경하는 중에 오류가 발생했습니다:", error);
+        }
+    };
+    
     const handleDetailMsg = async (id) => {
         try {
+            // 서버에 해당 쪽지를 읽은 상태로 표시하는 요청 보내기
+            await markMessageAsRead(id);
+    
+            // 선택된 쪽지 확인
             const selectedReceivedMessage = receivedMessages.find(msg => msg.messageid === id);
             const selectedSentMessage = sentMessages.find(msg => msg.messageid === id);
-
+    
+            // 읽은 쪽지 상태 업데이트
+            const updatedReadMsg = readMsg.map(msg => {
+                if (msg.messageId === id) {
+                    return { ...msg, readState: 1 };
+                }
+                return msg;
+            });
+            setReadMsg(updatedReadMsg);
+    
+            // mcheck 값을 업데이트하고 쪽지 내용 설정
             if (selectedReceivedMessage) {
+                // 읽은 쪽지일 경우 서버에서 가져온 상태를 변경하여 업데이트
+                const updatedReceivedMessages = receivedMessages.map(msg => {
+                    if (msg.messageid === id) {
+                        return { ...msg, mcheck: 1 };
+                    }
+                    return msg;
+                });
+                setReceivedMessages(updatedReceivedMessages => updatedReceivedMessages);
+    
                 setCurrentMsgId(selectedReceivedMessage.messageid);
                 setCurrentMsg(selectedReceivedMessage);
                 setBeforeMsg(msg);
@@ -80,6 +128,7 @@ function MsgModal({ setShowMsgModal }) {
             console.error(error);
         }
     };
+    
 
     const handleSendMsg = async () => {
         try {
@@ -123,13 +172,17 @@ function MsgModal({ setShowMsgModal }) {
         event.stopPropagation();
         try {
             const deleteMsgResponse = await axios.post(`http://localhost:8080/directmessages/messageid=${id}/delete`);
-            
+    
             if (deleteMsgResponse.status === 200) {
                 swal({
                     title: "쪽지 삭제",
                     text: "쪽지가 삭제되었습니다.",
                     icon: "success",
                 });
+    
+                // 삭제가 성공하면 UI에서 해당 쪽지를 지웁니다.
+                setReceivedMessages(receivedMessages.filter(msg => msg.messageid !== id));
+                setSentMessages(sentMessages.filter(msg => msg.messageid !== id));
             } else {
                 swal({
                     title: "쪽지 삭제 실패",
@@ -147,7 +200,8 @@ function MsgModal({ setShowMsgModal }) {
         }
     }
     
-    
+
+
 
     /*const handleReadMsg = (msgId, readState) => { /* readState 상태 변경 함수 -> 함수에서 무한루프 발생 */
     /*setReadMsg(readMsg => ({ ...readMsg, readState: 1 }));
@@ -184,12 +238,18 @@ function MsgModal({ setShowMsgModal }) {
                             </OptionShowMessageList>
                         )
                     }
-                    { // 받은 쪽지 목록 조회
+                    { //받은쪽지 목록 조회
                         msg === 'mailbox' && Array.isArray(receivedMessages) && receivedMessages.map((msg) => {
+                            const isRead = msg.mcheck === 1;
+
                             return (
-                                <MessageItem key={msg.uid} onClick={() => { handleDetailMsg(msg.messageid); }} readState={readMsg}>
+                                <MessageItem
+                                    key={msg.uid}
+                                    onClick={() => { handleDetailMsg(msg.messageid); }}
+                                    readState={isRead ? 1 : 0} // 읽은 쪽지일 때와 안 읽은 쪽지일 때 스타일을 다르게 적용
+                                >
                                     <MessageImgContainer>
-                                        <img src={msg.userimageUrl} />
+                                        <img src={msg.userimageUrl} alt="User" />
                                     </MessageImgContainer>
 
                                     <MessageContentsContainer>
@@ -204,32 +264,38 @@ function MsgModal({ setShowMsgModal }) {
                                         </BottomContainer>
                                     </MessageContentsContainer>
                                 </MessageItem>
-                            )
+                            );
                         })}
 
-                    { // 보낸 쪽지 목록 조회
-                        msg === 'sendbox' && Array.isArray(sentMessages) && sentMessages.map((msgsend) => {
-                            return (
-                                <MessageItem key={msgsend.uid} onClick={() => { handleDetailMsg(msgsend.messageid); }} readState={readMsg}>
-                                    <MessageImgContainer>
-                                        <img src={msgsend.userimageUrl} />
-                                    </MessageImgContainer>
+                    { //보낸쪽지 목록 조회 
+                    msg === 'sendbox' && Array.isArray(sentMessages) && sentMessages.map((msgsend) => {
+                        const isRead = msg.mcheck === 1;
 
-                                    <MessageContentsContainer>
-                                        <UpContainer>
-                                            <MessageTitle><span>{msgsend.nickname}</span> 님</MessageTitle>
-                                            <FontAwesomeIcon icon={faTrashCan} onClick={(event) => handleDelete(msgsend.messageid, event)} />
-                                        </UpContainer>
+                        return (
+                            <MessageItem
+                                key={msgsend.uid}
+                                onClick={() => { handleDetailMsg(msgsend.messageid); }}
+                                readState={isRead ? 1 : 0} 
+                            >
+                                <MessageImgContainer>
+                                    <img src={msgsend.userimageUrl} alt="User" />
+                                </MessageImgContainer>
 
-                                        <BottomContainer>
-                                            <MessageContents>{msgsend.mtitle}</MessageContents>
-                                            <MessageDate>{msgsend.mdate}</MessageDate>
-                                        </BottomContainer>
-                                    </MessageContentsContainer>
-                                </MessageItem>
-                            )
-                        })
-                    }
+                                <MessageContentsContainer>
+                                    <UpContainer>
+                                        <MessageTitle><span>{msgsend.nickname}</span> 님</MessageTitle>
+                                        <FontAwesomeIcon icon={faTrashCan} onClick={(event) => handleDelete(msgsend.messageid, event)} />
+                                    </UpContainer>
+
+                                    <BottomContainer>
+                                        <MessageContents>{msgsend.mtitle}</MessageContents>
+                                        <MessageDate>{msgsend.mdate}</MessageDate>
+                                    </BottomContainer>
+                                </MessageContentsContainer>
+                            </MessageItem>
+                        );
+                    })}
+
                 </MessageList>
 
                 { //쪽지 내용 조회
@@ -358,6 +424,8 @@ const OptionShowMessageList = styled.div`
     }
 `
 
+
+
 const MailboxOutDiv = styled.div`
     &:hover {
         color: #7283A6;
@@ -401,6 +469,7 @@ const MessageItem = styled.li`
         border-radius: 8px;
     }
     cursor: pointer;
+    opacity: ${(props) => (props.readState === 1 ? '0.6' : '1')}; 예시: 읽은 쪽지는 투명도를 줄입니다.
 `;
 
 const CloseButton = styled.button`
