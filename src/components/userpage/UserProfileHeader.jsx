@@ -28,7 +28,7 @@ const UserProfileHeader = (props) => {
     const UserData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/profile/`+p);
-        // console.log(response);
+        console.log(response);
         const data = response.data;
         setUserData(data);
       } catch (error) {
@@ -122,7 +122,7 @@ const [userInterest, setUserInterest] = useState([]);
             <FollowAndFollowerText onClick={followingPage}>팔로잉</FollowAndFollowerText>
             <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
           </FollowAndFollower>
-          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
+          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'writeToUser'} userId={p} nickname={userData.nickname} userimageUrl={userData.useriamgeUrl}/>}
         </>
       ) : (
         <div>Loading...</div>

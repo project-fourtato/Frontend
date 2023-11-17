@@ -177,7 +177,7 @@ const Header = () => {
           )}
         </HeaderRight>
       </HeaderWrapper>
-      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
+      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'mailbox'}/>}
     </>
   );
 };
