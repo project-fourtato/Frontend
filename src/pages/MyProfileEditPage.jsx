@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import NickName from "../components/edtiprofile/NickName";
 import Setting from "../components/edtiprofile/Setting";
 import styled from "styled-components";
+import { useLocation } from 'react-router-dom';
+
 function MyProfileEditPage(props) {
+  const [formData, setFormData] = useState();
+  const [nickname, setNickname] = useState();
+  const [userMessage, setUserMessage] = useState();
+  let location = useLocation();
+
+  const profileSession = sessionStorage.getItem("profile");
+  const p = JSON.parse(profileSession);
+
   return (
     <Container>
-      <NickName />
+      <NickName setImage={setFormData} setUserNickname={setNickname} setUserMessage={setUserMessage} nickname={nickname} userMessage={userMessage}  />
       <MiddleLine/>
-      <Setting />
+      {
+        (profileSession !== null) ? <Setting formData={formData} nickname={nickname} userMessage={userMessage} />
+         : <Setting formData={formData} nickname={nickname} userMessage={userMessage} uid={location.state.idValue} setImage={setFormData}  />
+      }
     </Container>
   );
 }

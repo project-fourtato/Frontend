@@ -33,6 +33,7 @@ function AppRouter() {
         <Route path="/userpage" element={<UserPage />} />
         <Route path="/detail/:id" element={<BookDetailPage />} />
         <Route path="/edit" element={<MyProfileEditPage />} />
+        <Route path="/signup/profile" element={<MyProfileEditPage />} />
         <Route path="/recommend" element={<BookRecommendPage />} />
         <Route path="/journals" element={<JournalsUploadPage />} />
         <Route path="/exchange/:id" element={<BookExchangePage />} />

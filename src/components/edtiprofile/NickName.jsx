@@ -1,33 +1,79 @@
-import React, { useState, useRef } from "react";
-import { BiSolidUser } from "react-icons/bi";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { FiUpload } from "react-icons/fi";
-import { BiSolidMessage } from "react-icons/bi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUpload, faMessage } from "@fortawesome/free-solid-svg-icons";
 import "../../App.css";
 
 import swal from "sweetalert";
+import axios from "axios";
 function NickName(props) {
-  const [selectedImage, setSelectedImage] = useState(null);
+  let tempImage = "";
+  const [selectedImage, setSelectedImage] = useState('');
+  const [imageClick, setImageClick] = useState(0);
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
+  const [profileResponse, setProfileResponse] = useState({
+    uid: '',
+    nickname: '',
+    useriamgeUrl: '',
+    userimageName: '',
+    usermessage: ''
+  });
   const fileInputRef = React.useRef(null);
+
+  const profileSession = sessionStorage.getItem("profile");
+  const p = JSON.parse(profileSession);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = 'http://localhost:8080/profile/' + p.uid;
+        const response = await axios.get(url);
+        setProfileResponse(response.data);
+        tempImage = response.data.useriamgeUrl;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (profileSession !== null) {
+      fetchData();
+    }
+  }, []);
+
+  useEffect(() => {
+    setSelectedImage(profileResponse.useriamgeUrl);
+    props.setUserNickname(profileResponse.nickname);
+    props.setUserMessage(profileResponse.usermessage);
+  }, [profileResponse]);
+
+  useEffect(() => {
+    if (selectedImage === null) {
+      const formData = new FormData();
+      props.setImage(formData);
+    } else if(selectedImage === "https://storage.googleapis.com/booker-v3/basis-profile.png") {
+      const formData = new FormData();
+      props.setImage(formData);
+    } else if(imageClick == 0) {
+      const formData = new FormData();
+      props.setImage(formData);
+    }
+  }, [selectedImage])
 
   const handleNicknameChange = (e) => {
     const inputValue = e.target.value;
-    
+
     if (inputValue.includes(' ')) {
       swal("경고", "닉네임에 띄어쓰기를 사용할 수 없어요.", "error");
       return;
     }
-  
+
     if (inputValue.length > 11) {
       swal("경고", "닉네임은 11자를 초과할 수 없어요.", "error");
       return;
     }
-  
-    setNickname(inputValue);
+
+    props.setUserNickname(inputValue);
   };
 
   const handleDescriptionChange = (e) => {
@@ -35,7 +81,7 @@ function NickName(props) {
       swal("Oops!", "한 줄 소개는 31글자를 넘을 수 없습니다.", "error");
       return;
     }
-    setDescription(e.target.value);
+    props.setUserMessage(e.target.value);
   };
 
   const handleImageChange = (e) => {
@@ -47,6 +93,11 @@ function NickName(props) {
       };
       reader.readAsDataURL(file);
     }
+
+    setImageClick(1);
+    const formData = new FormData();
+    formData.append('file', file);
+    props.setImage(formData);
   };
   const handleEditButtonClick = () => {
     fileInputRef.current.click();
@@ -58,20 +109,27 @@ function NickName(props) {
         {/* 사진업로드 */}
         <UploadWrapper>
           {selectedImage ? (
-            <ImagePreview src={selectedImage} alt="Selected profile" />
-          ) : (
-            <UploadContainer>
+            <>
               <label htmlFor="fileInput">
-                <FontAwesomeIcon icon={faUpload} className="icon-editprofile-upload" />
+                <ImagePreview src={selectedImage} alt="Selected profile" />
               </label>
-            </UploadContainer>
+            </>
+          ) : (
+            <label htmlFor="fileInput">
+              <UploadContainer>
+                <FontAwesomeIcon icon={faUpload} className="icon-editprofile-upload" />
+              </UploadContainer>
+            </label>
           )}
           <HiddenFileInput
             ref={fileInputRef}
             id="fileInput"
             type="file"
+            multiple="multiple"
             onChange={handleImageChange}
+            onClick={(e) => e.target.value = null}
           />
+
         </UploadWrapper>
 
         <MyNameText>
@@ -81,8 +139,9 @@ function NickName(props) {
         <Input
           type="text"
           placeholder="닉네임을 입력해 주세요!"
-          value={nickname}
+          value={props.nickname}
           onChange={handleNicknameChange}
+          disabled ={(profileSession !== null) ? true : false}
         />
 
         <MyNameText>
@@ -91,8 +150,8 @@ function NickName(props) {
         <Subtitle>자신을 소개하는 한 줄을 적어보세요!</Subtitle>
         <Input
           type="text"
-          placeholder="힌줄소개를 입력해 주세요!"
-          value={description}
+          placeholder="한줄소개를 입력해 주세요!"
+          value={props.userMessage}
           onChange={handleDescriptionChange}
         />
       </div>
@@ -114,6 +173,9 @@ const UploadWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  label {
+    cursor: pointer;
+  }
 `;
 
 const UploadContainer = styled.div`
@@ -160,6 +222,8 @@ const Button = styled.button`
 `;
 const HiddenFileInput = styled.input`
   display: none;
+  width: 100%;
+  height: 100%;
 `;
 
 const ImagePreview = styled.img`

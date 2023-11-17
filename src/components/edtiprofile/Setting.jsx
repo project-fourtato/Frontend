@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { BiSolidSmile } from "react-icons/bi";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { settingtagData } from "../../data/mypagedata";
 import { profileState, loginState } from "../../recoil/atom";
 import { useRecoilState } from "recoil";
-import { GrFormNext } from "react-icons/gr";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import SayGoodbyeModal from "../common/SayGoodbyeModal";
@@ -12,9 +10,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceLaugh, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import "../../App.css";
 import { icon } from "@fortawesome/fontawesome-svg-core";
+import axios from "axios";
 
 function Setting(props) {
 
+  let posts = "hello";
   const [profile, setProfile] = useRecoilState(profileState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [showModal, setShowModal] = useState(false);
@@ -23,10 +23,15 @@ function Setting(props) {
   const [selectedTags, setSelectedTags] = useState([]);
   const maxSelectedTags = 5;
 
+  const profileSession = sessionStorage.getItem("profile");
+  const p = JSON.parse(profileSession);
+
   const toggleTagSelection = (tag) => {
+    console.log("tag: " + tag);
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter(t => t !== tag));
     } else if (selectedTags.length < maxSelectedTags) {
+      console.log("그럼 set은 되는거지?");
       setSelectedTags([...selectedTags, tag]);
     } else {
       swal({
@@ -35,107 +40,205 @@ function Setting(props) {
         buttons: "확인"
       });
     }
+  }
+
+useEffect(() => {
+
+}, [selectedTags])
+
+const handleSuccess = () => {
+  (async () => {
+    if (props.nickname == '' || props.nickname == '' || props.userMessage == '') {
+      swal({
+        title: "주의",
+        text: "모든 항목에 값을 기입해주세요!",
+        icon: "warning",
+        buttons: "확인",
+      }).then(() => {
+        navigate("/edit");
+      })
+    } else if (selectedTags < 1) {
+      swal({
+        title: "주의",
+        text: "관심사는 최소 한 개 선택해주세요!",
+        icon: "warning",
+        buttons: "확인",
+      }).then(() => {
+        navigate("/edit");
+      })
+    } else {
+      try {
+        const url = "http://localhost:8080/profile/" + props.uid + "/new";
+        props.formData.append("uid", props.uid);
+        props.formData.append("nickname", props.nickname);
+        props.formData.append("usermessage", props.userMessage);
+
+        selectedTags.forEach((item, index) => {
+          props.formData.append(`uinterest${(index + 1)}`, item);
+        });
+
+        const response = await axios.post(url, props.formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        });
+        posts = response.data;
+        console.log(response.data.data);
+        if (posts.data === "Register login Success") {
+          navigate("/login");
+        }
+
+        swal({
+          title: "회원가입 성공!",
+          text: "회원가입이 완료되었습니다.",
+          icon: "success",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/login");
+          setIsLogin({ isLogin: true });
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  })();
+};
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const url = "http://localhost:8080/profile/find/interests/" + p.uid;
+      const response = await axios.get(url);
+      // let temp = response.data;
+      // const cleanedData = temp.jsonData.filter(item => item !== "null" && item !== "undefined");
+      // Object.values(cleanedData);
+      // console.log(cleanedData);
+      const responseData = JSON.parse(response.request.responseText);
+      const temp = Object.values(responseData);
+      const filteredTemp = temp.filter(item => item !== null);
+      setSelectedTags([...filteredTemp]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-
-  const handleSuccess = () => {
-    swal({
-      title: "회원가입 성공!",
-      text: "회원가입이 완료되었습니다.",
-      icon: "success",
-      buttons: "확인",
-    }).then(() => {
-      navigate("/");
-      setIsLogin({ isLogin: true });
-    })
+  if (profileSession !== null) {
+    fetchData();
   }
+}, []);
 
-  const handleEditSuccess = () => {
-    swal({
-      title: "프로필 수정 완료!",
-      text: "프로필 수정이 완료되었습니다.",
-      icon: "success",
-      buttons: "확인",
-    }).then(() => {
-      navigate("/mypage");
-    })
-  }
-
-  const RenderTagsInGroupsOfFive = () => {
-    const numberOfRows = Math.ceil(settingtagData.length / 4);
-    let rows = [];
-
-    for (let i = 0; i < numberOfRows; i++) {
-      let rowTags = settingtagData.slice(i * 4, (i + 1) * 4);
-      rows.push(
-        <TagRowContainer key={i}>
-          {rowTags.map(tag => (
-            <TagBoxContainer key={tag}>
-              <Tagbox
-                onClick={() =>
-                  toggleTagSelection(tag)}
-                isSelected={selectedTags.includes(tag)
-                }>
-                {tag}
-              </Tagbox>
-            </TagBoxContainer>
-          ))}
-        </TagRowContainer>
-      );
+const handleEditSuccess = async () => {
+  try {
+    const url = "http://localhost:8080/profile/" + p.uid + "/edit";
+    props.formData.append("uid", p.uid);
+    props.formData.append("usermessage", props.userMessage);
+    if (selectedTags[0]) {
+      props.formData.append("uinterest1", selectedTags[0]);
+    }
+    if (selectedTags[1]) {
+      props.formData.append("uinterest2", selectedTags[1]);
+    }
+    if (selectedTags[2]) {
+      props.formData.append("uinterest3", selectedTags[2]);
+    }
+    if (selectedTags[3]) {
+      props.formData.append("uinterest4", selectedTags[3]);
+    }
+    if (selectedTags[4]) {
+      props.formData.append("uinterest5", selectedTags[4]);
     }
 
-    return <>{rows}</>;
-  };
+    const response = await axios.put(url, props.formData);
+    if (response.data.data == "Profile Update Success") {
+      swal({
+        title: "프로필 수정 완료!",
+        text: "프로필 수정이 완료되었습니다.",
+        icon: "success",
+        buttons: "확인",
+      }).then(() => {
+        navigate("/mypage");
+      })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-  return (
-    <Container>
-      <MySettingText>
-        <FontAwesomeIcon icon={faFaceLaugh} /> 관심사 설정
-      </MySettingText>
-      <Subtitle>좋아하시는 책 분야를 선택해 주세요!</Subtitle>
-      <TagContainer>
-        <RenderTagsInGroupsOfFive />
-      </TagContainer>
+const RenderTagsInGroupsOfFive = () => {
+  const numberOfRows = Math.ceil(settingtagData.length / 4);
+  let rows = [];
 
-      <MySettingListText>
-        <FontAwesomeIcon icon={faAngleRight} />내가 선택한 목록
-      </MySettingListText>
-      <TagContainer>
-        {
-          selectedTags.map((tag) => (
-            <Tagbox key={tag}>
+  for (let i = 0; i < numberOfRows; i++) {
+    let rowTags = settingtagData.slice(i * 4, (i + 1) * 4);
+    rows.push(
+      <TagRowContainer key={i}>
+        {rowTags.map(tag => (
+          <TagBoxContainer key={tag}>
+            <Tagbox
+              onClick={() =>
+                toggleTagSelection(tag)}
+              isSelected={selectedTags.includes(tag)
+              }>
               {tag}
             </Tagbox>
-          ))
-        }
-      </TagContainer>
+          </TagBoxContainer>
+        ))}
+      </TagRowContainer>
+    );
+  }
 
+  return <>{rows}</>;
+};
+
+return (
+  <Container>
+    <MySettingText>
+      <FontAwesomeIcon icon={faFaceLaugh} /> 관심사 설정
+    </MySettingText>
+    <Subtitle>좋아하시는 책 분야를 선택해 주세요!</Subtitle>
+    <TagContainer>
+      <RenderTagsInGroupsOfFive />
+    </TagContainer>
+
+    <MySettingListText>
+      <FontAwesomeIcon icon={faAngleRight} />내가 선택한 목록
+    </MySettingListText>
+    <TagContainer>
       {
-        profile === 'edit' ?
-          (
-            <ButtonContainer>
-              <SubmitButton onClick={handleEditSuccess}>수정 완료</SubmitButton>
-            </ButtonContainer>
-          ) : (
-            <ButtonContainer>
-              <SubmitButton onClick={handleSuccess}>가입 완료</SubmitButton>
-            </ButtonContainer>
-          )
+        selectedTags.map((tag) => (
+          tag !== null && (<Tagbox key={tag}>
+            {tag}
+          </Tagbox>)
+        ))
       }
-      {
-        profile === 'edit' && (
-          <RemoveContainer>
-            <p onClick={() => setShowModal(true)}>BOOKER 회원탈퇴를 하고싶어요..!</p>
-          </RemoveContainer>
+    </TagContainer>
+
+    {
+      profileSession !== null ?
+        (
+          <ButtonContainer>
+            <SubmitButton onClick={handleEditSuccess}>수정 완료</SubmitButton>
+          </ButtonContainer>
+        ) : (
+          <ButtonContainer>
+            <SubmitButton onClick={handleSuccess}>가입 완료</SubmitButton>
+          </ButtonContainer>
         )
-      }
-      {
-        showModal && (
-          <SayGoodbyeModal setShowModal={setShowModal} />
-        )
-      }
-    </Container>
-  );
+    }
+    {
+      profile === 'edit' && (
+        <RemoveContainer>
+          <p onClick={() => setShowModal(true)}>BOOKER 회원탈퇴를 하고싶어요..!</p>
+        </RemoveContainer>
+      )
+    }
+    {
+      showModal && (
+        <SayGoodbyeModal setShowModal={setShowModal} />
+      )
+    }
+  </Container>
+);
 }
 
 export default Setting;

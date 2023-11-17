@@ -44,7 +44,7 @@ function SignUpCard(props) {
     if (isEmailValid(newValue)) {
       setEmail(newValue);
       setEmailCheck(1);
-      console.log("되는데 왜 안된다그래")
+      //console.log("되는데 왜 안된다그래")
     }
     else { 
       setEmail(newValue);
@@ -160,7 +160,7 @@ function SignUpCard(props) {
         console.log(response.data.data);
         console.log(posts.data);
         if(posts.data ===  "Register login Success"){
-          navigate("/edit");
+          navigate("/edit", { state : {idValue} });
         }
       } catch(error) {
         console.log(error)
