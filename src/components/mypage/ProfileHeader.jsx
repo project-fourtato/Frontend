@@ -239,6 +239,10 @@ const FollowAndFollowerText = styled.h5`
   line-height: 109.867%;
   letter-spacing: -0.14px;
   margin-right: 8px;
+  cursor : pointer;
+  &:hover{
+    color: #5f749f;
+  }
 `;
 
 const Dot = styled.p`

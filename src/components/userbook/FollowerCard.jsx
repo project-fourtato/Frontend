@@ -3,11 +3,14 @@ import styled from "styled-components";
 import axios from "axios";
 import userprofile from "../../assets/userprofile.png";
 import "../../App.css"
+import { useNavigate } from "react-router-dom";
 
 function FollowerCard() {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
   const [followerList, setFollowerList] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchFollowerList = async () => {
@@ -23,13 +26,19 @@ function FollowerCard() {
     fetchFollowerList();
   }, []);
 
+  const studyPage = (uid) => {
+    // console.log(uid);
+    navigate("/studyPage/"+uid);
+  };
+
+
   return (
     <>
       <FollowingContainer>
         <FollowingBox>팔로워</FollowingBox>
       </FollowingContainer>
       {followerList.map((follower, index) => (
-        <BookListCardContainer key={index}>
+        <BookListCardContainer key={index} onClick={() => studyPage(follower.toUserId)}>
           <ProfileImage src={follower.userimageUrl || userprofile} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>
@@ -48,9 +57,19 @@ export default FollowerCard;
 const BookListCardContainer = styled.div`
   display: flex; /* Make the container flex */
   width: 1200px;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
+  padding-top:20px;
+  padding-bottom:10px;
   border-bottom: 1px solid #c1c1c1;
   align-items: center; /* Align items vertically */
+  &:hover{
+  background: #fff;
+  cursor: pointer;
+  border-radius : 25px;
+  opacity : 0.8;
+  box-shadow : 2px 2px 2px 2px #dbdbdb;
+
+  }
 `;
 
 const ProfileImage = styled.img`
@@ -116,16 +135,19 @@ const LeftBoxText = styled.h5`
 `;
 
 const FollowingContainer = styled.div`
+  cursor : default;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
   margin-top : -50px;
+  
+  
 `;
 
 const FollowingBox = styled.p`
-  border-radius: 10px;
+  border-radius: 25px;
   border: 1px solid #c1c1c1;
   background: #fff;
   text-align: center;
@@ -137,5 +159,6 @@ const FollowingBox = styled.p`
   font-weight: 700;
   line-height: normal;
   margin-right: 10px;
-  cursor: pointer;
+  cursor: default;
+  
 `;

@@ -2,37 +2,48 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import userprofile from "../../assets/userprofile.png";
+import "../../App.css"
+import { useNavigate } from "react-router-dom";
 
-function FollowingCard() {
+function FollowerCard() {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
-  const [followingList, setFollowingList] = useState([]);
+  const [followerList, setFollowerList] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const fetchFollowingList = async () => {
+    const fetchFollowerList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followingsList/"+p.uid);
-        setFollowingList(response.data.data);
+        const response = await axios.get("http://localhost:8080/follow/followingList/" + p.uid);
+        console.log(response.data);
+        setFollowerList(response.data.data);
       } catch (error) {
-        console.error("팔로잉 목록을 불러오는 중 오류 발생:", error);
+        console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
       }
     };
 
-    fetchFollowingList();
+    fetchFollowerList();
   }, []);
+
+  const studyPage = (uid) => {
+    // console.log(uid);
+    navigate("/studyPage/"+uid);
+  };
+
 
   return (
     <>
       <FollowingContainer>
         <FollowingBox>팔로잉</FollowingBox>
       </FollowingContainer>
-      {followingList.map((following, index) => (
-        <BookListCardContainer key={index}>
-          <ProfileImage src={following.userimageUrl || userprofile} alt="프로필 사진" />
-          <ProfileName>{following.nickname} 님의 개인서재</ProfileName>
+      {followerList.map((follower, index) => (
+        <BookListCardContainer key={index} onClick={() => studyPage(follower.fromUserId)}>
+          <ProfileImage src={follower.userimageUrl || userprofile} alt="프로필 사진" />
+          <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>
             <LeftBox>
-              <LeftBoxText>{following.usermessage}</LeftBoxText>
+              <LeftBoxText>{follower.usermessage}</LeftBoxText>
             </LeftBox>
           </BookListCardHeader>
         </BookListCardContainer>
@@ -41,15 +52,22 @@ function FollowingCard() {
   );
 }
 
-export default FollowingCard;
-
+export default FollowerCard;
 
 const BookListCardContainer = styled.div`
   display: flex; /* Make the container flex */
   width: 1200px;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
+  padding-top:20px;
+  padding-bottom:10px;
   border-bottom: 1px solid #c1c1c1;
   align-items: center; /* Align items vertically */
+  &:hover{
+  background: #fff;
+  cursor: pointer;
+  border-radius : 25px;
+  opacity : 0.8;
+  }
 `;
 
 const ProfileImage = styled.img`
@@ -115,16 +133,19 @@ const LeftBoxText = styled.h5`
 `;
 
 const FollowingContainer = styled.div`
+  cursor : default;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
   margin-top : -50px;
+  
+  
 `;
 
 const FollowingBox = styled.p`
-  border-radius: 10px;
+  border-radius: 25px;
   border: 1px solid #c1c1c1;
   background: #fff;
   text-align: center;
@@ -136,5 +157,5 @@ const FollowingBox = styled.p`
   font-weight: 700;
   line-height: normal;
   margin-right: 10px;
-  cursor: pointer;
+  cursor: default;
 `;
