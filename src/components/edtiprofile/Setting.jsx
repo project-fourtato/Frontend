@@ -226,7 +226,7 @@ return (
         )
     }
     {
-      profile === 'edit' && (
+       profileSession !== null && (
         <RemoveContainer>
           <p onClick={() => setShowModal(true)}>BOOKER 회원탈퇴를 하고싶어요..!</p>
         </RemoveContainer>
@@ -234,7 +234,7 @@ return (
     }
     {
       showModal && (
-        <SayGoodbyeModal setShowModal={setShowModal} />
+        <SayGoodbyeModal setShowModal={setShowModal} userId={p.uid} />
       )
     }
   </Container>

@@ -1,63 +1,100 @@
-import React from 'react';
+import { useEffect, useState, React } from 'react';
 import styled from 'styled-components';
 import {AiOutlineClose} from "react-icons/ai";
 import {FaExclamationCircle} from "react-icons/fa";
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { loginState } from '../../recoil/atom';
+import axios from "axios";
 
-function SayGoodbyeModal({setShowModal}) {
-
-    const [isLogin, setIsLogin] = useRecoilState(loginState);
+function SayGoodbyeModal({ setShowModal, ...props }) {
+    const setLoginState = useSetRecoilState(loginState);
+    const [check, setCheck] = useState(false);
+    const userIdObject = props.userId;
     const navigate = useNavigate();
-
+    // 타인서재 페이지에서 쪽지 전송 구현
+    const [userId, setUserId] = useState("");
+  
+    useEffect(() => {
+      const setData = () => {
+        setUserId(props.userId);
+        console.log("userId:", props.userId); // userId 값 확인
+      };
+      setData();
+    }, [props.userId]);
+  
     const handleGoodbye = () => {
-        swal({
-          title: "회원탈퇴가 완료되었습니다.",
-          icon: "success",
-          buttons: "확인",
-        }).then(() => {
-          setIsLogin({ isLogin: false });
-          navigate("/");
+      const apiUrl = `http://localhost:8080/profile/`+userIdObject+`/delete`;
+        console.log(apiUrl);
+      // 프로필 삭제 요청
+      axios
+        .post(apiUrl)
+        .then((response) => {
+          // 성공 응답 처리
+          swal({
+            title: response.Object,
+            icon: "success",
+            buttons: "확인",
+          });
+  
+          
+          // 홈페이지로 이동
+          
+          setCheck(true);
+
         })
-      }
+        .catch((error) => {
+          // 프로필 삭제 요청 중 오류 처리
+          console.error("프로필 삭제 중 오류가 발생했습니다:", error);
+          swal({
+            title: "오류",
+            text: "프로필 삭제 중에 오류가 발생했습니다. 나중에 다시 시도해주세요.",
+            icon: "error",
+            buttons: "확인",
+          });
+        });
+    };
+  
+    useEffect(()=>{
+        // 세션 삭제
+        setLoginState({isLogin: false});
+        console.log("isLogin false");
+        navigate("/");
+        // sessionStorage.removeItem("profile");
+      },[check]);
 
     const handleClose = () => {
-        setShowModal(false);
-      };
-    
-
+      setShowModal(false);
+    };
+  
     return (
-        <ModalBackground>
+      <ModalBackground>
         <ModalContainer>
-        <CloseButton onClick={handleClose}>
-          <AiOutlineClose />
+          <CloseButton onClick={handleClose}>
+            <AiOutlineClose />
           </CloseButton>
-            <TitleContainer>
+          <TitleContainer>
             <FaExclamationCircle />
             <Title>BOOKER, 정말 회원탈퇴 하시려구요..?</Title>
-            </TitleContainer>
-            <SubTextContainer>
-            <SubText>BOOKER 정말 좋은데,,</SubText> 
+          </TitleContainer>
+          <SubTextContainer>
+            <SubText>BOOKER 정말 좋은데,,</SubText>
             <SubText>그래도..! 탈퇴하시려면 해당 문구를 따라 적어주세요!</SubText>
-            </SubTextContainer>
-            <GoodbyeBoxContainer>
+          </SubTextContainer>
+          <GoodbyeBoxContainer>
             <p>저는 BOOKER를 탈퇴하겠습니다.</p>
-            </GoodbyeBoxContainer>
-            <InputBox 
-                type='text'
-                placeholder="해당 문구 입력"
-            />
-            <ButtonContainer>
+          </GoodbyeBoxContainer>
+          <InputBox type="text" placeholder="해당 문구 입력" />
+          <ButtonContainer>
             <RemoveButton onClick={handleGoodbye}>회원 탈퇴</RemoveButton>
-            </ButtonContainer>
+          </ButtonContainer>
         </ModalContainer>
-        </ModalBackground>
+      </ModalBackground>
     );
-}
-
-export default SayGoodbyeModal;
+  }
+  
+  export default SayGoodbyeModal;
 
 const ModalBackground = styled.div`
     position: fixed; 
