@@ -32,7 +32,7 @@ function BestUserCard() {
   }, []);
   const studyPage = (uid) => {
     // console.log(uid);
-    navigate("/studyPage/"+uid);
+    navigate("/studyPage/" + uid);
   };
   return (
     <Container>
@@ -120,7 +120,11 @@ const UserImgBox = styled.div`
 `;
 
 const UserImg = styled.img`
-  width: 4.2rem;
+  min-width:75px;
+  min-height: 75px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
 `;
 
 const UserInfoOutDiv = styled.div`
@@ -155,10 +159,11 @@ const Tagbox = styled.p`
   background: #fff;
   text-align: center;
   padding: 10px 10px;
-  width: 70px;
+  width: 3.5rem;
   color: #000;
-  font-size: 15px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 700;
   margin-right: 10px;
+  margin-top: 3px;
 `;
