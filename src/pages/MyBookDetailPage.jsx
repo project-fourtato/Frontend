@@ -21,9 +21,9 @@ const MyBookDetailPage = (props) => {
     const BookData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/books/booksDetail/`+isbn);
-        // console.log(response);
+        console.log(response);
         const data = response.data.data;
-        // console.log(data);
+        console.log(data);
         setBookData(data);
         const title = data.title;
 
@@ -59,10 +59,10 @@ const MyBookDetailPage = (props) => {
       try {
         const response = await axios.get(`http://localhost:8080/booksState/uid=`+uid+`&isbn=`+isbn);
         const data = response.data;
-        // console.log(data);
+        console.log(data);
         const option = data.bookState;
-        // console.log("잘받아와지나~");
-        // console.log(option);
+        console.log("잘받아와지나~");
+        console.log(option);
         if (option === 0) { setSelectedOption("읽기 전"); }
         else if (option === 1) { setSelectedOption("읽고 싶은 책");}
         else if (option === 2) {setSelectedOption("읽는 중"); }
@@ -89,14 +89,14 @@ const MyBookDetailPage = (props) => {
       if (willDelete) {
         (async() => {
           try{
-            // console.log(userbid);
+            console.log(userbid);
             const url = 'http://localhost:8080/books/'+userbid+'/delete';
             const response = await axios.post(url, {
               "isbn" : isbn,
               "bookstate" : 0,
               "salestate" : 0
           });
-            // console.log(url);
+            console.log(url);
             navigate("/mypage");
           } catch(error) {
             console.log(error);
@@ -121,6 +121,8 @@ const MyBookDetailPage = (props) => {
     } 
   };
   const handleOption = async (option) => {
+    console.log("들어오남");
+    console.log(option);
     try{
       const url = 'http://localhost:8080/journals/bookstateUpdate/uid='+uid+'&isbn='+isbn;
       const response = await axios.put(url, {
@@ -128,16 +130,18 @@ const MyBookDetailPage = (props) => {
         salestate: 0
       });
       const responseData = response.data.data;
-      // console.log(responseData);
+      console.log(responseData);
       if(responseData=="bookstate update success"){
         setCount(count+1);
-        // console.log(count);
+        console.log("count가 잘 되나?");
+        console.log(count);
       }
     } catch (error) {
       console.log(error);
     }};
+    useEffect(()=>{
 
-
+    }, [selectedOption]);
 
   return (
     <BookDetailContainer>

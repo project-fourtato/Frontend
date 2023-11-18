@@ -21,7 +21,7 @@ const MyBookListCard = (props) => {
   },[props.myBookList]);
 
   const goDetailPage = (uid, isbn, userbid) => {
-    navigate(`/detail`, {
+    navigate(`/myDetail`, {
       state: { uid, isbn, userbid },
     });
   };

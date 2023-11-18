@@ -32,7 +32,7 @@ function LibrarySearchBar(props) {
       try{
         const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&isbn='+lastSegment;
         const response = await axios.get(url);
-        console.log(url);
+        // console.log(url);
         setMsgList(response.data.data);
         // console.log(msgList);
       } catch(error) {

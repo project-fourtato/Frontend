@@ -1,25 +1,66 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { reviewList } from "../../data/reviewpage";
+import owlImg from "../../assets/owl.png"
+import axios from "axios";
 import "../../App.css"
 
 function ReviewBox(props) {
+  const [journalsData, setJournalsData] = useState(null);
+  const userbid = props.userbid;
+  const type = props.type; //user인지 my인지 new인지
+  const nickname = props.nickname;
+  const journalAdd = () => {
+    if (type == 'user') {
+      return '';
+    } else if(type == 'my'){
+      return <JournalAddButton>독서록 추가</JournalAddButton>;
+    } else {
+      return '';
+    }
+  };
+  const textAdd = () => {
+    if (type == 'new') { 
+      return <BookAddMent><img src={owlImg} style={{ width: "70%" }}/>
+      <div>"책 추가하기" 버튼을 눌러 독서록을 작성해보세요!</div></BookAddMent>;
+    }
+  };
+  useEffect(()=>{
+    journalAdd();
+  }, [type]);
+  useEffect(() => {
+    const JournalsData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/journalsList/`+userbid);
+        // console.log(response);
+        const data = response.data.data;
+        // console.log(data);
+        setJournalsData(data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+    if(type!=='new'){
+    JournalsData();
+    }
+  }, []);
   return (
     <ReviewBoxContainer>
-      <ReviewTitleText><FontAwesomeIcon icon={faPenToSquare} className="icon-review-box" />내가 남긴 감상평</ReviewTitleText>
+      <ReviewTitleText><FontAwesomeIcon icon={faPenToSquare} className="icon-review-box" />{nickname} 님이 남긴 감상평</ReviewTitleText>
       <JournalListOutDiv>
-      {reviewList.map((journal) => {
+        {textAdd()}
+      {journalsData && journalsData.map((journal) => {
         return (
           <ReviewBoxOutDiv>
-            <JournalTitleText>{journal.title}</JournalTitleText>
-            <JournalDateText>{journal.date}</JournalDateText>
+            <JournalTitleText>{journal.ptitle}</JournalTitleText>
+            <JournalDateText>{journal.pdatetime.split("T")[0]}</JournalDateText>
           </ReviewBoxOutDiv>
         )
       })}
       </JournalListOutDiv>
-      <JournalAddButton>독서록 추가</JournalAddButton>
+      {journalAdd()}
     </ReviewBoxContainer>
   );
 }
@@ -45,8 +86,29 @@ const ReviewTitleText = styled.h3`
 `;
 
 const JournalListOutDiv = styled.div`
+  margin-top : ${({ type }) => {
+    if(type === 'user'){
+      return "20px";
+    }
+    else if(type === 'my'){
+      return "0";
+    }
+    else{
+      return "0";
+    }
+  }};
   overflow: auto;
-  height: 81%;
+  height: ${({ type }) => {
+    if(type === 'user'){
+      return "90%";
+    }
+    else if(type === 'my'){
+      return "81%";
+    }
+    else{
+      return "81%";
+    }
+  }};
 `
 
 const JournalTitleText = styled.div`
@@ -89,4 +151,11 @@ const JournalAddButton = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+const BookAddMent = styled.div`
+  // padding-top : 10px;
+  font-weight : bold;
+  font-size : 110%;
+  text-align: center;
 `

@@ -2,6 +2,7 @@ import {React, useRef} from "react";
 import { useEffect, useState } from "react";
 import { FaBookMedical } from "react-icons/fa";
 import { booksearchList } from "../../data/recommenddata";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookBookmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +13,7 @@ import "../../App.css";
 
 function BestBookCard(props) {
   const profile = sessionStorage.getItem("profile");
+  const navigate = useNavigate();
   const p = JSON.parse(profile);
   const scrollRef = useRef(null);
   const handleScrollDown = () => {
@@ -25,12 +27,12 @@ function BestBookCard(props) {
       try {
         const url = 'http://localhost:8080/bestseller';
         const response = await axios.get(url);
-        console.log(response);
+        // console.log(response);
   
         // response.data가 이미 배열 형태일 것이므로 추가적인 JSON.parse가 필요하지 않음
         setBooksearchList(response.data.data);
-        console.log("확인");
-        console.log(booksearchList);
+        // console.log("확인");
+        // console.log(booksearchList);
       } catch (error) {
         console.log(error);
       }
@@ -39,7 +41,11 @@ function BestBookCard(props) {
     fetchData();
   }, []);
 
-
+  const goDetailPage = (uid, isbn) => {
+    navigate(`/newDetail`, {
+      state: {uid, isbn},
+    });
+  };
   return (
     <Container>
       <TitleText>
@@ -47,7 +53,7 @@ function BestBookCard(props) {
       </TitleText>
 
       {Array.isArray(booksearchList) && booksearchList.map((book) => (
-        <BookListBox key={book.isbn}>
+        <BookListBox key={book.isbn} onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>
           <BookImg src={book.cover} />
           <BookInfoOutDiv>
             <BookTitleText>{book.bookName}</BookTitleText>
