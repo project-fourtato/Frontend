@@ -32,7 +32,7 @@ function BestUserCard() {
   }, []);
   const studyPage = (uid) => {
     // console.log(uid);
-    navigate("/studyPage/"+uid);
+    navigate("/studyPage/" + uid);
   };
   return (
     <Container>
@@ -120,7 +120,11 @@ const UserImgBox = styled.div`
 `;
 
 const UserImg = styled.img`
-  width: 4.2rem;
+  min-width:75px;
+  min-height: 75px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
 `;
 
 const UserInfoOutDiv = styled.div`
