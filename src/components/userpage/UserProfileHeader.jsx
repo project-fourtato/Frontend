@@ -78,6 +78,7 @@ const [userInterest, setUserInterest] = useState([]);
   useEffect(() => {
     if(userData){
     props.setUsermessage(userData.usermessage);
+    props.setNickname(userData.nickname);
     setUserInterest([userData.uinterest1,userData.uinterest2,userData.uinterest3,userData.uinterest4,userData.uinterest5]);
   }
   }, [userData]);
@@ -122,7 +123,7 @@ const [userInterest, setUserInterest] = useState([]);
             <FollowAndFollowerText onClick={followingPage}>팔로잉</FollowAndFollowerText>
             <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
           </FollowAndFollower>
-          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
+          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'writeToUser'} userId={p} nickname={userData.nickname} userimageUrl={userData.useriamgeUrl}/>}
         </>
       ) : (
         <div>Loading...</div>

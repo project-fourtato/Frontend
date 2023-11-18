@@ -4,9 +4,11 @@ import { booksearchList } from "../../data/searchdata";
 import "../../App.css"
 import axios from "axios";
 import Session from 'react-session-api';
+import { useLocation, useNavigate } from "react-router-dom";
 
 function BooksearchList(props) {
   const profile = sessionStorage.getItem("profile");
+  const navigate = useNavigate();
   const p = JSON.parse(profile);
   const [searchValue, setSearch] = useState('');
   const [booksearchList, setBooksearchList] = useState([])
@@ -37,12 +39,34 @@ function BooksearchList(props) {
     }
   }, [searchValue]);
 
+  const goDetailPage = async (uid, isbn) => {
+    try{
+      const url = 'http://localhost:8080/booksState/uid='+uid+'&isbn='+isbn;
+      const response = await axios.get(url);
+      const responseData = response.data;
+      // console.log(responseData);
+      if(responseData ===''){
+        navigate(`/newDetail`, {
+          state: { uid, isbn },
+        });
+      }
+      else {
+        const bid = responseData.userbid;
+        navigate(`/myDetail`, {
+          state: { uid, isbn, bid },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <AllOutDiv>
     <BookListCardContainer>
 
       {booksearchList.map((book) => (
-        <BookListBox key={book.uid}>
+        <BookListBox key={book.uid} onClick={() => goDetailPage(book.uid, book.isbn)}>
           <BookImgBox src={book.cover} />
           <BookInfoOutDiv>  
             <BookTitleText>{book.bookName}</BookTitleText>

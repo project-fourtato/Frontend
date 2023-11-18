@@ -8,7 +8,9 @@ import LoginPage from "../pages/LoginPage";
 import BookRecommendPage from "../pages/BookRecommendPage";
 import BookExchangePage from "../pages/BookExchangePage";
 import MyProfileEditPage from "../pages/MyProfileEditPage";
-import BookDetailPage from "../pages/BookDetailPage";
+import MyBookDetailPage from "../pages/MyBookDetailPage";
+import UserBookDetailPage from "../pages/UserBookDetailPage";
+import NewBookDetailPage from "../pages/NewBookDetailPage";
 import SearchPage from "../pages/SearchPage";
 import FollowerPage from "../pages/FollowerPage";
 import FollowingPage from "../pages/FollowingPage";
@@ -31,7 +33,9 @@ function AppRouter() {
         <Route path="/studypage/:id" element={<StudyPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/userpage" element={<UserPage />} />
-        <Route path="/detail/:id" element={<BookDetailPage />} />
+        <Route path="/myDetail" element={<MyBookDetailPage />} />
+        <Route path="/userDetail" element={<UserBookDetailPage />} />
+        <Route path="/newDetail" element={<NewBookDetailPage />} />
         <Route path="/edit" element={<MyProfileEditPage />} />
         <Route path="/signup/profile" element={<MyProfileEditPage />} />
         <Route path="/recommend" element={<BookRecommendPage />} />

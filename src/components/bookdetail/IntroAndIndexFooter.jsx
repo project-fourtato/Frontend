@@ -6,6 +6,7 @@ import { GrFormNext } from "react-icons/gr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import "../../App.css"
+import { useEffect } from "react";
 
 function IntroAndIndexFooter(props) {
 
@@ -15,7 +16,17 @@ function IntroAndIndexFooter(props) {
   const introContent = props.introContent || "책 소개 내용이 없습니다.";
   const indexContent = props.indexContent || "목차 내용이 없습니다.";
 
+  const [categoryName, setCategoryName] = useState('');
+  const [description, setDescription] = useState('');
+
+  useEffect(()=> {
+    setCategoryName(props.categoryName);
+  }, [props.categoryName]);
   
+  useEffect(()=> {
+    setDescription(props.description);
+  }, [props.description]);
+
   return (
     <IntroBoxContainer>
       <CategoryBox>
@@ -23,8 +34,8 @@ function IntroAndIndexFooter(props) {
           <FontAwesomeIcon icon={faFolder} className="icon-bookdetail-category" />
           카테고리
         </TitleText>
-        <CategoryText>
-          자기계발 {">"} 성공 {">"} 성공학
+        <CategoryText >
+          {categoryName}
         </CategoryText>
       </CategoryBox>
 
@@ -33,16 +44,16 @@ function IntroAndIndexFooter(props) {
           <FontAwesomeIcon icon={faChevronRight} className="icon-bookdetail-modal" />
           책 소개
         </TitleText>
-        {isIntroExpanded && <ContentText>{introContent}</ContentText>}
+        {isIntroExpanded && <ContentText>{description}</ContentText>}
       </IntroBookBox>
-
+{/* 
       <IndexBox>
         <TitleText onClick={() => setIsIndexExpanded(!isIndexExpanded)}>
         <FontAwesomeIcon icon={faChevronRight} className="icon-bookdetail-modal" />
           목차
         </TitleText>
         {isIndexExpanded && <ContentText>{indexContent}</ContentText>}
-      </IndexBox>
+      </IndexBox> */}
     </IntroBoxContainer>
   );
 }

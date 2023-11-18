@@ -9,20 +9,21 @@ const UserBookListCard = (props) => {
   const navigate = useNavigate();
   const [usermessage, setUsermessage] = useState('');
   const [myBookList, setMyBookList] = useState([]);
-
+  const [nickname, setNickname] = useState('');
   useEffect(() => {
     setUsermessage(props.usermessage);
+    setNickname(props.nickname);
     // console.log(usermessage);
-  },[props.usermessage]);
+  },[props.usermessage, props.nickname]);
 
   useEffect(() =>{
     setMyBookList(props.myBookList);
     // console.log(props.myBookList);
   },[props.myBookList]);
 
-  const goDetailPage = (uid, isbn, userbid) => {
-    navigate(`/detail`, {
-      state: { uid, isbn, userbid },
+  const goDetailPage = (uid, isbn, userbid, bookstate, nickname) => {
+    navigate(`/userDetail`, {
+      state: { uid, isbn, userbid, bookstate, nickname },
     });
   };
 
@@ -46,7 +47,9 @@ const UserBookListCard = (props) => {
                   goDetailPage(
                     book.uid,
                     book.isbn,
-                    book.userbid
+                    book.userbid,
+                    book.bookstate,
+                    nickname
                   )
                 }
               />

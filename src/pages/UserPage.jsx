@@ -6,12 +6,14 @@ import axios from "axios";
 
 const UserPage = (props) => {
   const [usermessage, setUsermessage] = useState('');
+  const [nickname, setNickname] = useState('');
   const p = props.UserUid;
 
   const [myBookList, setMyBookList] = useState([]);
   useEffect(() => {
     // console.log(usermessage);
-  },[usermessage]);
+    // console.log(nickname);
+  },[usermessage, nickname]);
   useEffect(() => {
     const UserData = async () => {
       try {
@@ -28,8 +30,8 @@ const UserPage = (props) => {
   return (
     <Container>
       <AllOutDiv>
-        <UserProfileHeader setUsermessage={setUsermessage} UserUid={p}/>
-        <UserBookListCard usermessage={usermessage} myBookList={myBookList}/>
+        <UserProfileHeader setUsermessage={setUsermessage} setNickname={setNickname} UserUid={p}/>
+        <UserBookListCard usermessage={usermessage} nickname={nickname} myBookList={myBookList}/>
       </AllOutDiv>
     </Container>
   );

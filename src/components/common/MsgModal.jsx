@@ -9,10 +9,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faReply, faPaperPlane, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 
-function MsgModal({ setShowMsgModal }) {
+function MsgModal({ setShowMsgModal, ...props }) {
 
     // list, detail, write
-    const [msg, setMsg] = useState('mailbox');
+    const [msg, setMsg] = useState(props.msgName);
     const [beforeMsg, setBeforeMsg] = useState('mailbox');
     const [content, setContent] = useState('');
     const [title, setTitle] = useState('');
@@ -167,6 +167,88 @@ function MsgModal({ setShowMsgModal }) {
             });
         }
     };
+
+    
+    //타인서재 페이지에서 쪽지 전송 구현
+    const [userId, setUserId] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [userimageUrl, setUserimageUrl] = useState('');
+    const [userMsg, setUserMsg] = useState([]);
+
+    useEffect(()=>{
+        const setData = ()=> {
+            setUserId(props.userId);
+            setNickname(props.nickname);
+            setUserimageUrl(props.userimageUrl);
+        };
+        setData();
+        
+    },[props.userId, props.nickname, props.userimageUrl]);
+    
+    useEffect(()=>{        
+        console.log(props.nickname);
+        console.log(nickname);
+        settingCurrentMsg();
+    },[userId, nickname, userimageUrl])
+
+    useEffect(()=>{
+        console.log(userMsg.nickname);
+        console.log(userMsg.userimageUrl);
+    }, [userMsg]);
+
+    const settingCurrentMsg = () => {
+        const messageToSend = {
+            mcontents: content,
+            mtitle: title,
+            recipientuid: userId,
+            senderuid: p.uid,
+            userimageUrl : userimageUrl,
+            nickname : nickname
+        };
+        console.log(messageToSend);
+        setUserMsg(messageToSend);
+    };
+
+
+    const handleSendMsgInUserPage = async () => {
+        try {
+            const messageToSend = {
+                mcontents: content,
+                mtitle: title,
+                recipientuid: userId,
+                senderuid: p.uid,
+                userimageUrl : userimageUrl,
+                nickname : nickname
+            };
+            setCurrentMsg(messageToSend);
+
+            const sendMsgResponse = await axios.post('http://localhost:8080/directmessages/new', messageToSend);
+
+            if (sendMsgResponse.status === 200) {
+                swal({
+                    title: "쪽지 전송 성공!",
+                    text: "쪽지가 전송되었습니다.",
+                    icon: "success",
+                });
+                setShowMsgModal(false);
+            } else {
+                swal({
+                    title: "쪽지 전송 실패",
+                    text: "쪽지를 전송하는 중에 오류가 발생했습니다.",
+                    icon: "error",
+                });
+            }
+        } catch (error) {
+            console.error('쪽지 전송 중 오류가 발생했습니다:', error);
+            swal({
+                title: "쪽지 전송 오류",
+                text: "쪽지를 전송하는 중에 오류가 발생했습니다.",
+                icon: "error",
+            });
+        }
+    };
+
+
 
     const handleDelete = async (id, event) => {
         event.stopPropagation();
@@ -364,6 +446,45 @@ function MsgModal({ setShowMsgModal }) {
                                 <ButtonContainer>
                                     <Button onClick={() => setMsg('mailbox')}>전송 취소</Button>
                                     <Button onClick={handleSendMsg}><StyledSendIcon />쪽지 전송</Button>
+                                </ButtonContainer>
+                            </DetailContainer>
+                        </>
+                    )
+                }
+
+                { // 타인에게 쪽지 작성
+                    msg === 'writeToUser' && userMsg && (
+                        <>
+                            <DetailContainer>
+                                <DetailMsgImgContainer>
+                                    <img src={userMsg.userimageUrl} alt="Message" />
+                                    <MessageDetilTitle><span>{userMsg.nickname}</span> 님에게</MessageDetilTitle>
+                                </DetailMsgImgContainer>
+
+                                <WriteContainer>
+                                    <WriteTitle>제목</WriteTitle>
+                                    <WriteInput
+                                        type="text"
+                                        placeholder="제목을 입력해주세요."
+                                        spellCheck="false"
+                                        value={title} // 상태와 input 값을 연결
+                                        onChange={(e) => setTitle(e.target.value)} // 값이 변경될 때 상태 업데이트
+                                    />
+                                </WriteContainer>
+
+                                <WriteContainer>
+                                    <WriteTitle>내용</WriteTitle>
+                                    <WriteTextarea
+                                        placeholder="내용을 입력해주세요."
+                                        spellCheck="false"
+                                        value={content} // 상태와 textarea 값을 연결
+                                        onChange={(e) => setContent(e.target.value)} // 값이 변경될 때 상태 업데이트
+                                    />
+                                </WriteContainer>
+
+                                <ButtonContainer>
+                                    <Button onClick={() => handleClose()}>전송 취소</Button>
+                                    <Button onClick={handleSendMsgInUserPage}><StyledSendIcon />쪽지 전송</Button>
                                 </ButtonContainer>
                             </DetailContainer>
                         </>
