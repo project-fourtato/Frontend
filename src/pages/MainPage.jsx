@@ -9,6 +9,7 @@ import MyPersonListCard from "../components/main/MyPersonListCard";
 import axios from "axios";
 import "../../src/App.css";
 import Session from 'react-session-api';
+import { useLocation, useNavigate } from "react-router-dom";
 
 function MainPage(props) {
   const profile = sessionStorage.getItem("profile");
@@ -26,11 +27,10 @@ function MainPage(props) {
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);
       } catch(error) {
-        console.log(error)
+        sessionStorage.removeItem("profile");
       }
     }) ();
   }, [nickname]);
-
 
 
   console.log('isLogin',isLogin)

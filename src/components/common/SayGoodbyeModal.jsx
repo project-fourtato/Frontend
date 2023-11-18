@@ -24,45 +24,59 @@ function SayGoodbyeModal({ setShowModal, ...props }) {
       setData();
     }, [props.userId]);
   
-    const handleGoodbye = () => {
-      const apiUrl = `http://localhost:8080/profile/`+userIdObject+`/delete`;
-        console.log(apiUrl);
-      // 프로필 삭제 요청
-      axios
-        .post(apiUrl)
-        .then((response) => {
-          // 성공 응답 처리
-          swal({
-            title: response.Object,
+    // const handleGoodbye = async () => {
+    //   const apiUrl = `http://localhost:8080/profile/`+userIdObject+`/delete`;
+    //   console.log(apiUrl);
+    //   // 프로필 삭제 요청
+    //   const response = await axios
+    //     .post(apiUrl)
+    //     .then((response) => {
+    //       // 성공 응답 처리
+    //       swal({
+    //         title: response.Object,
+    //         icon: "success",
+    //         buttons: "확인",
+    //       });        
+    //     })
+    //     .catch((error) => {
+    //       // 프로필 삭제 요청 중 오류 처리
+
+    //     });
+
+        
+    // };
+
+    const handleGoodbye = async () => {
+      try {
+      const url = `http://localhost:8080/profile/`+userIdObject+`/delete`;
+      const response = await axios.post(url);
+        const responseData = response.data;
+        console.log(responseData);
+        if(responseData==="Profile and associated data deleted successfully"){
+            swal({
+            title: "탈퇴되었습니다",
+            text: "지금까지 BOOKER를 이용해주셔서 감사합니다.",
             icon: "success",
             buttons: "확인",
           });
-  
-          
-          // 홈페이지로 이동
-          
-          setCheck(true);
-
-        })
-        .catch((error) => {
-          // 프로필 삭제 요청 중 오류 처리
-          console.error("프로필 삭제 중 오류가 발생했습니다:", error);
+          setShowModal(false);
+          setLoginState({isLogin: false});
+          console.log("isLogin false");
+          navigate("/");
+        }
+        else {
+          console.log("프로필 삭제 중 오류가 발생했습니다:");
           swal({
             title: "오류",
             text: "프로필 삭제 중에 오류가 발생했습니다. 나중에 다시 시도해주세요.",
             icon: "error",
             buttons: "확인",
           });
-        });
+        }
+      } catch(error) {
+        console.log(error);
+      }
     };
-  
-    useEffect(()=>{
-        // 세션 삭제
-        setLoginState({isLogin: false});
-        console.log("isLogin false");
-        navigate("/");
-        // sessionStorage.removeItem("profile");
-      },[check]);
 
     const handleClose = () => {
       setShowModal(false);
