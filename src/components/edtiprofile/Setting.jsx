@@ -27,11 +27,9 @@ function Setting(props) {
   const p = JSON.parse(profileSession);
 
   const toggleTagSelection = (tag) => {
-    console.log("tag: " + tag);
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter(t => t !== tag));
     } else if (selectedTags.length < maxSelectedTags) {
-      console.log("그럼 set은 되는거지?");
       setSelectedTags([...selectedTags, tag]);
     } else {
       swal({
@@ -109,10 +107,6 @@ useEffect(() => {
     try {
       const url = "http://localhost:8080/profile/find/interests/" + p.uid;
       const response = await axios.get(url);
-      // let temp = response.data;
-      // const cleanedData = temp.jsonData.filter(item => item !== "null" && item !== "undefined");
-      // Object.values(cleanedData);
-      // console.log(cleanedData);
       const responseData = JSON.parse(response.request.responseText);
       const temp = Object.values(responseData);
       const filteredTemp = temp.filter(item => item !== null);

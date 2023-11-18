@@ -92,9 +92,9 @@ function NickName(props) {
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
+      setImageClick(1);
     }
 
-    setImageClick(1);
     const formData = new FormData();
     formData.append('file', file);
     props.setImage(formData);
