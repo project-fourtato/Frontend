@@ -53,7 +53,9 @@ const UserBookDetailPage = (props) => {
       BookData();
     }, []);
 
-
+    useEffect(()=>{
+      // console.log(nickname);
+    }, [nickname]);
 
   return (
     <BookDetailContainer>

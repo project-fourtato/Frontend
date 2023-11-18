@@ -12,6 +12,7 @@ const UserPage = (props) => {
   const [myBookList, setMyBookList] = useState([]);
   useEffect(() => {
     // console.log(usermessage);
+    // console.log(nickname);
   },[usermessage, nickname]);
   useEffect(() => {
     const UserData = async () => {

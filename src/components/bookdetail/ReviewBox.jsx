@@ -12,6 +12,9 @@ function ReviewBox(props) {
   const userbid = props.userbid;
   const type = props.type; //user인지 my인지 new인지
   const nickname = props.nickname;
+  useEffect(()=>{
+    // console.log(props.nickname);
+  }, [nickname]);
   const journalAdd = () => {
     if (type == 'user') {
       return '';
