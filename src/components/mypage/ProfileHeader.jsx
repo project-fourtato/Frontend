@@ -113,7 +113,7 @@ function ProfileHeader(props) {
             icon={faPaperPlane}
             className="icon-mypage-paper-plane"
           />
-          쪽지 보내기
+          쪽지 목록
         </SendMsgButton>
       </div>
     </ProfileSection>
@@ -130,7 +130,7 @@ function ProfileHeader(props) {
                     }}>팔로잉</FollowAndFollowerText>
         <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
       </FollowAndFollower>
-      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
+      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'mailbox'}/>}
     </>
   );
 }
