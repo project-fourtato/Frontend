@@ -150,10 +150,11 @@ const Tagbox = styled.p`
   background: #fff;
   text-align: center;
   padding: 10px 10px;
-  width: 70px;
+  width: 3.5rem;
   color: #000;
-  font-size: 15px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 700;
   margin-right: 10px;
+  margin-top: 3px;
 `;
