@@ -17,6 +17,7 @@ function BookListCard(props) {
   
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
+  const navigate = useNavigate();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeDropdownId, setActiveDropdownId] = useState(null);
@@ -67,7 +68,7 @@ function BookListCard(props) {
   
     const navigate = useNavigate();
     const studyPage = (uid) => {
-      console.log(uid);
+      // console.log(uid);
       navigate("/studyPage/"+uid);
     };
     
@@ -104,6 +105,11 @@ function BookListCard(props) {
     }
   };
   
+  const goDetailPage = (uid, isbn, userbid) => {
+    navigate(`/myDetail`, {
+      state: { uid, isbn, userbid },
+    });
+  };
   return (
     <CardContainer>
       <MainTitleContainer>
@@ -112,11 +118,11 @@ function BookListCard(props) {
       </MainTitleContainer>  
       {bookListResponse.map((book) => (
         <BookListContainer key={book.uid}>
-          <BookImage src={book.cover} alt="bookimg" />
+          <BookImage src={book.cover} alt="bookimg" onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}/>
           <BookDetailContainer>
             <BookListContent>
-              <ContentTitleText>{book.title}</ContentTitleText>
-              <ContentText>{book.author}{book.publisher}</ContentText>
+              <ContentTitleText onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>{book.title}</ContentTitleText>
+              <ContentText onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>{book.author} |{book.publisher}</ContentText>
               <SubBtnBox>
                 {/* DropDownApp 구성 요소를 사용자 프로필에 통합 */}
                 <DropDownApp profiles={book.profile} />
@@ -160,6 +166,10 @@ const BookListContainer = styled.div`
   display: flex;
   margin-bottom: 25px;
   align-items: start;
+  &:hover {
+    border-radius: 15px;
+    background: #F8F8F8;
+  }
 `;
 
 const BookImage = styled.img`
@@ -167,6 +177,7 @@ const BookImage = styled.img`
   height: auto;
   flex-shrink: 0;
   border-radius: 2px;
+  cursor : pointer;
 `;
 
 const BookListContent = styled.div`
@@ -182,6 +193,7 @@ const ContentTitleText = styled.p`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
 `;
 
 const ContentText = styled.p`
@@ -191,6 +203,7 @@ const ContentText = styled.p`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
 `;
 
 const SubBtnBox = styled.div`

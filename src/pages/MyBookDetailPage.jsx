@@ -99,7 +99,7 @@ const MyBookDetailPage = (props) => {
             // console.log(url);
             navigate("/mypage");
           } catch(error) {
-            console.log(error);
+            // console.log(error);
           }
         }) ();
           swal({
@@ -121,6 +121,8 @@ const MyBookDetailPage = (props) => {
     } 
   };
   const handleOption = async (option) => {
+    // console.log("들어오남");
+    // console.log(option);
     try{
       const url = 'http://localhost:8080/journals/bookstateUpdate/uid='+uid+'&isbn='+isbn;
       const response = await axios.put(url, {
@@ -131,13 +133,15 @@ const MyBookDetailPage = (props) => {
       // console.log(responseData);
       if(responseData=="bookstate update success"){
         setCount(count+1);
+        // console.log("count가 잘 되나?");
         // console.log(count);
       }
     } catch (error) {
       console.log(error);
     }};
+    useEffect(()=>{
 
-
+    }, [selectedOption]);
 
   return (
     <BookDetailContainer>

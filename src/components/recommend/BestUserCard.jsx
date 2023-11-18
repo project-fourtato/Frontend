@@ -3,8 +3,10 @@ import axios from "axios";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 function BestUserCard() {
+  const navigate = useNavigate();
   // 프로필 정보는 세션 스토리지에서 가져오기
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
@@ -14,13 +16,13 @@ function BestUserCard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('p.uid:', p.uid);
+        // console.log('p.uid:', p.uid);
         const url = 'http://localhost:8080/profile/interests/' + p.uid;
         const response = await axios.get(url);
-        console.log(response);
+        // console.log(response);
         setUsersearchList(response.data.data);
-        console.log('호잇호잇');
-        console.log(usersearchList);
+        // console.log('호잇호잇');
+        // console.log(usersearchList);
       } catch (error) {
         console.error(error);
       }
@@ -28,7 +30,10 @@ function BestUserCard() {
 
     fetchData();
   }, []);
-
+  const studyPage = (uid) => {
+    // console.log(uid);
+    navigate("/studyPage/"+uid);
+  };
   return (
     <Container>
       <TitleText>
@@ -38,7 +43,7 @@ function BestUserCard() {
 
       {Array.isArray(usersearchList) && usersearchList.map((user) => {
         return (
-          <UserListBox key={user.uid}>
+          <UserListBox key={user.uid} onClick={() => studyPage(user.uid)}>
             <UserImgBox>
               <UserImg src={user.useriamgeUrl} />
             </UserImgBox>

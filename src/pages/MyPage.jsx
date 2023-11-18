@@ -8,6 +8,7 @@ import axios from "axios";
 
 const MyPage = (props) => {
   const [usermessage, setUsermessage] = useState('');
+  const [nickname, setNickname] = useState('');
   const pro = sessionStorage.getItem("profile");
   const p = JSON.parse(pro); //session uid 가져오기
   const [myBookList, setMyBookList] = useState([]);

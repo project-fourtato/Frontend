@@ -13,9 +13,9 @@ function ExchangBookCard(props) {
        setLibraryList(props.msgList); 
        setSelectedRegion(props.region);
        setSelectedCity(props.city);
-       console.log("확인이..");
-       console.log(region);
-       console.log(libraryList);
+      //  console.log("확인이..");
+      //  console.log(region);
+      //  console.log(libraryList);
        }, [props.msgList]);
 
   const render = (status) => {

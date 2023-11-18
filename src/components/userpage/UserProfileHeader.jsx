@@ -28,7 +28,7 @@ const UserProfileHeader = (props) => {
     const UserData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/profile/`+p);
-        console.log(response);
+        // console.log(response);
         const data = response.data;
         setUserData(data);
       } catch (error) {
@@ -78,6 +78,7 @@ const [userInterest, setUserInterest] = useState([]);
   useEffect(() => {
     if(userData){
     props.setUsermessage(userData.usermessage);
+    props.setNickname(userData.nickname);
     setUserInterest([userData.uinterest1,userData.uinterest2,userData.uinterest3,userData.uinterest4,userData.uinterest5]);
   }
   }, [userData]);
