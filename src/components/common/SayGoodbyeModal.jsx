@@ -203,8 +203,8 @@ const ButtonContainer = styled.div`
 const RemoveButton = styled.button`
 border-radius: 8px;
 border: 1px solid #CACACA;
-background: #DBE8D9;
-color: #000;
+background: #5f749f;
+color: #fff;
 font-family: Inter;
 font-style: normal;
 font-weight: 600;
@@ -214,7 +214,7 @@ height: 50px;
 font-size: 18px;
 cursor: pointer;
 &:hover {
-    background: #344a39;
-    color: #fff;
+    background: #fff;
+    color: #5f749f;
   }
 `;

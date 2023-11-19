@@ -74,7 +74,7 @@ function BookListCard(props) {
     return (
       <div>
         <DropdownBox className="app" onClick={() => hasProfiles && setDropdownVisibility(!dropdownVisibility)}>
-          {hasProfiles ? (dropdownVisibility ? '나와 같이 읽는 사람' : '나와 같이 읽는 사람') : '나와 같이 읽는 사람 없음'}
+          {hasProfiles ? (dropdownVisibility ? '나와 같이 읽는 사람' : '나와 같이 읽는 사람') : '같이 읽는 사람 없음 '}
           {hasProfiles && (dropdownVisibility ? (
             <FontAwesomeIcon className="icon-dropdown" icon={faCaretUp} />
           ) : (
