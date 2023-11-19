@@ -42,7 +42,7 @@ const UserPage = (props) => {
   return (
     <Container>
       <AllOutDiv>
-        <UserProfileHeader setUsermessage={setUsermessage} setNickname={setNickname} UserUid={p}/>
+        <UserProfileHeader usermessage={usermessage} setUsermessage={setUsermessage} setNickname={setNickname} UserUid={p}/>
         <UserBookListCard usermessage={usermessage} nickname={nickname} myBookList={myBookList}/>
       </AllOutDiv>
     </Container>
