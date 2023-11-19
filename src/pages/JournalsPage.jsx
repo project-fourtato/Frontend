@@ -7,10 +7,8 @@ import ImageUploadCard from "../components/journals/ImageUploadCard";
 function JournalsUploadPage(props) {
     return (
         <Container>
-            <ImageUploadCard></ImageUploadCard>
             <JournalContentCard></JournalContentCard>
         </Container>
-
     )
 }
 
