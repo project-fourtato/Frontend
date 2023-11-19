@@ -11,7 +11,7 @@ function DeclarationPage(props) {
             swal("경고", "신고 사유를 입력해주세요.", "warning");
             return;
         }
-        
+
         if (memo.length > 800) {
             swal("경고", "신고 내용은 800자를 초과할 수 없습니다.", "warning");
             return;
@@ -30,11 +30,11 @@ function DeclarationPage(props) {
     return (
         <Container>
             <Title>신고하기</Title>
-            <Textarea 
+            <Textarea
                 value={memo}
                 onChange={e => setMemo(e.target.value)}
                 placeholder="신고 사유를 입력하세요."
-                />
+            />
             <SubmitButton onClick={handleSubmit}>신고 제출</SubmitButton>
         </Container>
     );
@@ -54,8 +54,9 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-    font-size: 24px;
+    font-size: 25px;
     font-weight: bold;
+    margin-left: 7px;
     margin-bottom: 20px;
     margin-top: 20px;
 `;
@@ -66,6 +67,8 @@ const Textarea = styled.textarea`
     box-sizing: border-box;
     height: 300px;
     padding: 10px;
+    font-size: 14px;
+    font-style: normal;
     margin-top: 8px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
@@ -73,16 +76,22 @@ const Textarea = styled.textarea`
 `;
 
 const SubmitButton = styled.button`
+    color: #fff;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 70%;
+    letter-spacing: -0.17px;
     display: block;
     width: 100%;
     padding: 20px;
     margin-top: 20px;
-    background-color: #344a39;
+    background-color: #5f749f;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
     &:hover {
-        background-color: #344a39;
+        background-color: #4e688a;
     }
 `;
