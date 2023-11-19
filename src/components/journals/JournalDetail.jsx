@@ -247,13 +247,13 @@ const JournalTitle = styled.div`
     font-weight: bold;
     font-size: 22px;
     margin-bottom: 10px;
-    overflow: auto;
+    overflow: hidden;
 `;
 const JournalContent = styled.div`
     font-weight: bold;
     font-size: 22px;
     margin-bottom: 10px;
-    overflow: auto;
+    overflow: hidden;
 `;
 
 const ContentButtonOutDiv = styled.div`
