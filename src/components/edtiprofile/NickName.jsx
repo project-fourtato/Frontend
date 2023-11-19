@@ -151,8 +151,8 @@ function NickName(props) {
         <Input
           type="text"
           placeholder="한줄소개를 입력해 주세요!"
-          value={props.userMessage}
           onChange={handleDescriptionChange}
+          value={props.userMessage}
         />
       </div>
     </Container>

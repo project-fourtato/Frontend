@@ -19,6 +19,7 @@ import DeclarationPage from "../pages/DeclarationPage";
 import JournalsUploadPage from "../pages/JournalsPage";
 import SearchListPage from "../pages/SearchListPage";
 import StudyPage from "../pages/StudyPage";
+import JournalDetail from "../components/journals/JournalDetail";
 
 function AppRouter() {
   return (
@@ -40,9 +41,11 @@ function AppRouter() {
         <Route path="/signup/profile" element={<MyProfileEditPage />} />
         <Route path="/recommend" element={<BookRecommendPage />} />
         <Route path="/journals" element={<JournalsUploadPage />} />
+        <Route path="/journals/edit" element={<JournalsUploadPage />} />
         <Route path="/exchange/:id" element={<BookExchangePage />} />
         <Route path="/declaration" element={<DeclarationPage/>} />
         <Route path="/exchange" element={<SearchListPage/>} />
+        <Route path="/journals/:jid" element={<JournalDetail />} />
       </Route>
     </Routes>
   );

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { reviewList } from "../../data/reviewpage";
+import { useNavigate } from "react-router-dom";
 import owlImg from "../../assets/owl.png"
 import axios from "axios";
 import "../../App.css"
@@ -12,14 +13,24 @@ function ReviewBox(props) {
   const userbid = props.userbid;
   const type = props.type; //user인지 my인지 new인지
   const nickname = props.nickname;
+  const navigate = useNavigate();
+
+  // 현재 URL에서 경로 추출
+  const currentPath = window.location.pathname;
+  // 예시: 경로에서 마지막 부분 추출 (마지막 슬래시 이후의 부분)
+  const lastSegment = currentPath.substring(currentPath.lastIndexOf('/') + 1); //유저 누르면 여기 값 넣어줘서 확인
+
   useEffect(()=>{
     // console.log(props.nickname);
   }, [nickname]);
+  const moveJournalAdd = () => {
+    navigate("/journals", { state : {userbid} });
+  }
   const journalAdd = () => {
     if (type == 'user') {
       return '';
     } else if(type == 'my'){
-      return <JournalAddButton>독서록 추가</JournalAddButton>;
+      return <JournalAddButton onClick={moveJournalAdd}>독서록 추가</JournalAddButton>;
     } else {
       return '';
     }
@@ -49,6 +60,9 @@ function ReviewBox(props) {
     JournalsData();
     }
   }, []);
+  const handleMoveJournalDetail = (jid) => {
+    navigate("/journals/" + jid, { state : {jid, lastSegment} });
+  }
   return (
     <ReviewBoxContainer>
       <ReviewTitleText><FontAwesomeIcon icon={faPenToSquare} className="icon-review-box" />{nickname} 님이 남긴 감상평</ReviewTitleText>
@@ -56,7 +70,7 @@ function ReviewBox(props) {
         {textAdd()}
       {journalsData && journalsData.map((journal) => {
         return (
-          <ReviewBoxOutDiv>
+          <ReviewBoxOutDiv onClick={() => handleMoveJournalDetail(journal.jid)}>
             <JournalTitleText>{journal.ptitle}</JournalTitleText>
             <JournalDateText>{journal.pdatetime.split("T")[0]}</JournalDateText>
           </ReviewBoxOutDiv>

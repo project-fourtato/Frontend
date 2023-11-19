@@ -83,18 +83,16 @@ const handleSuccess = () => {
         posts = response.data;
         console.log(response.data.data);
         if (posts.data === "Register login Success") {
-          navigate("/login");
+          swal({
+            title: "회원가입 성공!",
+            text: "회원가입이 완료되었습니다.",
+            icon: "success",
+            buttons: "확인",
+          }).then(() => {
+            navigate("/login");
+            setIsLogin({ isLogin: true });
+          })
         }
-
-        swal({
-          title: "회원가입 성공!",
-          text: "회원가입이 완료되었습니다.",
-          icon: "success",
-          buttons: "확인",
-        }).then(() => {
-          navigate("/login");
-          setIsLogin({ isLogin: true });
-        })
       } catch (error) {
         console.log(error);
       }
