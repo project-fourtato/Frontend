@@ -13,7 +13,6 @@ import Session from 'react-session-api';
 
 
 function SignInCard(props) {
-
   //api
   let posts = "hello";
   const [idValue, setId] = useState('');

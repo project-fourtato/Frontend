@@ -13,7 +13,6 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
 
 function Setting(props) {
-
   let posts = "hello";
   const [profile, setProfile] = useRecoilState(profileState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);

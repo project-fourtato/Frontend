@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from "react";
 import backgoundimg from "../assets/booker-main-v3.gif";
 import { styled, createGlobalStyle } from "styled-components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../recoil/atom";
 import userprofile from "../assets/userprofile.png";
 import BookListCard from "../components/main/BookListCard";
@@ -18,6 +18,7 @@ function MainPage(props) {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [nickname, setNickname] = useState('');
   const [useriamgeUrl, setUseriamgeUrl] = useState('');
+  const setLoginState = useSetRecoilState(loginState);
 
   useEffect(() => {
     (async() => {
@@ -26,6 +27,12 @@ function MainPage(props) {
         const response = await axios.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);
+        const checkForSession = () => {
+          if(p) {
+            setLoginState({isLogin: true});
+          }
+        };
+        checkForSession();
       } catch(error) {
         sessionStorage.removeItem("profile");
       }

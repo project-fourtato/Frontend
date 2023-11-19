@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import {styled, createGlobalStyle} from "styled-components";
 import Search from "./Search";
 import logo from "../../assets/14.png";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState, profileState } from "../../recoil/atom";
 import swal from "sweetalert";
 import MsgModal from "./MsgModal";
@@ -14,8 +14,21 @@ import { faComment, faAddressCard, faBell } from "@fortawesome/free-regular-svg-
 import "../../../src/App.css";
 
 const Header = () => {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
+
+  
+  const setLoginState = useSetRecoilState(loginState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const [profile, setProfile] = useRecoilState(profileState);
+  const checkForSession = () => {
+    if(p) {
+      setLoginState({isLogin: true});
+    }
+  };
+
+  useEffect(()=>{
+    checkForSession();
+  },[])
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [showMsgModal, setShowMsgModal] = useState(false);
