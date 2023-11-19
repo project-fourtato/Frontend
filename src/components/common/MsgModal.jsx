@@ -342,7 +342,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
 
                                         <BottomContainer>
                                             <MessageContents>{msg.mtitle}</MessageContents>
-                                            <MessageDate>{msg.mdate}</MessageDate>
+                                            <MessageDate>{msg.mdate.split('T')[0]} &nbsp; {msg.mdate.split('T')[1]}</MessageDate>
                                         </BottomContainer>
                                     </MessageContentsContainer>
                                 </MessageItem>
@@ -371,7 +371,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
 
                                     <BottomContainer>
                                         <MessageContents>{msgsend.mtitle}</MessageContents>
-                                        <MessageDate>{msgsend.mdate}</MessageDate>
+                                        <MessageDate>{msgsend.mdate.split('T')[0]} &nbsp; {msgsend.mdate.split('T')[1]}</MessageDate>
                                     </BottomContainer>
                                 </MessageContentsContainer>
                             </MessageItem>

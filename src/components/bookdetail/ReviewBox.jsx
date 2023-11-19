@@ -131,7 +131,11 @@ const JournalListOutDiv = styled.div`
 const JournalTitleText = styled.div`
   font-size: 18px;
   font-weight: bold;
-`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 300px;
+`;
 
 const JournalDateText = styled.p`
   color: #000;
