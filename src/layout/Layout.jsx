@@ -16,10 +16,11 @@ const Layout = () => {
 export default Layout;
 
 const Pooter = styled.p `
-  text-align: center;
-  font-weight: bold;
-  padding-bottom: 10px;
-  position: absolute;
-  bottom: 0;
-  left: 200;
+text-align: right;
+font-weight: bold;
+padding-bottom: 10px;
+position: fixed;
+bottom: 0;
+right: 15px;
+width: 100%;
 `
