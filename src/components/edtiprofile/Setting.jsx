@@ -327,6 +327,7 @@ const RemoveContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 50px;
+  font-size: 15px;
   >p{
     color: #000;
 cursor: pointer;  

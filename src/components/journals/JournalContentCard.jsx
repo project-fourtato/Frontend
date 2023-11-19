@@ -75,14 +75,14 @@ function JournalContentCard(props) {
 
     const handleDataUpload = () => {
         (async () => {
-            if (title == '' || contents == '') {
+            if (title === '' || contents === '') {
                 swal({
                     title: "독서록 등록 실패",
                     text: "타이틀과 내용을 전부 채워주세요!",
-                    icon: "fail",
+                    icon: "error",
                     buttons: "확인",
                 }).then(() => {
-                    navigate("/journals");
+                    
                 })
             } else {
                 try {
@@ -402,6 +402,7 @@ const JournalContent = styled.div`
 `;
 
 const JournalContentInput = styled.textarea`
+    max-width:97%;
     width: 97%;
     height: 16.5rem;
     border: 1px solid #CACACA;

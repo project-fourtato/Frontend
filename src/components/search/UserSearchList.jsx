@@ -106,7 +106,6 @@ const UserSpeechBox = styled.div`
   background: #5f749f;
   border-radius: 1em;
   padding: 1em 5em;
-  height: 0.8rem;
   &::after {
     content: "";
     position: absolute;

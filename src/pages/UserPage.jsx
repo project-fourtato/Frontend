@@ -24,17 +24,10 @@ const UserPage = (props) => {
         // console.log(response);
         const data = response.data.data;
         console.log(data);
-        if(data.length === 0) {
-          throw new Error("is Null");
-        }
 
         setMyBookList(data);
       } catch (error) {
         console.error("Error fetching user data", error);
-        swal("페이지 이동 실패", "유효하지 않은 값입니다.", "error")
-          .then(() => {
-            navigate("/");
-          })
       }
     };
     UserData();

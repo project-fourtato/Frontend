@@ -48,7 +48,9 @@ const UserBookListCard = (props) => {
                   goDetailPage(
                     book.uid,
                     book.isbn,
-                    book.userbid
+                    book.userbid,
+                    book.bookstate,
+                    nickname
                   )
                 }
               />

@@ -124,8 +124,15 @@ const UserProfileHeader = (props) => {
         // console.log(response);
         const data = response.data;
         setUserData(data);
+        if(data.length === 0) {
+          throw new Error("is Null");
+        }
       } catch (error) {
         console.error("Error fetching user data", error);
+        swal("페이지 이동 실패", "유효하지 않은 값입니다.", "error")
+          .then(() => {
+            navigate("/");
+          })
       }
     };
 
