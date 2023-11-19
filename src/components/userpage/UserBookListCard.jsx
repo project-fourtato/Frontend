@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faStore, faStoreSlash, faBook, faBookOpenReader, faSquareCheck, faHeart } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const UserBookListCard = (props) => {
@@ -14,12 +14,12 @@ const UserBookListCard = (props) => {
     setUsermessage(props.usermessage);
     setNickname(props.nickname);
     // console.log(usermessage);
-  },[props.usermessage, props.nickname]);
+  }, [props.usermessage, props.nickname]);
 
-  useEffect(() =>{
+  useEffect(() => {
     setMyBookList(props.myBookList);
     // console.log(props.myBookList);
-  },[props.myBookList]);
+  }, [props.myBookList]);
 
   const goDetailPage = (uid, isbn, userbid, bookstate, nickname) => {
     navigate(`/userDetail`, {
@@ -35,9 +35,13 @@ const UserBookListCard = (props) => {
           <LeftBoxText>{usermessage}</LeftBoxText>
         </LeftBox>
         {/* 타인 서재에서는 책 추가 버튼이 필요하지 않을 것이므로 숨김 */}
-        </BookListCardHeader>
+      </BookListCardHeader>
+      <TopStatusContainer>
+        <StatusText><FontAwesomeIcon icon={faStore} />  거래 가능</StatusText>
+        <StatusText><FontAwesomeIcon icon={faStoreSlash} /> 거래 불가능</StatusText>
+      </TopStatusContainer>
       {myBookList && myBookList.reduce((chunks, book, index) => {
-        if (index % 4 === 0) chunks.push([]);
+        if (index % 5 === 0) chunks.push([]);
         chunks[chunks.length - 1].push(book);
         return chunks;
       }, []).map((chunk, chunkIndex) => (
@@ -58,15 +62,15 @@ const UserBookListCard = (props) => {
                 <ActionButton
                   completed0={book.bookstate} id='book'
                 >
-                  {(book.bookstate === 0 ? "독서전" :
-                    book.bookstate === 1 ? "관심도서" :
-                    book.bookstate === 2 ? "독서중" :
-                    book.bookstate === 3 ? "독서완료" : null)} 
+                  {(book.bookstate === 0 ? <FontAwesomeIcon icon={faBook} /> :
+                    book.bookstate === 1 ? <FontAwesomeIcon icon={faHeart} /> :
+                      book.bookstate === 2 ? <FontAwesomeIcon icon={faBookOpenReader} /> :
+                        book.bookstate === 3 ? <FontAwesomeIcon icon={faSquareCheck} /> : null)}
                 </ActionButton>
                 <ActionButton
-                  completed1={book.salestate} id='sale' 
+                  completed1={book.salestate} id='sale'
                 >
-                  {book.salestate ===0 ? "거래불가능" : "거래가능"}
+                  {(book.salestate) === 0 ? <FontAwesomeIcon icon={faStoreSlash} /> : <FontAwesomeIcon icon={faStore} />}
                 </ActionButton>
               </BookButtonsContainer>
             </BookItem>
@@ -158,10 +162,11 @@ const BookListBodyContainer = styled.div`
 `;
 
 const BookimgBox = styled.img`
-  width: 95px;
+  border-radius: 10px;
+  width: 100px;
   height: 140px;
-  margin-right: 10px;
   cursor: pointer;
+  margin-left:20px;
 `;
 
 const BookItem = styled.div`
@@ -170,47 +175,63 @@ const BookItem = styled.div`
 
 const BookButtonsContainer = styled.div`
   display: flex;
-  width: 80px;
+  width: 40px;
   flex-direction: column;
-  margin-left: 5px;
-  margin-right: 10px;
 `;
 
 const ActionButton = styled.button`
-  border-radius: 8px;
-  background-color: ${({ completed0,completed1, id }) => {
+  background : rgba(90,90,90,0);
+  font-color: ${({ completed0, completed1, id }) => {
     if (id === 'book') {
-      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+      if (completed0 === 0 || completed0 === 2 || completed0 === 3) {
         return "#fff";
       }
-      else { return "#5f749f";}
+      else { return "#5f749f"; }
     } else {
-      if ( completed1 === 0){
+      if (completed1 === 0) {
         return "#fff";
       }
-      else { return "#5f749f";}
+      else { return "#5f749f"; }
     }
   }};
-  color: ${({ completed0,completed1, id }) => {
+  color: ${({ completed0, completed1, id }) => {
     if (id === 'book') {
-      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+      if (completed0 === 0 || completed0 === 2 || completed0 === 3) {
         return "#5f749f";
       }
-      else { return "#fff";}
+      else { return "#ff7676"; }
     } else {
-      if ( completed1 === 0){
+      if (completed1 === 0) {
         return "#5f749f";
       }
-      else { return "#fff";}
+      else { return "#5f749f"; }
     }
   }};
   cursor: pointer;
   margin-top: 10px;
-  padding: 5px;
-  border: 1px solid #000;
-  font-size: 15px;
+  padding: 0px;
+  margin-left: 5px;
+  width: 30px;
+  border: none;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   transition: background-color 0.3s, color 0.3s;
 
+
+`;
+
+const TopStatusContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+`;
+
+const StatusText = styled.p`
+  font-size: 16px;
+  margin: 0 10px;
+  color: #afafaf;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
 `;
