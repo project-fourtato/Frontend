@@ -22,7 +22,8 @@ function SearchTab(props) {
   const SearchBtnClick = () => { //도서관검색 api 연결
       (async() => {
         try{
-          const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&searchOne='+searchValue;
+          const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
+          const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&searchOne='+stringWithoutSpaces;
           const response = await axios.get(url);
           // console.log(url);
           // console.log(response.data.data);
