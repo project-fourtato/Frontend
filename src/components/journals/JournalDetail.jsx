@@ -174,6 +174,7 @@ const JournalDateilContent = styled.div`
     padding: 20px;
     font-size: 17px;
     height: 16.5rem;
+    overflow: auto;
 `
 
 const JournalDateTimeDiv = styled.div`
