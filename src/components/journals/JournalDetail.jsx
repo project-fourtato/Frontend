@@ -29,6 +29,10 @@ function JournalDetail(props) {
     const segments = currentPath.split('/');
     const lastSegment = segments[1];
 
+    const profileSession = sessionStorage.getItem("profile");
+    const p = JSON.parse(profileSession);
+    let uid = p.uid;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -46,8 +50,30 @@ function JournalDetail(props) {
         navigate(-1);
     };
 
-    const handleDeleteButton = () => {
-        
+    const handleDeleteButton = async () => {
+        (async () => {
+            try {
+                const url = "http://localhost:8080/journals/" + jid + "/delete";
+                
+                const response = await axios.post(url);
+
+                posts = response.data;
+                console.log(response.data);
+
+                if(posts.data === "Delete Books Success") {
+                    swal({
+                        title: "독서록 삭제 완료!",
+                        text: "독서록 삭제가 완료되었습니다.",
+                        icon: "success",
+                        buttons: "확인"
+                    }).then(() => {
+                        navigate(-1, {state : {uid}});
+                    })
+                }
+            } catch(error) {
+                console.log(error);
+            }
+        })();
     }
 
     const handleEditButton = () => {
