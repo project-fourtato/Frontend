@@ -30,12 +30,6 @@ const UserBookListCard = (props) => {
   // dummyMyBookList를 myBookList로 변경
   return (
     <BookListCardContainer>
-      <BookListCardHeader>
-        <LeftBox>
-          <LeftBoxText>{usermessage}</LeftBoxText>
-        </LeftBox>
-        {/* 타인 서재에서는 책 추가 버튼이 필요하지 않을 것이므로 숨김 */}
-      </BookListCardHeader>
       <TopStatusContainer>
         <StatusText><FontAwesomeIcon icon={faStore} />  거래 가능</StatusText>
         <StatusText><FontAwesomeIcon icon={faStoreSlash} /> 거래 불가능</StatusText>
