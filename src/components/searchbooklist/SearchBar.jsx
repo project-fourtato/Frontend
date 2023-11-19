@@ -88,7 +88,7 @@ const SearchBarOutDiv = styled.div`
   width: 550px;
   align-items: center;
   background: #fff;
-  width: 700px;
+  width: 650px;
   height: 3px;
   padding: 22px 15px 22px 25px;
   border-radius: 50px;
@@ -101,6 +101,7 @@ const SearchBarOutDiv = styled.div`
     height: 20px;
     margin-right: 8px;
     color: #142343;
+    cursor: pointer;
   }
   &:hover {
     border: 1px solid #344a39;
