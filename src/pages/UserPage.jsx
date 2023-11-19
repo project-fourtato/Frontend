@@ -3,11 +3,14 @@ import UserBookListCard from "../components/userpage/UserBookListCard";
 import UserProfileHeader from "../components/userpage/UserProfileHeader";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 const UserPage = (props) => {
   const [usermessage, setUsermessage] = useState('');
   const [nickname, setNickname] = useState('');
   const p = props.UserUid;
+  const navigate = useNavigate();
 
   const [myBookList, setMyBookList] = useState([]);
   useEffect(() => {
@@ -21,8 +24,15 @@ const UserPage = (props) => {
         // console.log(response);
         const data = response.data.data;
         setMyBookList(data);
+        // if (!response.ok) {
+        //   throw new Error(`서버 응답 오류: ${response.status}`);
+        // }
       } catch (error) {
         console.error("Error fetching user data", error);
+        swal("페이지 이동 실패", "유효하지 않은 값입니다.", "error")
+          .then(() => {
+            navigate("/");
+          })
       }
     };
     UserData();

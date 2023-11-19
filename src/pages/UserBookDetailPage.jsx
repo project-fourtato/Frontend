@@ -12,11 +12,21 @@ const UserBookDetailPage = (props) => {
   });
   const location = useLocation();
   const navigate = useNavigate();
-  const uid = location.state.uid;
-  const isbn = location.state.isbn;
-  const userbid = location.state.userbid;
-  const bookstate = location.state.bookstate;
-  const nickname = location.state.nickname;
+  let uid = "";
+  let isbn = "";
+  let userbid = "";
+  let bookstate = "";
+  let nickname = "";
+
+  try {
+    uid = location.state.uid;
+    isbn = location.state.isbn;
+    userbid = location.state.userbid;
+    bookstate = location.state.bookstate;
+    nickname = location.state.nickname;
+  } catch(error) {
+    navigate("/error");
+  }
   const [firstPart, setFirstPart] = useState('');
   const [secondPart, setSecondPart] = useState('');
 

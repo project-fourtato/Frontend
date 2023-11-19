@@ -17,7 +17,14 @@ function JournalContentCard(props) {
     const [contents, setContents] = useState();
     const navigate = useNavigate();
     let location = useLocation();
-    const userbid = location.state.userbid;
+    let userbid= "";
+    let jid = "";
+    try {
+        userbid = location.state.userbid;
+        jid = location.state.jid;
+    } catch(error) {
+        navigate("/error");
+    }
 
     const profileSession = sessionStorage.getItem("profile");
     const p = JSON.parse(profileSession);
@@ -112,7 +119,7 @@ function JournalContentCard(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = "http://localhost:8080/journals/" + location.state.jid;
+                const url = "http://localhost:8080/journals/" + jid;
                 const response = await axios.get(url);
                 setJournalResponse(response.data);
             } catch (error) {
@@ -133,7 +140,7 @@ function JournalContentCard(props) {
 
     const handleUpdateJournal = async () => {
         try {
-            const url = "http://localhost:8080/journals/" + location.state.jid + "/edit";
+            const url = "http://localhost:8080/journals/" + jid + "/edit";
             if (title) {
                 image.append("ptitle", title);
             }
@@ -179,7 +186,18 @@ function JournalContentCard(props) {
     }
 
     const handleCancel = () => {
-        navigate(-1);
+        swal({
+            title: "작성된 내용이 사라질 수 있습니다.",
+            text: "그래도 이동하시겠습니까?",
+            icon: "warning",
+            buttons: ["취소", "확인"],
+            dangerMode: true,
+        })
+        .then((willLeave) => {
+            if (willLeave) {
+                navigate(-1);
+            }
+        });
     };
 
     return (
