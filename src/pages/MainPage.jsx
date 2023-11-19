@@ -38,7 +38,7 @@ function MainPage(props) {
     }) ();
   }, [nickname]);
 
-  useEffect(() => {
+    useEffect(() => {
     (async() => {
       try{
         const url = 'http://localhost:8080/profile/'+p.uid;
@@ -48,10 +48,9 @@ function MainPage(props) {
         checkForSession();
       } catch(error) {
         sessionStorage.removeItem("profile");
-        setLoginState({isLogin: false});
       }
     }) ();
-  }, []);
+  }, [nickname]);
 
 
   console.log('isLogin',isLogin)
