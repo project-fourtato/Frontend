@@ -179,7 +179,18 @@ function JournalContentCard(props) {
     }
 
     const handleCancel = () => {
-        navigate(-1);
+        swal({
+            title: "작성된 내용이 사라질 수 있습니다.",
+            text: "그래도 이동하시겠습니까?",
+            icon: "warning",
+            buttons: ["취소", "확인"],
+            dangerMode: true,
+        })
+        .then((willLeave) => {
+            if (willLeave) {
+                navigate(-1);
+            }
+        });
     };
 
     return (
