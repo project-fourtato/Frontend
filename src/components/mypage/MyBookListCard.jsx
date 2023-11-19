@@ -212,9 +212,9 @@ const BookListBodyContainer = styled.div`
 `;
 
 const BookimgBox = styled.img`
-  width: 80px;
+  width: 95px;
   height: 140px;
-  margin-right: 15px;
+  margin-right: 10px;
   cursor: pointer;
 `;
 
@@ -227,7 +227,7 @@ const BookButtonsContainer = styled.div`
   width: 80px;
   flex-direction: column;
   margin-left: 5px;
-  margin-right: 15px;
+  margin-right: 10px;
 `;
 
 const ActionButton = styled.button`
