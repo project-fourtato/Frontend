@@ -5,17 +5,17 @@ import userprofile from "../../assets/userprofile.png";
 import "../../App.css"
 import { useNavigate } from "react-router-dom";
 
-function FollowerCard() {
+function FollowerCard(props) {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
   const [followerList, setFollowerList] = useState([]);
   const navigate = useNavigate();
-
+  const lastSegment = props.lastSegment; //uid
 
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followersList/" + p.uid);
+        const response = await axios.get("http://localhost:8080/follow/followersList/" + lastSegment);
         // console.log(response.data);
         setFollowerList(response.data.data);
       } catch (error) {

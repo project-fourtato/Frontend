@@ -69,12 +69,12 @@ function ProfileHeader(props) {
   }, [userData]);
 
   const followerPage = () => {
-    navigate("/follower");
+    navigate("/follower/"+p.uid);
     setProfile('aa');
   };
 
   const followingPage = () => {
-    navigate("/following");
+    navigate("/following/"+p.uid);
     setProfile('aa');
   };
 

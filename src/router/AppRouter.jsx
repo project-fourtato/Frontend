@@ -30,8 +30,8 @@ function AppRouter() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/follower" element={<FollowerPage />} />
-        <Route path="/following" element={<FollowingPage />} />
+        <Route path="/follower/:id" element={<FollowerPage />} />
+        <Route path="/following/:id" element={<FollowingPage />} />
         <Route path="/studypage/:id" element={<StudyPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/userpage" element={<UserPage />} />

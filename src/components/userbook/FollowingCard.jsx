@@ -5,17 +5,18 @@ import userprofile from "../../assets/userprofile.png";
 import "../../App.css"
 import { useNavigate } from "react-router-dom";
 
-function FollowerCard() {
+function FollowerCard(props) {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
   const [followerList, setFollowerList] = useState([]);
   const navigate = useNavigate();
+  const lastSegment = props.lastSegment; //uid
 
 
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followingList/" + p.uid);
+        const response = await axios.get("http://localhost:8080/follow/followingsList/" + lastSegment);
         // console.log(response.data);
         setFollowerList(response.data.data);
       } catch (error) {
@@ -38,7 +39,7 @@ function FollowerCard() {
         <FollowingBox>팔로잉</FollowingBox>
       </FollowingContainer>
       {followerList.map((follower, index) => (
-        <BookListCardContainer key={index} onClick={() => studyPage(follower.fromUserId)}>
+        <BookListCardContainer key={index} onClick={() => studyPage(follower.toUserId)}>
           <ProfileImage src={follower.userimageUrl || userprofile} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>

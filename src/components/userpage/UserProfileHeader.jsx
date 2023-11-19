@@ -10,14 +10,112 @@ import axios from "axios";
 import { profileState } from "../../recoil/atom";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 
-const UserProfileHeader = (props) => {
+const UserProfileHeader = (props) => { 
   const navigate = useNavigate();
-
+  const pro = sessionStorage.getItem("profile");
+  const pSession = JSON.parse(pro); //session uid 가져오기
+  const p = props.UserUid;
   const [showMsgModal, setShowMsgModal] = useState(false);
 
-  const p = props.UserUid;
+  const [count,setCount] = useState(0);
+  const [FollowButtonText, setFollowButtonText] = useState("");
+
+
+  const handleButtonClick = async () => {
+    if(FollowButtonText === "팔로우취소"){ //팔로우 취소를 한다면
+      swal({
+        title: "팔로우 취소하시겠습니까?",
+        icon: "warning",
+        buttons: ["취소", "확인"]
+      })
+      .then( async (value) => {
+        if(value){
+          try {
+            const url = 'http://localhost:8080/follow/delete?toUserId='+p+'&fromUserId='+ pSession.uid;
+            const response = await axios.post(url);
+            // console.log(response);
+            const responseData = response.data;
+            setCount(count+1);
+          } catch (error) {
+            // console.log(error);
+          }
+        }
+        else {
+          swal({
+              title: "삭제가 취소되었습니다",
+              // text: "삭제가 취소되었습니다.",
+              icon: "error",
+          });
+        }
+        
+      });
+      
+    }
+    else { //팔로우를 한다면
+      swal({
+        title: "팔로우 하시겠습니까?",
+        icon: "warning",
+        buttons: ["취소", "확인"]
+      })
+      .then( async(value) => {
+        if(value){
+          try {
+            const url = 'http://localhost:8080/follow/new?toUserId='+p+'&fromUserId='+ pSession.uid;
+            const response = await axios.post(url);
+            // console.log(response);
+            const responseData = response.data;
+            setCount(count+1);
+          } catch (error) {
+            // console.log(error);
+          }
+        }
+        else {
+          swal({
+              title: "팔로우가 취소되었습니다",
+              // text: "취소되었습니다.",
+              icon: "error",
+          });
+        }
+      
+      });
+    }
+  };
+
+
+
+  //팔로우 유무 조회
+  useEffect(() => {
+    const UserData = async () => {
+      try {
+        // console.log("userdata 제발 ㅗ디라~~");
+        const response = await axios.get(`http://localhost:8080/follow/followCheck/toUserId=`+p+`&fromUserId=`+pSession.uid);
+        // console.log(response);
+        const data = response.data.data;
+        // console.log(data);
+        // console.log(data)
+        if(data === true){
+          setFollowButtonText("팔로우취소");
+        }
+        else{
+          setFollowButtonText("팔로우");
+        }
+      } catch (error) {
+        console.error("팔로우 유무 조회 에러", error);
+      }
+    };
+
+    UserData();
+  }, [count]);
+
+  useEffect(()=>{
+    // console.log("바뀌는 걸 확인해야 해");
+  },[FollowButtonText]);
+
+
+
 
   const [profile, setProfile] = useRecoilState(profileState);
   const [userData, setUserData] = useState(null);
@@ -40,12 +138,12 @@ const UserProfileHeader = (props) => {
   }, []);
 
   const followerPage = () => {
-    navigate("/follower");
+    navigate("/follower/"+p);
     setProfile('aa');
   };
 
   const followingPage = () => {
-    navigate("/following");
+    navigate("/following/"+p);
     setProfile('aa');
   };
 
@@ -72,7 +170,7 @@ const UserProfileHeader = (props) => {
     FollowingData();
     // console.log(followingData);
     // console.log(followerData);
-  }, []);
+  }, [count, p]);
 
 const [userInterest, setUserInterest] = useState([]);
   useEffect(() => {
@@ -114,9 +212,13 @@ const [userInterest, setUserInterest] = useState([]);
                 <FontAwesomeIcon icon={faPaperPlane} className="icon-mypage-paper-plane" />
                 쪽지 보내기
               </SendMsgButton>
-              <FollowButton>
+              <FollowButton
+                onClick={() => {
+                  handleButtonClick();
+                }}
+              >
               <FontAwesomeIcon icon={faUser} className="icon-mypage-paper-plane" />
-                팔로우하기</FollowButton>
+                {FollowButtonText}</FollowButton>
             </div>
           </ProfileSection>
           <FollowAndFollower>
