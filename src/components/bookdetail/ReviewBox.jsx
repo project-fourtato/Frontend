@@ -86,11 +86,30 @@ export default ReviewBox;
 
 const ReviewBoxContainer = styled.div`
   border-radius: 40px;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16), 2px 3px 6px rgba(0, 0, 0, 0.23);
   width: 460px;
   height: 470px;
   padding: 45px 55px;
   background-color: white;
+
+  /* 스크롤바 커스텀 스타일링 */
+  ::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 스크롤바 트랙 배경색 */
+    border-radius: 10px; /* 트랙의 모양을 변경하려면 조정 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #ddd; /* 연한 회색으로 수정 */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #eee; /* 마우스를 올렸을 때 더 연한 회색 */
+  }
 `;
 
 const ReviewTitleText = styled.h3`
