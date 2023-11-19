@@ -77,12 +77,18 @@ function JournalDetail(props) {
 
                 if(posts.data === "Delete Books Success") {
                     swal({
-                        title: "독서록 삭제 완료!",
-                        text: "독서록 삭제가 완료되었습니다.",
-                        icon: "success",
-                        buttons: "확인"
+                        title: "경고",
+                        text: "독서록을 삭제하시겠습니까?",
+                        icon: "warning",
+                        buttons: ["취소", "확인"],
+                        dangerMode: true,
                     }).then(() => {
                         navigate(-1, {state : {uid}});
+                        swal({
+                            title: "삭제되었습니다.",
+                            icon: "success",
+                            buttons: "확인",
+                        });
                     })
                 }
             } catch(error) {

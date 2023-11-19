@@ -68,33 +68,37 @@ function BookListCard(props) {
   
     const navigate = useNavigate();
     const studyPage = (uid) => {
-      // console.log(uid);
       navigate("/studyPage/"+uid);
     };
     
+    const hasProfiles = profiles.length > 0;
+  
     return (
       <div>
-        <div className="app" onClick={() => setDropdownVisibility(!dropdownVisibility)}>
-          {dropdownVisibility ? '나와 같이 읽는 사람' : '나와 같이 읽는 사람'}
-          {dropdownVisibility ? (
+        <DropdownBox className="app" onClick={() => hasProfiles && setDropdownVisibility(!dropdownVisibility)}>
+          {hasProfiles ? (dropdownVisibility ? '나와 같이 읽는 사람' : '나와 같이 읽는 사람') : '나와 같이 읽는 사람 없음'}
+          {hasProfiles && (dropdownVisibility ? (
             <FontAwesomeIcon className="icon-dropdown" icon={faCaretUp} />
           ) : (
             <FontAwesomeIcon className="icon-dropdown" icon={faCaretDown} />
-          )}
-        </div>
-        <Dropdown visibility={dropdownVisibility}>
-          <ul>
-            {profiles.map((user, index) => (
-              <li key={index} onClick={() => studyPage(user.uid)}>
-                <img src={user.useriamgeUrl} alt="user" />
-                <p>{user.nickname}</p>
-              </li>
-            ))}
-          </ul>
-        </Dropdown>
+          ))}
+        </DropdownBox>
+        {hasProfiles && (
+          <Dropdown visibility={dropdownVisibility}>
+            <ul>
+              {profiles.map((user, index) => (
+                <li key={index} onClick={() => studyPage(user.uid)}>
+                  <img src={user.useriamgeUrl} alt="user" />
+                  <p>{user.nickname}</p>
+                </li>
+              ))}
+            </ul>
+          </Dropdown>
+        )}
       </div>
     );
   };
+  
   
   
   const toggleDropdown = (id) => {
@@ -177,14 +181,19 @@ const BookImage = styled.img`
   height: auto;
   flex-shrink: 0;
   border-radius: 2px;
-  cursor : pointer;
+  cursor: pointer;
+  margin-bottom: 15px;
+  margin-top: 15px; 
+  margin-left: 15px;
 `;
+
 
 const BookListContent = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 22px;
-  margin-top: 4px;
+  margin-top: 15px;
+  margin-right: 15px;
 `;
 
 const ContentTitleText = styled.p`
@@ -273,4 +282,8 @@ const BookDetailContainer = styled.div`
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  `;
+
+  const DropdownBox = styled.div`
+    margin-bottom: 5px;
   `;

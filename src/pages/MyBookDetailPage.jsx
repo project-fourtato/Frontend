@@ -3,8 +3,11 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import IntroAndIndexFooter from "../components/bookdetail/IntroAndIndexFooter";
 import ReviewBox from "../components/bookdetail/ReviewBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faStore, faStoreSlash, faBook, faBookOpenReader, faSquareCheck, faHeart, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import swal from 'sweetalert';
+import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const MyBookDetailPage = (props) => {
   const [bookData, setBookData] = useState({
@@ -72,7 +75,7 @@ const MyBookDetailPage = (props) => {
         const option = data.bookState;
         // console.log("잘받아와지나~");
         // console.log(option);
-        if (option === 0) { setSelectedOption("읽기 전"); }
+        if (option === 0) {setSelectedOption("읽기 전");}
         else if (option === 1) { setSelectedOption("읽고 싶은 책");}
         else if (option === 2) {setSelectedOption("읽는 중"); }
         else if (option === 3) {setSelectedOption("독서 완료"); }
@@ -168,19 +171,19 @@ const MyBookDetailPage = (props) => {
                 {isDropdownVisible && (
                   <DropdownMenu>
                     <DropdownItem onClick={() => handleDropdownItemClick(0)}>
-                      읽기 전
+                    <FontAwesomeIcon icon={faBook} />  읽기 전
                     </DropdownItem>
                     <DropdownItem onClick={() => handleDropdownItemClick(1)}>
-                      읽고 싶은 책
+                    <FontAwesomeIcon icon={faHeart} />  읽고 싶은 책
                     </DropdownItem>
                     <DropdownItem onClick={() => handleDropdownItemClick(2)}>
-                      읽는 중
+                    <FontAwesomeIcon icon={faBookOpenReader} />  읽는 중
                     </DropdownItem>
                     <DropdownItem onClick={() => handleDropdownItemClick(3)}>
-                      독서 완료
+                    <FontAwesomeIcon icon={faSquareCheck} />  독서 완료
                     </DropdownItem>
                     <DropdownItem onClick={() => handleDropdownItemClick("책 삭제하기")}>
-                      책 삭제하기
+                    <FontAwesomeIcon icon={faTrashCan} />  책 삭제하기
                     </DropdownItem>
                   </DropdownMenu>
                 )}
