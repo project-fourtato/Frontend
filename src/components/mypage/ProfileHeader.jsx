@@ -113,7 +113,7 @@ function ProfileHeader(props) {
             icon={faPaperPlane}
             className="icon-mypage-paper-plane"
           />
-          쪽지 보내기
+          쪽지 목록
         </SendMsgButton>
       </div>
     </ProfileSection>
@@ -130,7 +130,7 @@ function ProfileHeader(props) {
                     }}>팔로잉</FollowAndFollowerText>
         <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
       </FollowAndFollower>
-      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} />}
+      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'mailbox'}/>}
     </>
   );
 }
@@ -193,7 +193,7 @@ const MyTag = styled.p`
   background: #fff;
   text-align: center;
   padding: 10px 10px;
-  width: 55px;
+  width: 4rem;
   height: 8px;
   color: #000;
   font-size: 12px;
@@ -239,6 +239,10 @@ const FollowAndFollowerText = styled.h5`
   line-height: 109.867%;
   letter-spacing: -0.14px;
   margin-right: 8px;
+  cursor : pointer;
+  &:hover{
+    color: #5f749f;
+  }
 `;
 
 const Dot = styled.p`

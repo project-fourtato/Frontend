@@ -190,7 +190,7 @@ const MyTag = styled.p`
   background: #fff;
   text-align: center;
   padding: 10px 10px;
-  width: 55px;
+  width: 4rem;
   height: 8px;
   color: #000;
   font-size: 12px;
@@ -237,6 +237,10 @@ const FollowAndFollowerText = styled.h5`
   line-height: 109.867%; /* 30.763px */
   letter-spacing: -0.14px;
   margin-right: 8px;
+  cursor : pointer;
+  &:hover{
+    color: #5f749f;
+  }
 `;
 
 const Dot = styled.p`

@@ -9,16 +9,27 @@ const MyBookListCard = (props) => {
   const navigate = useNavigate();
   const [usermessage, setUsermessage] = useState('');
   const [myBookList, setMyBookList] = useState([]);
+  const chunkedBooks = myBookList.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / 4);
+
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // 초기화
+    }
+
+    resultArray[chunkIndex].push(item);
+    return resultArray;
+  }, []);
+
 
   useEffect(() => {
     setUsermessage(props.usermessage);
     // console.log(usermessage);
-  },[props.usermessage]);
+  }, [props.usermessage]);
 
-  useEffect(() =>{
+  useEffect(() => {
     setMyBookList(props.myBookList);
     // console.log(props.myBookList);
-  },[props.myBookList]);
+  }, [props.myBookList]);
 
   const goDetailPage = (uid, isbn, userbid) => {
     navigate(`/myDetail`, {
@@ -29,37 +40,38 @@ const MyBookListCard = (props) => {
   const goaddbook = () => {
     navigate("/search");
   };
-  const [selectedUserbid, SetSeletectedUserbid] = useState(''); 
-  const [selectedSaleState, SetSelectedSaleState] = useState(-1); 
+  const [selectedUserbid, SetSeletectedUserbid] = useState('');
+  const [selectedSaleState, SetSelectedSaleState] = useState(-1);
   const [count, setCount] = useState(0);
   const handleButtonClick = async () => {
-    if(selectedUserbid){
-    try {
-      // console.log("자식");
-      // console.log(selectedUserbid);
+    if (selectedUserbid) {
+      try {
+        // console.log("자식");
+        // console.log(selectedUserbid);
 
-      const url = 'http://localhost:8080/books/salestateUpdate/'+selectedUserbid;
-      const response = await axios.put(url, {
-        bookstate: 1, 
-        salestate: selectedSaleState
-    });
-      const responseData = response.data.data;
-      if(responseData==="bookstate update success"){
-        // console.log(responseData);
-        setCount(count+1);
-        props.setCount(count);
+        const url = 'http://localhost:8080/books/salestateUpdate/' + selectedUserbid;
+        const response = await axios.put(url, {
+          bookstate: 1,
+          salestate: selectedSaleState
+        });
+        const responseData = response.data.data;
+        if (responseData === "bookstate update success") {
+          // console.log(responseData);
+          setCount(count + 1);
+          props.setCount(count);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch(error) {
-      console.log(error);
-    }}
+    }
   };
-  
+
   function fetchOne(saleState, userbid) {
-    SetSelectedSaleState(saleState==0?1:0);
+    SetSelectedSaleState(saleState == 0 ? 1 : 0);
     SetSeletectedUserbid(userbid);
   }
 
-  useEffect (() => {
+  useEffect(() => {
     // console.log("useEffect 실행");
     // console.log(selectedSaleState);
     // console.log(selectedUserbid);
@@ -80,36 +92,42 @@ const MyBookListCard = (props) => {
           책 추가
         </AddBookButton>
       </BookListCardHeader>
-      <BookListBodyContainer>
-        {myBookList && myBookList.map((book) => (
-          <BookItem key={book.id}>
-            <BookimgBox
-              src={book.cover}
-              onClick={() =>
-                goDetailPage(
-                  book.uid,
-                  book.isbn,
-                  book.userbid
-                )
-              }
-            />
-            <BookButtonsContainer>
-              <ActionButton completed0={book.bookstate} id='book'>
-              {(book.bookstate === 0 ? "독서전" :
-                book.bookstate === 1 ? "관심도서" :
-                book.bookstate === 2 ? "독서중" :
-                book.bookstate === 3 ? "독서완료" : null)}              
-              </ActionButton>
-              <ActionButton
-                completed1={book.salestate} id='sale'
-                onClick={() => {fetchOne(book.salestate, book.userbid); }}
-              >
-                {(book.salestate)===0 ? "거래불가능" : "거래가능"}
-              </ActionButton>
-            </BookButtonsContainer>
-          </BookItem>
-        ))}
-      </BookListBodyContainer>
+      {myBookList && myBookList.reduce((chunks, book, index) => {
+        if (index % 4 === 0) chunks.push([]);
+        chunks[chunks.length - 1].push(book);
+        return chunks;
+      }, []).map((chunk, chunkIndex) => (
+        <BookListBodyContainer key={chunkIndex}>
+          {chunk.map((book) => (
+            <BookItem key={book.id}>
+              <BookimgBox
+                src={book.cover}
+                onClick={() =>
+                  goDetailPage(
+                    book.uid,
+                    book.isbn,
+                    book.userbid
+                  )
+                }
+              />
+              <BookButtonsContainer>
+                <ActionButton completed0={book.bookstate} id='book'>
+                  {(book.bookstate === 0 ? "독서전" :
+                    book.bookstate === 1 ? "관심도서" :
+                      book.bookstate === 2 ? "독서중" :
+                        book.bookstate === 3 ? "독서완료" : null)}
+                </ActionButton>
+                <ActionButton
+                  completed1={book.salestate} id='sale'
+                  onClick={() => { fetchOne(book.salestate, book.userbid); }}
+                >
+                  {(book.salestate) === 0 ? "거래불가능" : "거래가능"}
+                </ActionButton>
+              </BookButtonsContainer>
+            </BookItem>
+          ))}
+        </BookListBodyContainer>
+      ))}
     </BookListCardContainer>
   );
 };
@@ -206,38 +224,38 @@ const BookItem = styled.div`
 
 const BookButtonsContainer = styled.div`
   display: flex;
-  width: 100px;
+  width: 80px;
   flex-direction: column;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 5px;
+  margin-right: 15px;
 `;
 
 const ActionButton = styled.button`
   border-radius: 5px;
-  background-color: ${({ completed0,completed1, id }) => {
+  background-color: ${({ completed0, completed1, id }) => {
     if (id === 'book') {
-      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+      if (completed0 === 0 || completed0 === 2 || completed0 === 3) {
         return "#fff";
       }
-      else { return "#5f749f";}
+      else { return "#5f749f"; }
     } else {
-      if ( completed1 === 0){
+      if (completed1 === 0) {
         return "#fff";
       }
-      else { return "#5f749f";}
+      else { return "#5f749f"; }
     }
   }};
-  color: ${({ completed0,completed1, id }) => {
+  color: ${({ completed0, completed1, id }) => {
     if (id === 'book') {
-      if ( completed0 === 0 || completed0 === 2 || completed0 ===3){
+      if (completed0 === 0 || completed0 === 2 || completed0 === 3) {
         return "#5f749f";
       }
-      else { return "#fff";}
+      else { return "#fff"; }
     } else {
-      if ( completed1 === 0){
+      if (completed1 === 0) {
         return "#5f749f";
       }
-      else { return "#fff";}
+      else { return "#fff"; }
     }
   }};
   cursor: pointer;
@@ -250,22 +268,22 @@ const ActionButton = styled.button`
   transition: background-color 0.3s, color 0.3s;
 
   // &:hover {
-  //   background-color: ${({completed1, id }) => {
-  //     if (id === 'sale') {
-  //       if ( completed1 === 1){
-  //         return "#fff";
-  //       }
-  //       else { return "#5f749f";}
-  //     }
-  //   }};
-  //   color: ${({completed1, id }) => {
-  //     if (id === 'sale') {
-  //       if ( completed1 === 1){
-  //         return "#5f749f";
-  //       }
-  //       else { return "#fff";}
-  //     } 
-  //     }
-    }};
+  //   background-color: ${({ completed1, id }) => {
+    //     if (id === 'sale') {
+    //       if ( completed1 === 1){
+    //         return "#fff";
+    //       }
+    //       else { return "#5f749f";}
+    //     }
+    //   }};
+    //   color: ${({completed1, id }) => {
+    //     if (id === 'sale') {
+    //       if ( completed1 === 1){
+    //         return "#5f749f";
+    //       }
+    //       else { return "#fff";}
+    //     } 
+    //     }
+  }};
   }
 `;

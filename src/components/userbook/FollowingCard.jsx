@@ -2,39 +2,48 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import userprofile from "../../assets/userprofile.png";
+import "../../App.css"
+import { useNavigate } from "react-router-dom";
 
-function FollowingCard() {
+function FollowerCard() {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
-  const [followingList, setFollowingList] = useState([]);
+  const [followerList, setFollowerList] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const fetchFollowingList = async () => {
+    const fetchFollowerList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followingsList/"+p.uid);
-        setFollowingList(response.data.data);
+        const response = await axios.get("http://localhost:8080/follow/followingList/" + p.uid);
+        console.log(response.data);
+        setFollowerList(response.data.data);
       } catch (error) {
-        console.error("팔로잉 목록을 불러오는 중 오류 발생:", error);
+        console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
       }
     };
 
-    fetchFollowingList();
+    fetchFollowerList();
   }, []);
+
+  const studyPage = (uid) => {
+    // console.log(uid);
+    navigate("/studyPage/"+uid);
+  };
+
 
   return (
     <>
-      {followingList.map((following, index) => (
-        <BookListCardContainer key={index}>
-          <FollowingContainer>
-            <FollowingBox>팔로잉</FollowingBox>
-          </FollowingContainer>
-          <ProfileLeftContainer>
-            <ProfileImage src={following.userimageUrl || userprofile} alt="프로필 사진" />
-            <ProfileName>{following.nickname} 님의 개인서재</ProfileName>
-          </ProfileLeftContainer>
+      <FollowingContainer>
+        <FollowingBox>팔로잉</FollowingBox>
+      </FollowingContainer>
+      {followerList.map((follower, index) => (
+        <BookListCardContainer key={index} onClick={() => studyPage(follower.fromUserId)}>
+          <ProfileImage src={follower.userimageUrl || userprofile} alt="프로필 사진" />
+          <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>
             <LeftBox>
-              <LeftBoxText>{following.toUserId} 님을 팔로우 중</LeftBoxText>
+              <LeftBoxText>{follower.usermessage}</LeftBoxText>
             </LeftBox>
           </BookListCardHeader>
         </BookListCardContainer>
@@ -43,48 +52,56 @@ function FollowingCard() {
   );
 }
 
-export default FollowingCard;
-
+export default FollowerCard;
 
 const BookListCardContainer = styled.div`
+  display: flex; /* Make the container flex */
   width: 1200px;
-  margin-bottom: 55px;
+  // margin-bottom: 30px;
+  padding-top:20px;
+  padding-bottom:10px;
   border-bottom: 1px solid #c1c1c1;
-
-`;
-
-const ProfileLeftContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
+  align-items: center; /* Align items vertically */
+  &:hover{
+  background: #fff;
+  cursor: pointer;
+  border-radius : 25px;
+  opacity : 0.8;
+  }
 `;
 
 const ProfileImage = styled.img`
-  width: 100px;
-  height: 100px;
+  min-width:80px;
+  min-height: 80px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-left: 150px;
+  margin-right: 30px;
+  margin-bottom: 20px;
 `;
 
 const ProfileName = styled.h2`
   color: #000;
-  font-family: Inter;
   font-size: 26px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   margin-bottom: 10px;
+  min-width: 300px;
 `;
 
 const BookListCardHeader = styled.div`
   display: flex;
-  margin-bottom: 30px;
-  justify-content: space-between;
+  align-items: center;
 `;
 
 const LeftBox = styled.div`
+  margin-top: -20px;
+  margin-left: 70px;
+  width: clamp(200px, 60%, 350px);
   position: relative;
-  background: #B2CCFF;
+  background: #5f749f;
   border-radius: 1em;
   padding: 1em 5em;
   &::after {
@@ -95,7 +112,7 @@ const LeftBox = styled.div`
     width: 0;
     height: 0;
     border: 1.719em solid transparent;
-    border-right-color: #B2CCFF;
+    border-right-color: #5f749f;
     border-left: 0;
     border-bottom: 0;
     margin-top: -0.959em;
@@ -104,37 +121,41 @@ const LeftBox = styled.div`
 `;
 
 const LeftBoxText = styled.h5`
-  color: #000;
-  font-family: Inter;
+  color: #fff;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: 109.867%;
   letter-spacing: -0.17px;
+  white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden; /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 대해 생략 부호(...) 표시 */
 `;
 
 const FollowingContainer = styled.div`
+  cursor : default;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   margin-top : -50px;
+  
+  
 `;
 
 const FollowingBox = styled.p`
-  border-radius: 10px;
+  border-radius: 25px;
   border: 1px solid #c1c1c1;
-  background: #B2CCFF;
+  background: #fff;
   text-align: center;
   padding: 12px 20px;
   min-width: 200px;
-  color: #000;
-  font-family: Inter;
-  font-size: 20px;
+  color: #5f749f;
+  font-size: 22px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   margin-right: 10px;
-  cursor: pointer;
+  cursor: default;
 `;
