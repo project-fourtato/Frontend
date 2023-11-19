@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import userprofile from "../../assets/userprofile.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faUser, faUserLarge ,faUserPlus, faUserMinus } from "@fortawesome/free-solid-svg-icons";
 import MsgModal from "../common/MsgModal";
 import UserBookListCard from "./UserBookListCard";
-import book2 from "../../assets/book2.png";
 import axios from "axios";
 import { profileState } from "../../recoil/atom";
 import { useRecoilState } from "recoil";
@@ -25,7 +23,7 @@ const UserProfileHeader = (props) => {
 
 
   const handleButtonClick = async () => {
-    if(FollowButtonText === "팔로우취소"){ //팔로우 취소를 한다면
+    if(FollowButtonText === "팔로잉"){ //팔로우 취소를 한다면
       swal({
         title: "팔로우 취소하시겠습니까?",
         icon: "warning",
@@ -97,7 +95,7 @@ const UserProfileHeader = (props) => {
         // console.log(data);
         // console.log(data)
         if(data === true){
-          setFollowButtonText("팔로우취소");
+          setFollowButtonText("팔로잉");
         }
         else{
           setFollowButtonText("팔로우");
@@ -203,7 +201,7 @@ const [userInterest, setUserInterest] = useState([]);
                 </InterestOutDiv>
               </div>
             </ProfileLeftContainer>
-            <div>
+            <SendFollowButtonOutDiv>
               <SendMsgButton
                 onClick={() => {
                   setShowMsgModal(true);
@@ -212,14 +210,7 @@ const [userInterest, setUserInterest] = useState([]);
                 <FontAwesomeIcon icon={faPaperPlane} className="icon-mypage-paper-plane" />
                 쪽지 보내기
               </SendMsgButton>
-              <FollowButton
-                onClick={() => {
-                  handleButtonClick();
-                }}
-              >
-              <FontAwesomeIcon icon={faUser} className="icon-mypage-paper-plane" />
-                {FollowButtonText}</FollowButton>
-            </div>
+            </SendFollowButtonOutDiv>
           </ProfileSection>
           <FollowAndFollower>
             <FollowAndFollowerText onClick={followerPage}>팔로워</FollowAndFollowerText>
@@ -305,6 +296,11 @@ const MyTag = styled.p`
   margin-right: 8px;
 `;
 
+const SendFollowButtonOutDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 const SendMsgButton = styled.button`
   border-radius: 43px;
   border: 1px solid #c1c1c1;
@@ -335,7 +331,7 @@ const FollowAndFollower = styled.div`
 `;
 
 const FollowButton = styled.div`
-border-radius: 43px;
+  border-radius: 43px;
   border: 1px solid #c1c1c1;
   background: #fff;
   cursor: pointer;
@@ -346,11 +342,14 @@ border-radius: 43px;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
+  line-height: 43px;
   margin-top: 10px;
+  text-align: center;
   &:hover {
     background: #5f749f;
     color: #fff;
+  }
+  >svg {
   }
 `
 

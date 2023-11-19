@@ -1,13 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import styled from "styled-components";
-import { useState } from "react";
-import BooksearchList from "./BooksearchList";
-import UserSearchList from "./UserSearchList";
-import LibrarySearchList from "./LibrarySearchList";
-import MainSearch from "../search/MainSearch"
-import swal from "sweetalert";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import swal from "sweetalert";
+import MainSearch from "../search/MainSearch";
+import BooksearchList from "./BooksearchList";
+import LibrarySearchList from "./LibrarySearchList";
+import UserSearchList from "./UserSearchList";
 
 function SearchTab(props) {
   const [tab, setTab] = useState({
@@ -66,7 +65,8 @@ function SearchTab(props) {
       }
       else if((tab.active == 2) &&(searchValue.length<6)){
         swal({
-          title: "도서관은 6글자 이상부터 검색 가능합니다.",
+          title: "주의!",
+          text: "도서관은 6글자 이상부터 검색 가능합니다.",
           icon: "warning",
           buttons: "확인",
         }).then(() => {

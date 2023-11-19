@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import porfile1 from '../../assets/profile1.png';
-import porfile2 from '../../assets/profile2.png';
 import Session from 'react-session-api';
 import axios from "axios";
 function SearchUserCard(props) {
     const profile = sessionStorage.getItem("profile");
     const p = JSON.parse(profile);
-    const [haveabookuser, setHaveabookuser] = useState([{"nickname" : "고구마가되고싶어고구마", "useriamgeUrl" : porfile1}, 
-    {"name" : "치크케이크", "img" : porfile2}]);
+    const [haveabookuser, setHaveabookuser] = useState([{"nickname" : "고구마가되고싶어고구마", "useriamgeUrl" : "bb"}, 
+    {"name" : "치크케이크", "img" : "aa"}]);
 
     // 현재 URL에서 경로 추출
     const currentPath = window.location.pathname;

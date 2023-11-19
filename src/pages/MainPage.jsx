@@ -3,7 +3,6 @@ import backgoundimg from "../assets/booker-main-v3.gif";
 import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../recoil/atom";
-import userprofile from "../assets/userprofile.png";
 import BookListCard from "../components/main/BookListCard";
 import MyPersonListCard from "../components/main/MyPersonListCard";
 import axios from "axios";

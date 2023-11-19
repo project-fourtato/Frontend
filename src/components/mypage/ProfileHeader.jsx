@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import userprofile from "../../assets/userprofile.png";
 import { useNavigate } from "react-router-dom";
 import { profileState } from "../../recoil/atom";
 import { useRecoilState } from "recoil";

@@ -23,10 +23,12 @@ const UserPage = (props) => {
         const response = await axios.get(`http://localhost:8080/booksList/`+p);
         // console.log(response);
         const data = response.data.data;
+        console.log(data);
+        if(data.length === 0) {
+          throw new Error("is Null");
+        }
+
         setMyBookList(data);
-        // if (!response.ok) {
-        //   throw new Error(`서버 응답 오류: ${response.status}`);
-        // }
       } catch (error) {
         console.error("Error fetching user data", error);
         swal("페이지 이동 실패", "유효하지 않은 값입니다.", "error")

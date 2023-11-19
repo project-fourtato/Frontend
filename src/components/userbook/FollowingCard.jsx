@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import userprofile from "../../assets/userprofile.png";
 import "../../App.css"
 import { useNavigate } from "react-router-dom";
 
@@ -40,7 +39,7 @@ function FollowerCard(props) {
       </FollowingContainer>
       {followerList.map((follower, index) => (
         <BookListCardContainer key={index} onClick={() => studyPage(follower.toUserId)}>
-          <ProfileImage src={follower.userimageUrl || userprofile} alt="프로필 사진" />
+          <ProfileImage src={follower.userimageUrl} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>
             <LeftBox>

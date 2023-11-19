@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { mainBookList } from "../../data/maindata";
-import downarrow from "../../assets/downarrow.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookOpenReader, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import "../../App.css";
 import Session from 'react-session-api';
 import axios from "axios";
-import userimage from "../../assets/searchimg/su1.png";
 import "../../assets/dropdown.css";
 import { useNavigate } from "react-router-dom";
 
@@ -122,7 +120,7 @@ function BookListCard(props) {
           <BookDetailContainer>
             <BookListContent>
               <ContentTitleText onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>{book.title}</ContentTitleText>
-              <ContentText onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>{book.author} |{book.publisher}</ContentText>
+              <ContentText onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>{book.author} | {book.publisher}</ContentText>
               <SubBtnBox>
                 {/* DropDownApp 구성 요소를 사용자 프로필에 통합 */}
                 <DropDownApp profiles={book.profile} />
