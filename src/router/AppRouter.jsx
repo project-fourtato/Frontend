@@ -19,6 +19,7 @@ import DeclarationPage from "../pages/DeclarationPage";
 import JournalsUploadPage from "../pages/JournalsPage";
 import SearchListPage from "../pages/SearchListPage";
 import StudyPage from "../pages/StudyPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 function AppRouter() {
   return (
@@ -43,6 +44,7 @@ function AppRouter() {
         <Route path="/exchange/:id" element={<BookExchangePage />} />
         <Route path="/declaration" element={<DeclarationPage/>} />
         <Route path="/exchange" element={<SearchListPage/>} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

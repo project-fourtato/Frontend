@@ -106,7 +106,7 @@ const SelectBox = styled.div`
   border-radius: 25px;
   border: 1px solid #DBDBDB;
   background: #FFF;
-  width: 110px;
+  width: 150px;
   height: 1.65rem;
   /*box-shadow: 1px 1px rgba(0,0,0,0.16);*/
   > p {
