@@ -24,27 +24,6 @@ function SayGoodbyeModal({ setShowModal, ...props }) {
       setData();
     }, [props.userId]);
   
-    // const handleGoodbye = async () => {
-    //   const apiUrl = `http://localhost:8080/profile/`+userIdObject+`/delete`;
-    //   console.log(apiUrl);
-    //   // 프로필 삭제 요청
-    //   const response = await axios
-    //     .post(apiUrl)
-    //     .then((response) => {
-    //       // 성공 응답 처리
-    //       swal({
-    //         title: response.Object,
-    //         icon: "success",
-    //         buttons: "확인",
-    //       });        
-    //     })
-    //     .catch((error) => {
-    //       // 프로필 삭제 요청 중 오류 처리
-
-    //     });
-
-        
-    // };
 
     const handleGoodbye = async () => {
       try {

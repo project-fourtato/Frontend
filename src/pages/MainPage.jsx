@@ -19,6 +19,24 @@ function MainPage(props) {
   const [nickname, setNickname] = useState('');
   const [useriamgeUrl, setUseriamgeUrl] = useState('');
   const setLoginState = useSetRecoilState(loginState);
+  const checkForSession = () => {
+    if(p) {
+      setLoginState({isLogin: true});
+    }
+  };
+  useEffect(() => {
+    (async() => {
+      try{
+        const url = 'http://localhost:8080/profile/'+p.uid;
+        const response = await axios.get(url);
+        setNickname(response.data.nickname);
+        setUseriamgeUrl(response.data.useriamgeUrl);
+        checkForSession();
+      } catch(error) {
+        sessionStorage.removeItem("profile");
+      }
+    }) ();
+  }, [nickname]);
 
   useEffect(() => {
     (async() => {
@@ -27,17 +45,13 @@ function MainPage(props) {
         const response = await axios.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);
-        const checkForSession = () => {
-          if(p) {
-            setLoginState({isLogin: true});
-          }
-        };
         checkForSession();
       } catch(error) {
         sessionStorage.removeItem("profile");
+        setLoginState({isLogin: false});
       }
     }) ();
-  }, [nickname]);
+  }, []);
 
 
   console.log('isLogin',isLogin)

@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef} from "react";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaUserAlt } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import swal from "sweetalert";
@@ -13,12 +13,27 @@ import Session from 'react-session-api';
 
 
 function SignInCard(props) {
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
+  const setLoginState = useSetRecoilState(loginState);
+
+  ////뒤로가기 버튼을 통해 해당 페이지에 왔을 때 처리///////
+  const checkForSession = () => {
+    if(p) {
+      setLoginState({isLogin: true});
+    }
+  };
+  checkForSession();
+  sessionStorage.removeItem("profile");
+
+
+  ///////////////////////////////////////////////////////
+  const navigate = useNavigate();
   //api
   let posts = "hello";
   const [idValue, setId] = useState('');
   const [pwValue, setPw] = useState('');
   const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const navigate = useNavigate();
 
   const saveUserId = event => {
     setId(event.target.value);
