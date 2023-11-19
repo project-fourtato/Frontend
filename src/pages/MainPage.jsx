@@ -53,7 +53,7 @@ function MainPage(props) {
   }, [nickname]);
 
 
-  console.log('isLogin',isLogin)
+  // console.log('isLogin',isLogin)
   return (
     <>
       {isLogin.isLogin  ? (

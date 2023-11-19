@@ -80,7 +80,7 @@ const handleSuccess = () => {
           }
         });
         posts = response.data;
-        console.log(response.data.data);
+        // console.log(response.data.data);
         if (posts.data === "Register login Success") {
           swal({
             title: "회원가입 성공!",
@@ -93,7 +93,7 @@ const handleSuccess = () => {
           })
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
   })();
@@ -109,7 +109,7 @@ useEffect(() => {
       const filteredTemp = temp.filter(item => item !== null);
       setSelectedTags([...filteredTemp]);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -151,7 +151,7 @@ const handleEditSuccess = async () => {
       })
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 }
 

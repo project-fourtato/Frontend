@@ -40,7 +40,7 @@ function JournalDetail(props) {
                 const response = await axios.get(url);
                 setJournalResponse(response.data);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         fetchData();
@@ -58,7 +58,7 @@ function JournalDetail(props) {
                 const response = await axios.post(url);
 
                 posts = response.data;
-                console.log(response.data);
+                // console.log(response.data);
 
                 if(posts.data === "Delete Books Success") {
                     swal({
@@ -71,7 +71,7 @@ function JournalDetail(props) {
                     })
                 }
             } catch(error) {
-                console.log(error);
+                // console.log(error);
             }
         })();
     }

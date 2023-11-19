@@ -18,7 +18,7 @@ function BookSearchList(props) {
     const [bookList,setBookList] = useState([]);
     useEffect(() => {
        setBookList(props.bookList); 
-       console.log(bookList);
+    //    console.log(bookList);
        }, [props.bookList]);
     
     

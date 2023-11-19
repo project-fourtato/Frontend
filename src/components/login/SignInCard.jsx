@@ -65,7 +65,7 @@ function SignInCard(props) {
 
         
       } catch(error) {
-        console.log(error)
+        // console.log(error)
       }
     }) ();
   };
@@ -92,7 +92,7 @@ function SignInCard(props) {
     
     // 로그인 로직을 여기에 구현
     
-    console.log("로그인!");
+    // console.log("로그인!");
     swal({
       title: "로그인 되었습니다.",
       icon: "success",

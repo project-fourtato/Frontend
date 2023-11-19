@@ -66,12 +66,12 @@ function SignUpCard(props) {
 
   useEffect(() => {
     // emailCheck가 변경될 때 수행할 동작
-    console.log("emailCheck 값이 변경되었습니다.", emailCheck);
+    // console.log("emailCheck 값이 변경되었습니다.", emailCheck);
   }, [emailCheck]);
   
   useEffect(() => {
     // DuplicatedIdCheck가 변경될 때 수행할 동작
-    console.log("DuplicatedIdCheck 값이 변경되었습니다.", DuplicatedIdCheck);
+    // console.log("DuplicatedIdCheck 값이 변경되었습니다.", DuplicatedIdCheck);
   }, [DuplicatedIdCheck]);
   
 
@@ -89,7 +89,7 @@ function SignUpCard(props) {
         
         
         if(posts === false){
-          console.log("중복임")
+          // console.log("중복임")
           swal("경고", "다른 아이디를 입력해주세요.", "error")
           .then(() => {
             setDuplicatedIdCheck(0);
@@ -97,7 +97,7 @@ function SignUpCard(props) {
           })
         }
         else{
-          console.log("중복아님")
+          // console.log("중복아님")
           swal({
             title: "사용 가능한 아이디입니다.",
             icon: "success",
@@ -110,7 +110,7 @@ function SignUpCard(props) {
 
         
       } catch(error) {
-        console.log(error)
+        // console.log(error)
       }
     }) ();
   };
@@ -136,7 +136,7 @@ function SignUpCard(props) {
         })
       }
       else if(emailCheck == 0){
-        console.log(emailCheck);
+        // console.log(emailCheck);
         swal({
           title: "이메일을 다시 확인해주세요.",
           icon: "warning",
@@ -147,9 +147,9 @@ function SignUpCard(props) {
       }
       else { //로그인 성공
       try{
-        console.log(emailCheck);
+        // console.log(emailCheck);
         const url = 'http://localhost:8080/login/new';
-        console.log(url);
+        // console.log(url);
         const response = await axios.post(url, {
           uid : idValue,
           pw : pwValue,
@@ -157,13 +157,13 @@ function SignUpCard(props) {
           birth : birthValue
         });
         posts = response.data;
-        console.log(response.data.data);
-        console.log(posts.data);
+        // console.log(response.data.data);
+        // console.log(posts.data);
         if(posts.data ===  "Register login Success"){
           navigate("/edit", { state : {idValue} });
         }
       } catch(error) {
-        console.log(error)
+        // console.log(error)
       }
     }
     }) ();

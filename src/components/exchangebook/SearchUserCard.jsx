@@ -20,14 +20,14 @@ function SearchUserCard(props) {
         const fetchData = async () => {
           try {
             const url = 'http://localhost:8080/books/sale/isbn/' +lastSegment;
-            console.log(url);
+            // console.log(url);
             const response = await axios.get(url);
             const responseData = JSON.parse(response.request.responseText);
             setHaveabookuser(responseData.data);
-            console.log(responseData);
+            // console.log(responseData);
             
           } catch(error) {
-            console.log(error);
+            // console.log(error);
           }
         };
     

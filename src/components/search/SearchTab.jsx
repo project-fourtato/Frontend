@@ -29,7 +29,7 @@ function SearchTab(props) {
           setMsgList(response.data.data);
           // console.log("list확인");
         } catch(error) {
-          console.log(error)
+          // console.log(error)
         }
       }) ();
     };
@@ -45,7 +45,7 @@ function SearchTab(props) {
     setTablist(newTablist);
     // console.log(tablist[1]);
     return () => {
-      console.log("clean up");
+      // console.log("clean up");
     }
   },[msgList, searchValue]);
 
@@ -84,7 +84,7 @@ function SearchTab(props) {
   });
 
   useEffect(() => {
-    console.log(tablist);
+    // console.log(tablist);
   },[tablist]);
 
   const activeTab = (e) => {

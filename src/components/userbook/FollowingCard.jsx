@@ -16,10 +16,10 @@ function FollowerCard() {
     const fetchFollowerList = async () => {
       try {
         const response = await axios.get("http://localhost:8080/follow/followingList/" + p.uid);
-        console.log(response.data);
+        // console.log(response.data);
         setFollowerList(response.data.data);
       } catch (error) {
-        console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
+        // console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
       }
     };
 

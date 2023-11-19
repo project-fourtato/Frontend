@@ -186,14 +186,14 @@ function MsgModal({ setShowMsgModal, ...props }) {
     },[props.userId, props.nickname, props.userimageUrl]);
     
     useEffect(()=>{        
-        console.log(props.nickname);
-        console.log(nickname);
+        // console.log(props.nickname);
+        // console.log(nickname);
         settingCurrentMsg();
     },[userId, nickname, userimageUrl])
 
     useEffect(()=>{
-        console.log(userMsg.nickname);
-        console.log(userMsg.userimageUrl);
+        // console.log(userMsg.nickname);
+        // console.log(userMsg.userimageUrl);
     }, [userMsg]);
 
     const settingCurrentMsg = () => {
@@ -205,7 +205,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
             userimageUrl : userimageUrl,
             nickname : nickname
         };
-        console.log(messageToSend);
+        // console.log(messageToSend);
         setUserMsg(messageToSend);
     };
 

@@ -24,7 +24,7 @@ function BestUserCard() {
         // console.log('호잇호잇');
         // console.log(usersearchList);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     };
 

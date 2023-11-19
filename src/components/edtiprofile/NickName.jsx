@@ -32,7 +32,7 @@ function NickName(props) {
         setProfileResponse(response.data);
         tempImage = response.data.useriamgeUrl;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 

@@ -90,7 +90,7 @@ function JournalContentCard(props) {
                         }
                     })
                     posts = response.data;
-                    console.log(response.data);
+                    // console.log(response.data);
 
                     if (posts.data === "Write Journals Success") {
                         swal({
@@ -103,7 +103,7 @@ function JournalContentCard(props) {
                         })
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         })();
@@ -116,7 +116,7 @@ function JournalContentCard(props) {
                 const response = await axios.get(url);
                 setJournalResponse(response.data);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -141,7 +141,7 @@ function JournalContentCard(props) {
                 image.append("pcontents", contents);
             }
 
-            console.log(image.get("pcontents"));
+            // console.log(image.get("pcontents"));
 
             const response = await axios.put(url, image,
                 {
@@ -160,7 +160,7 @@ function JournalContentCard(props) {
                 })
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

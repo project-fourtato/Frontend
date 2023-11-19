@@ -17,7 +17,7 @@ function ExchangeSearchBar(props) {
 
   const fetchData = async () => { //3. 해당 함수 실행됨
     try {
-      console.log(searchValue);
+      // console.log(searchValue);
       const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
       const url = 'http://localhost:8080/books/sale/searchOne/' + stringWithoutSpaces;
       const response = (await axios.get(url)).data.data;
@@ -26,7 +26,7 @@ function ExchangeSearchBar(props) {
       // console.log(response);
       setBookList(response);
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   };
 

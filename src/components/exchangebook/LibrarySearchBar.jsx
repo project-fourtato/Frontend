@@ -36,7 +36,7 @@ function LibrarySearchBar(props) {
         setMsgList(response.data.data);
         // console.log(msgList);
       } catch(error) {
-        console.log(error)
+        // console.log(error)
       }
     }) ();
     
