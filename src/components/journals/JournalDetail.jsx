@@ -21,13 +21,20 @@ function JournalDetail(props) {
     });
     const navigate = useNavigate();
     let location = useLocation();
-    const jid = location.state.jid;
+    let jid = "";
+    let lastSegment = "";
+    try {
+        jid = location.state.jid;
+        lastSegment = location.state.lastSegment;
+    } catch(error) {
+        navigate("/error");
+    }
 
-     // 현재 URL에서 경로 추출
-    const currentPath = window.location.pathname;
-    // 예시: 경로에서 마지막 부분 추출 (마지막 슬래시 이후의 부분)
-    const segments = currentPath.split('/');
-    const lastSegment = segments[1];
+    //  // 현재 URL에서 경로 추출
+    // const currentPath = window.location.pathname;
+    // // 예시: 경로에서 마지막 부분 추출 (마지막 슬래시 이후의 부분)
+    // const segments = currentPath.split('/');
+    // const lastSegment = segments[1];
 
     const profileSession = sessionStorage.getItem("profile");
     const p = JSON.parse(profileSession);
@@ -41,6 +48,14 @@ function JournalDetail(props) {
                 setJournalResponse(response.data);
             } catch (error) {
                 console.log(error);
+                swal({
+                    title: "이동 실패",
+                    text: "유효하지 않은 값입니다.",
+                    icon: "error",
+                    buttons: "확인"
+                }).then(() => {
+                    navigate("/");
+                })
             }
         };
         fetchData();
@@ -97,7 +112,7 @@ function JournalDetail(props) {
                     <UploadBtnContainer>
                         <Button2 onClick={handleCancel}><FontAwesomeIcon icon={faShare} flip="horizontal" />뒤로가기</Button2>
                         {
-                            (location.state.lastSegment === 'myDetail') ? (
+                            (lastSegment === 'myDetail') ? (
                                 <>
                                 <Button2 onClick={handleEditButton}><FontAwesomeIcon icon={faPencil} flip="horizontal" />수정하기</Button2>
                                 <Button onClick={handleDeleteButton}><FontAwesomeIcon icon={faTrashCan} flip="horizontal" /></Button>

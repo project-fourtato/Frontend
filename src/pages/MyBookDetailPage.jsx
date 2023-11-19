@@ -12,11 +12,20 @@ const MyBookDetailPage = (props) => {
   });
   const location = useLocation();
   const navigate = useNavigate();
-  const uid = location.state.uid;
-  const isbn = location.state.isbn;
-  const userbid = location.state.userbid;
   const [firstPart, setFirstPart] = useState('');
   const [secondPart, setSecondPart] = useState('');
+
+  let uid = "";
+  let isbn = "";
+  let userbid = ""
+  try {
+    uid = location.state.uid;
+    isbn = location.state.isbn;
+    userbid = location.state.userbid;
+  } catch(error) {
+    navigate("/error");
+  }
+
   useEffect(() => {
     const BookData = async () => {
       try {

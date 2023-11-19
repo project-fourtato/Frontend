@@ -12,8 +12,14 @@ const NewBookDetailPage = (props) => {
   });
   const location = useLocation();
   const navigate = useNavigate();
-  const uid = location.state.uid;
-  const isbn = location.state.isbn;
+  let uid = "";
+  let isbn = "";
+  try {
+    uid = location.state.uid;
+    isbn = location.state.isbn;
+  } catch(error) {
+    navigate("/error");
+  }
   // const uid = "hallym"; //더미
   // const isbn = "9788970509013"; //더미
   const nickname = "회원";

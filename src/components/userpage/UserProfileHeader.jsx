@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import userprofile from "../../assets/userprofile.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import MsgModal from "../common/MsgModal";
 import UserBookListCard from "./UserBookListCard";
 import book2 from "../../assets/book2.png";
@@ -114,6 +114,9 @@ const [userInterest, setUserInterest] = useState([]);
                 <FontAwesomeIcon icon={faPaperPlane} className="icon-mypage-paper-plane" />
                 쪽지 보내기
               </SendMsgButton>
+              <FollowButton>
+              <FontAwesomeIcon icon={faUser} className="icon-mypage-paper-plane" />
+                팔로우하기</FollowButton>
             </div>
           </ProfileSection>
           <FollowAndFollower>
@@ -228,6 +231,26 @@ const FollowAndFollower = styled.div`
   margin-left: 30px;
   margin-bottom: 20px;
 `;
+
+const FollowButton = styled.div`
+border-radius: 43px;
+  border: 1px solid #c1c1c1;
+  background: #fff;
+  cursor: pointer;
+  width: 165px;
+  height: 43px;
+  transform: rotate(-0.001deg);
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 10px;
+  &:hover {
+    background: #5f749f;
+    color: #fff;
+  }
+`
 
 const FollowAndFollowerText = styled.h5`
   color: #000;

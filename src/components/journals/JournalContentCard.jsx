@@ -17,7 +17,14 @@ function JournalContentCard(props) {
     const [contents, setContents] = useState();
     const navigate = useNavigate();
     let location = useLocation();
-    const userbid = location.state.userbid;
+    let userbid= "";
+    let jid = "";
+    try {
+        userbid = location.state.userbid;
+        jid = location.state.jid;
+    } catch(error) {
+        navigate("/error");
+    }
 
     const profileSession = sessionStorage.getItem("profile");
     const p = JSON.parse(profileSession);
@@ -112,7 +119,7 @@ function JournalContentCard(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = "http://localhost:8080/journals/" + location.state.jid;
+                const url = "http://localhost:8080/journals/" + jid;
                 const response = await axios.get(url);
                 setJournalResponse(response.data);
             } catch (error) {
@@ -133,7 +140,7 @@ function JournalContentCard(props) {
 
     const handleUpdateJournal = async () => {
         try {
-            const url = "http://localhost:8080/journals/" + location.state.jid + "/edit";
+            const url = "http://localhost:8080/journals/" + jid + "/edit";
             if (title) {
                 image.append("ptitle", title);
             }
