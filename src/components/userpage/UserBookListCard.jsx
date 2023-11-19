@@ -30,16 +30,19 @@ const UserBookListCard = (props) => {
   // dummyMyBookList를 myBookList로 변경
   return (
     <BookListCardContainer>
-      {/* 헤더 */}
       <BookListCardHeader>
         <LeftBox>
           <LeftBoxText>{usermessage}</LeftBoxText>
         </LeftBox>
         {/* 타인 서재에서는 책 추가 버튼이 필요하지 않을 것이므로 숨김 */}
-      </BookListCardHeader>
-      {/* 책 리스트 */}
-      <BookListBodyContainer>
-        {myBookList && myBookList.map((book) => (
+        </BookListCardHeader>
+      {myBookList && myBookList.reduce((chunks, book, index) => {
+        if (index % 4 === 0) chunks.push([]);
+        chunks[chunks.length - 1].push(book);
+        return chunks;
+      }, []).map((chunk, chunkIndex) => (
+        <BookListBodyContainer key={chunkIndex}>
+          {chunk.map((book) => (
             <BookItem key={book.id}>
               <BookimgBox
                 src={book.cover}
@@ -47,9 +50,7 @@ const UserBookListCard = (props) => {
                   goDetailPage(
                     book.uid,
                     book.isbn,
-                    book.userbid,
-                    book.bookstate,
-                    nickname
+                    book.userbid
                   )
                 }
               />
@@ -70,10 +71,10 @@ const UserBookListCard = (props) => {
               </BookButtonsContainer>
             </BookItem>
           ))}
-      </BookListBodyContainer>
+        </BookListBodyContainer>
+      ))}
     </BookListCardContainer>
   );
-
 };
 
 export default UserBookListCard;
@@ -157,10 +158,10 @@ const BookListBodyContainer = styled.div`
 `;
 
 const BookimgBox = styled.img`
-  width: 40%;
-  height: 100%;
+  width: 80px;
+  height: 140px;
+  margin-right: 15px;
   cursor: pointer;
-  border-radius: 5px;
 `;
 
 const BookItem = styled.div`
@@ -169,11 +170,10 @@ const BookItem = styled.div`
 
 const BookButtonsContainer = styled.div`
   display: flex;
-  width: 100px; 
+  width: 80px;
   flex-direction: column;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 1px;
+  margin-left: 5px;
+  margin-right: 15px;
 `;
 
 const ActionButton = styled.button`
@@ -205,14 +205,12 @@ const ActionButton = styled.button`
     }
   }};
   cursor: pointer;
-  margin-bottom: 7px;
+  margin-top: 10px;
   padding: 5px;
-  border: 1px solid #BABABA;
-  font-size: 14px;
+  border: 1px solid #000;
+  font-size: 15px;
   font-style: normal;
   font-weight: 700;
   transition: background-color 0.3s, color 0.3s;
-  height: 33px;
-  width: 95px;
 
 `;
