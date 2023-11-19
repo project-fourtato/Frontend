@@ -193,7 +193,7 @@ const MyTag = styled.p`
   background: #fff;
   text-align: center;
   padding: 10px 10px;
-  width: 4rem;
+  width: 5rem;
   height: 8px;
   color: #000;
   font-size: 12px;
