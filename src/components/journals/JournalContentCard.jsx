@@ -178,6 +178,10 @@ function JournalContentCard(props) {
     }
 
     const handleChangeTitle = (e) => {
+        if (e.target.value.length > 35) {
+            swal("경고", "닉네임은 35자를 초과할 수 없어요.", "error");
+            return e.target.value.slice(0, -1);
+          }
         setTitle(e.target.value);
     };
 
