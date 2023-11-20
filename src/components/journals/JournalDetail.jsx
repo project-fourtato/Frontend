@@ -194,7 +194,7 @@ const UploadBtnContainer = styled.div`
     justify-content: flex-end;
     width: 100%;
     margin-top: 2px;
-    margin-left:-35px;
+    margin-left:-22px;
     
 `
 
