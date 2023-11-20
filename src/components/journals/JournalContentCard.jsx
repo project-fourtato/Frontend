@@ -178,6 +178,10 @@ function JournalContentCard(props) {
     }
 
     const handleChangeTitle = (e) => {
+        if (e.target.value.length > 35) {
+            swal("경고", "닉네임은 35자를 초과할 수 없어요.", "error");
+            return e.target.value.slice(0, -1);
+          }
         setTitle(e.target.value);
     };
 
@@ -393,6 +397,7 @@ const JournalTitleInput = styled.input`
     border: 1px solid #CACACA;
     border-radius: 10px;
     padding-left: 20px;
+    word-wrap:break-word; 
 `;
 
 const JournalContent = styled.div`
@@ -402,9 +407,9 @@ const JournalContent = styled.div`
 `;
 
 const JournalContentInput = styled.textarea`
-    width: 600px;
-    max-width: 600px;
-    height: 20rem;
+    width: 97%;
+    max-width: 97%;
+    height: 16.5rem;
     border: 1px solid #CACACA;
     border-radius: 10px;
     resize: none;
@@ -412,5 +417,5 @@ const JournalContentInput = styled.textarea`
     padding-left: 20px;
     font-size: 14px;
     font-family: Nanum;
-    word-wrap: break-word; /* 수정 */
+    word-wrap: break-word; 
 `;

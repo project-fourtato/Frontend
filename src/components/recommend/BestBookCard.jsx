@@ -41,10 +41,26 @@ function BestBookCard(props) {
     fetchData();
   }, []);
 
-  const goDetailPage = (uid, isbn) => {
-    navigate(`/newDetail`, {
-      state: {uid, isbn},
-    });
+  const goDetailPage = async (uid, isbn) => {
+    try{
+      const url = 'http://localhost:8080/booksState/uid='+uid+'&isbn='+isbn;
+      const response = await axios.get(url);
+      const responseData = response.data;
+      // console.log(responseData);
+      if(responseData ===''){
+        navigate(`/newDetail`, {
+          state: { uid, isbn },
+        });
+      }
+      else {
+        const bid = responseData.userbid;
+        navigate(`/myDetail`, {
+          state: { uid, isbn, bid },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Container>

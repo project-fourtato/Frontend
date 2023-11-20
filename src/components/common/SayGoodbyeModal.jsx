@@ -72,8 +72,9 @@ function SayGoodbyeModal({ setShowModal, ...props }) {
             <Title>BOOKER, 정말 회원탈퇴 하시려구요..?</Title>
           </TitleContainer>
           <SubTextContainer>
-            <SubText>BOOKER 정말 좋은데,,</SubText>
-            <SubText>그래도..! 탈퇴하시려면 해당 문구를 따라 적어주세요!</SubText>
+            {/* <SubText>BOOKER 정말 좋은데,,</SubText> */}
+            {/* <SubText>그래도..! 탈퇴하시려면 해당 문구를 따라 적어주세요!</SubText> */}
+            <SubText>탈퇴를 원하시다면 해당 문구를 따라 적어주세요.</SubText>
           </SubTextContainer>
           <GoodbyeBoxContainer>
             <p>저는 BOOKER를 탈퇴하겠습니다.</p>
@@ -118,10 +119,8 @@ const ModalContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
+    padding-left : 5%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
     width: 500px;
     > svg {
         font-size: 30px;
@@ -132,23 +131,23 @@ const TitleContainer = styled.div`
 const Title = styled.h2`
     color: #000;
 font-weight: bold;
-font-family: Inter;
 font-size: 24px;
 margin-top: 5px;
 `;
 
 const SubTextContainer = styled.div`
     display: flex;
+    padding-left : 5%;
     flex-direction: column;
     /* align-items: center; */
     justify-content: center;
     width: 500px;
-    margin: 50px 0 20px;
+    margin: 40px 0 5px;
 `;
 
 const SubText = styled.p`
+padding-bottom : 5px;
 color: #000;
-font-family: Inter;
 font-size: 16px;
 font-style: normal;
 font-weight: 600;
@@ -166,7 +165,6 @@ padding: 20px 30px;
 margin-bottom: 30px;
 >p{
     color: #000;
-font-family: Inter;
 font-size: 18px;
 font-style: normal;
 font-weight: 600;
@@ -205,7 +203,6 @@ border-radius: 8px;
 border: 1px solid #CACACA;
 background: #5f749f;
 color: #fff;
-font-family: Inter;
 font-style: normal;
 font-weight: 600;
 line-height: normal;

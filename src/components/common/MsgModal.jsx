@@ -613,7 +613,12 @@ const MessageTitle = styled.div`
 `;
 
 const MessageContents = styled.div`
+    max-width : 300px;
     font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
     /* margin-bottom: 10px; */
 `;
 
@@ -671,10 +676,11 @@ const DetailMsgImgContainer = styled.div`
     align-items: center;
     margin-bottom: 15px;
     >img{
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
     }
+    margin-left : 10px;
 `
 
 const MessageDetilTitle = styled.div`
@@ -687,6 +693,7 @@ const MessageDetilTitle = styled.div`
     >span {
         color: #7283A6;
     }
+    word-wrap:break-word; 
 `
 
 const MessageDetailContents = styled.p`
@@ -694,18 +701,25 @@ const MessageDetailContents = styled.p`
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
-    line-height: 50px;
+    line-height: 140%;
     border-bottom: 1px solid #B8B8B8;
     padding: 5px 10px;
+    word-wrap:break-word; 
+    
 `
 
 const MainTextMsg = styled.p`
+    
+    overflow-x: hidden;
+    max-height : 200px;
+    overflow-y: scroll;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
     line-height: 155%;
     margin-top: 10px;
     padding: 10px; 
+    word-wrap:break-word; 
 `
 
 const ButtonContainer = styled.div`
