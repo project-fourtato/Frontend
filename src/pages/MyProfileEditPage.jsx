@@ -17,7 +17,9 @@ function MyProfileEditPage(props) {
   return (
     <Container>
       <NickName setImage={setFormData} setUserNickname={setNickname} setUserMessage={setUserMessage} nickname={nickname} userMessage={userMessage}  />
-      <MiddleLine/>
+      {
+        (profileSession !== null) ? <MiddleLine2 /> : <MiddleLine />
+      }
       {
         (profileSession !== null) ? <Setting formData={formData} nickname={nickname} userMessage={userMessage} />
         : <Setting formData={formData} nickname={nickname} userMessage={userMessage} uid={location.state.idValue} setImage={setFormData}  />
@@ -44,3 +46,10 @@ const MiddleLine = styled.div`
   background-color: #DBDBDB;
   margin: 0 40px; 
 `;
+
+const MiddleLine2 = styled.div`
+  width: 0.1rem;         
+  height: 550px;     
+  background-color: #DBDBDB;
+  margin: 0 40px; 
+`

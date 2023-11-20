@@ -100,7 +100,6 @@ const IndexBox = styled.div``;
 
 const ContentText = styled.p`
   color: #000;
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;

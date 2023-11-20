@@ -280,6 +280,7 @@ const BookDetailContainer = styled.div`
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  padding-top: 2px;
   `;
 
   const DropdownBox = styled.div`

@@ -80,6 +80,7 @@ const UserImgBox = styled.img`
   margin-bottom: 40px;
   width: 85px;
   height: 85px;
+  border-radius: 50%;
 `;
 
 const UserInfoOutDiv = styled.div`
@@ -102,10 +103,9 @@ const UserTitleText = styled.h5`
 
 const UserSpeechBox = styled.div`
   position: relative;
-  background: #37d15d;
+  background: #5f749f;
   border-radius: 1em;
   padding: 1em 5em;
-  height: 0.8rem;
   &::after {
     content: "";
     position: absolute;
@@ -114,7 +114,7 @@ const UserSpeechBox = styled.div`
     width: 0;
     height: 0;
     border: 1.719em solid transparent;
-    border-right-color: #37d15d;
+    border-right-color: #5f749f;
     border-left: 0;
     border-bottom: 0;
     margin-top: -1.2em;
