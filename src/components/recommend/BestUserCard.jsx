@@ -104,7 +104,7 @@ const TitleText = styled.h5`
 const UserListBox = styled.div`
   display: flex;
   border-bottom: 2px solid #e0e0e0;
-  padding-left: 8px;
+  padding-left: 6px;
   margin-bottom: 25px;
   margin-top: 20px;
   cursor: pointer;
@@ -115,20 +115,20 @@ const UserListBox = styled.div`
 `;
 
 const UserImgBox = styled.div`
-  margin-right: 25px;
+  margin-right: 17px;
   margin-bottom: 40px;
 `;
 
 const UserImg = styled.img`
   min-width:75px;
   min-height: 75px;
-  width: 75px;
-  height: 75px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
 `;
 
 const UserInfoOutDiv = styled.div`
-  margin-top: 4px;
+  margin-top: 6px;
 `;
 
 const UserTitleText = styled.h5`
@@ -149,7 +149,8 @@ const TagContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 2.1rem;
+  height: 2rem;
+  line-height: 1.8rem;
   padding-bottom: 0.3rem;
 `;
 
@@ -158,12 +159,11 @@ const Tagbox = styled.p`
   border: 1px solid #c1c1c1;
   background: #fff;
   text-align: center;
-  padding: 10px 10px;
-  width: 3.5rem;
+  padding: 0 13px 0 13px;/
   color: #000;
   font-size: 11px;
   font-style: normal;
   font-weight: 700;
-  margin-right: 10px;
+  margin-right: 5px;
   margin-top: 3px;
 `;

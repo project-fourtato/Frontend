@@ -234,7 +234,7 @@ const DropdownMenu = styled.div`
   background-color: #fff;
   border: 1px solid #c1c1c1;
   border-radius: 8px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
   z-index: 1;
   min-width: 157px;
 `;
@@ -243,10 +243,10 @@ const DropdownItem = styled.p`
   padding: 12px 20px;
   margin: 0;
   color: #000;
-  font-family: Inter;
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  text-align: center;
 `;

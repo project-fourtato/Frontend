@@ -402,9 +402,9 @@ const JournalContent = styled.div`
 `;
 
 const JournalContentInput = styled.textarea`
-    max-width:97%;
-    width: 97%;
-    height: 16.5rem;
+    width: 600px;
+    max-width: 600px;
+    height: 20rem;
     border: 1px solid #CACACA;
     border-radius: 10px;
     resize: none;
@@ -412,4 +412,5 @@ const JournalContentInput = styled.textarea`
     padding-left: 20px;
     font-size: 14px;
     font-family: Nanum;
+    word-wrap: break-word; /* 수정 */
 `;
