@@ -106,7 +106,7 @@ const NewBookDetailPage = (props) => {
             <h2>{firstPart}</h2>
             <h5>{secondPart}</h5>
             <p>{bookData.author}</p>
-            <p>{bookData.publisher} | {bookData.pubDate}</p>
+            <p className="p2">{bookData.publisher} | {bookData.pubDate}</p>
             <ProgressContainer>
               <DropdownMenu>
                 <DropdownItem onClick={() => handleDropdownItemClick("책 추가하기")}>
@@ -153,19 +153,21 @@ const BookDetailBox = styled.div`
 `;
 
 const BookImg = styled.img`
-  margin-right: 1.6rem;
-  width: 27%;
+  margin-right: 1.3rem;
+  width: 30%;
+  height: 190px;
+  border-radius: 10px;
 `
 
 const BookDetailTextBox = styled.div`
-  margin-top: 15px;
+  margin-top: 6px;
   width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   > h2 {
     color: #142343;
-    font-size: 20px;
+    font-size: 19px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -173,18 +175,21 @@ const BookDetailTextBox = styled.div`
   }
   > h5 {
     color: #000;
-    font-size: 17px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
   > p {
     color: #000;
-    font-size: 14px;
+    font-size: 13px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+  }
+  .p2 {
+    margin-top: 3px;
   }
 `;
 
@@ -192,10 +197,8 @@ const ProgressContainer = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
-  /*margin-top : 15px;*/
-  margin-top: 20px;
+  margin-top: 15px;
   position: relative;
-
 `;
 
 const ProgressBox = styled.div`
@@ -232,11 +235,11 @@ const DropdownMenu = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  border: 1px solid #c1c1c1;
+  border: 1px solid #DBDBDB;
   border-radius: 8px;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 2px 2px rgba(0,0,0,0.23);
   z-index: 1;
-  min-width: 157px;
+  min-width: 150px;
 `;
 
 const DropdownItem = styled.p`
@@ -249,4 +252,5 @@ const DropdownItem = styled.p`
   line-height: normal;
   cursor: pointer;
   text-align: center;
+  width: 116px;
 `;

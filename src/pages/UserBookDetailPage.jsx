@@ -76,7 +76,7 @@ const UserBookDetailPage = (props) => {
             <h2>{firstPart}</h2>
             <h5>{secondPart}</h5>
             <p>{bookData.author}</p>
-            <p>{bookData.publisher} | {bookData.pubDate}</p>
+            <p className="p2">{bookData.publisher} | {bookData.pubDate}</p>
             <ProgressContainer>
               <DropdownMenu>
                 <DropdownItem>
@@ -128,76 +128,79 @@ const BookDetailBox = styled.div`
 
 const BookImg = styled.img`
   margin-right: 1.6rem;
-  width: 27%;
+  width: 30%;
+  border-radius: 10px;
 `
 
 const BookDetailTextBox = styled.div`
-  margin-top: 15px;
-  width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  > h2 {
-    color: #142343;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    margin-bottom: 5px;
-  }
-  > h5 {
-    color: #000;
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    margin-bottom: 14px;
-  }
-  > p {
-    color: #000;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
+margin-top: 6px;
+width: 400px;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+> h2 {
+  color: #142343;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 5px;
+}
+> h5 {
+  color: #000;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+> p {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.p2 {
+  margin-top: 3px;
+}
 `;
 
 const ProgressContainer = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
-  /*margin-top : 15px;*/
-  margin-top: 20px;
+  margin-top : 15px;
   position: relative;
 
 `;
 
-const ProgressBox = styled.div`
-position: relative;
-border-radius: 10px;
-border: 1px solid #c1c1c1;
-background: #fff;
-text-align: center;
-padding: 12px 20px;
-min-width: 120px;
-color: #000;
-font-size: 15px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-margin-right: 10px;
-cursor: pointer;
-&::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  border-style: solid;
-  border-width: 6px 6px 0;
-  border-color: #000 transparent transparent transparent;
-}
-`;
+// const ProgressBox = styled.div`
+// position: relative;
+// border-radius: 10px;
+// border: 1px solid #c1c1c1;
+// background: #fff;
+// text-align: center;
+// padding: 12px 20px;
+// min-width: 150px;
+// color: #000;
+// font-size: 15px;
+// font-style: normal;
+// font-weight: 700;
+// line-height: normal;
+// margin-right: 10px;
+// cursor: pointer;
+// &::after {
+//   content: "";
+//   position: absolute;
+//   top: 50%;
+//   right: 10px;
+//   transform: translateY(-50%);
+//   border-style: solid;
+//   border-width: 6px 6px 0;
+//   border-color: #000 transparent transparent transparent;
+// }
+// `;
 
 const DropdownMenu = styled.div`
   position: absolute;
@@ -210,7 +213,7 @@ const DropdownMenu = styled.div`
   border-radius: 8px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  min-width: 157px;
+  min-width: 150px;
 `;
 
 const DropdownItem = styled.p`
@@ -218,10 +221,11 @@ const DropdownItem = styled.p`
   padding: 12px 20px;
   margin: 0;
   color: #000;
-  font-family: Inter;
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  text-align: center;
+  width: 116px;
 `;

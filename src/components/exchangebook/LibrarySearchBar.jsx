@@ -164,16 +164,25 @@ const SelectBox = styled.div`
 
 const Menu = styled.div`
   position: absolute;
-  top: 100%;
+  top: 101%;
   left: 0;
-  width: 100%;
+  width: 98%;
   background-color: #FFF;
   border: 1px solid #828282;
-  border-top: none;
-  border-radius: 0 0 10px 10px;
+  border-radius: 7px;
   z-index: 1;
   max-height: 200px;
   overflow-y: auto; 
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(23, 35, 65, 0.8);
+    border-radius: 10px;
+  }
 `;
 
 const MenuItem = styled.div`

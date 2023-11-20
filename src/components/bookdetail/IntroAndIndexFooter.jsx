@@ -4,7 +4,7 @@ import { FaRegFolder } from "react-icons/fa";
 import { BiSolidBookAlt } from "react-icons/bi";
 import { GrFormNext } from "react-icons/gr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faFolder, faChevronRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import "../../App.css"
 import { useEffect } from "react";
 
@@ -41,7 +41,7 @@ function IntroAndIndexFooter(props) {
 
       <IntroBookBox>
         <TitleText onClick={() => setIsIntroExpanded(!isIntroExpanded)}>
-          <FontAwesomeIcon icon={faChevronRight} className="icon-bookdetail-modal" />
+          <FontAwesomeIcon icon={(isIntroExpanded) ? faChevronDown : faChevronRight} className="icon-bookdetail-modal" />
           책 소개
         </TitleText>
         {isIntroExpanded && <ContentText>{description}</ContentText>}
@@ -67,7 +67,7 @@ const IntroBoxContainer = styled.div`
 `;
 const TitleText = styled.h5`
   color: #000;
-  font-size: 20px;
+  font-size: 19px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -75,6 +75,15 @@ const TitleText = styled.h5`
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  &:last-child {
+    &:hover {
+      color: #5F749F;
+      >svg {
+        color: #5F749F;
+      }
+    }
+  }
 `;
 
 const CategoryBox = styled.div`
@@ -99,7 +108,6 @@ const IntroBookBox = styled.div`
 const IndexBox = styled.div``;
 
 const ContentText = styled.p`
-  color: #000;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import IntroAndIndexFooter from "../components/bookdetail/IntroAndIndexFooter";
 import ReviewBox from "../components/bookdetail/ReviewBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faStore, faStoreSlash, faBook, faBookOpenReader, faSquareCheck, faHeart, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faStore, faStoreSlash, faBook, faBookOpenReader, faSquareCheck, faHeart, faTrashCan, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import swal from 'sweetalert';
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -164,10 +164,13 @@ const MyBookDetailPage = (props) => {
             <h2>{firstPart}</h2>
             <h5>{secondPart}</h5>
             <p>{bookData.author}</p>
-            <p>{bookData.publisher} | {bookData.pubDate}</p>
+            <p className="p2">{bookData.publisher} | {bookData.pubDate}</p>
             <ProgressContainer>
               <ProgressBox onClick={() => setIsDropdownVisible(!isDropdownVisible)}>
-                {selectedOption}
+              <FontAwesomeIcon icon={(selectedOption === '읽기 전') ? faBook : 
+                                      (selectedOption === '읽고 싶은 책') ? faHeart :
+                                      (selectedOption === '읽는 중') ? faBookOpenReader :
+                                      (selectedOption === '독서 완료') ? faSquareCheck : ""} />{selectedOption}
                 {isDropdownVisible && (
                   <DropdownMenu>
                     <DropdownItem onClick={() => handleDropdownItemClick(0)}>
@@ -211,7 +214,6 @@ const BookDetailContainer = styled.div`
 
 const BookDetailInnerContainer = styled.div`
   display: flex;
-
 `;
 
 const BookDetailBox = styled.div`
@@ -228,49 +230,51 @@ const BookDetailBox = styled.div`
 `;
 
 const BookImg = styled.img`
-  margin-right: 1.6rem;
-  width: 27%;
+margin-right: 1.3rem;
+width: 30%;
+border-radius: 10px;
 `
 
 const BookDetailTextBox = styled.div`
-  margin-top: 15px;
-  width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  > h2 {
-    color: #142343;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    margin-bottom: 5px;
-  }
-  > h5 {
-    color: #000;
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    margin-bottom: 14px;
-  }
-  > p {
-    color: #000;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
+margin-top: 6px;
+width: 400px;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+> h2 {
+  color: #142343;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 5px;
+}
+> h5 {
+  color: #000;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+> p {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.p2 {
+  margin-top: 3px;
+}
 `;
 
 const ProgressContainer = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
-  /*margin-top : 15px;*/
-  margin-top: 20px;
+  margin-top : 15px;
   position: relative;
-
 `;
 
 const ProgressBox = styled.div`
@@ -279,8 +283,8 @@ border-radius: 10px;
 border: 1px solid #c1c1c1;
 background: #fff;
 text-align: center;
-padding: 12px 20px;
-min-width: 120px;
+padding: 12px 25px 12px 20px;
+min-width: 115px;
 color: #000;
 font-size: 15px;
 font-style: normal;
@@ -298,6 +302,9 @@ cursor: pointer;
   border-width: 6px 6px 0;
   border-color: #000 transparent transparent transparent;
 }
+>svg {
+  margin-right: 10px;
+}
 `;
 
 const DropdownMenu = styled.div`
@@ -307,21 +314,27 @@ const DropdownMenu = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  border: 1px solid #c1c1c1;
+  border: 1px solid #DBDBDB;
   border-radius: 8px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px rgba(0,0,0,0.23);
   z-index: 1;
-  min-width: 157px;
+  min-width: 150px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 `;
 
 const DropdownItem = styled.p`
   padding: 12px 20px;
   margin: 0;
   color: #000;
-  font-family: Inter;
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  text-align: center;
+  width: 116px;
+  >svg {
+    margin-right: 7px;
+  }
 `;
