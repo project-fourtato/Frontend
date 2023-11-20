@@ -119,14 +119,17 @@ const UserSpeechBox = styled.div`
     border-bottom: 0;
     margin-top: -1.2em;
     margin-left: -0.519em;
+    
   }
 `;
 
 const UserSpeechBoxText = styled.h5`
+  max-width : 260px;
   color: #fff;
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
-  line-height: 80%;
+  line-height: 130%;
   letter-spacing: -0.17px;
+  word-wrap:break-word; 
 `;

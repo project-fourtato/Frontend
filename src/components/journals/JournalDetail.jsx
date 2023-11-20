@@ -156,6 +156,8 @@ const ImagePreview = styled.img`
     border-radius: 10px;
 `;
 const JournalDetailTitle = styled.div`
+    overflow : auto;
+    max-width : 600px;
     background-color: white;
     height: 30px;
     padding: 10px 20px;
@@ -165,9 +167,11 @@ const JournalDetailTitle = styled.div`
     border-radius: 10px;
     box-shadow: 2px 2px rgba(0,0,0,0.16), 1px 2px 2px rgba(0,0,0,0.23);
     margin-bottom: 30px;
+    word-wrap:break-word; 
 `
 
 const JournalDateilContent = styled.div`
+    max-width : 600px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 2px 2px rgba(0,0,0,0.16), 1px 2px 2px rgba(0,0,0,0.23);
@@ -175,6 +179,7 @@ const JournalDateilContent = styled.div`
     font-size: 17px;
     height: 16.5rem;
     overflow: auto;
+    word-wrap:break-word; 
 `
 
 const JournalDateTimeDiv = styled.div`

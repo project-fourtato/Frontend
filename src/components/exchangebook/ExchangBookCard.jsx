@@ -51,9 +51,9 @@ function ExchangBookCard(props) {
     )
   }
   let a = "";
-  // if(libraryList.length == 0 ){
-  //   a = "해당 지역의 도서관에는 검색하신 책이 없어요😢";
-  // }
+  if(libraryList.length == 0 ){
+    a = "해당 지역의 도서관에는 검색하신 책이 없어요😢";
+  }
   return (
     <>
       <AnnouncementTitle>{a}</AnnouncementTitle>

@@ -393,6 +393,7 @@ const JournalTitleInput = styled.input`
     border: 1px solid #CACACA;
     border-radius: 10px;
     padding-left: 20px;
+    word-wrap:break-word; 
 `;
 
 const JournalContent = styled.div`
