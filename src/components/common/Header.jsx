@@ -121,7 +121,7 @@ const Header = () => {
                 onClick={() => {
                   goExchangePage();
                 }}
-              >책 교환</HeaderMenuText>
+              >책 거래</HeaderMenuText>
             </HeaderMenuContainer>
           )}
           {isLogin.isLogin ? <Search /> : null}
