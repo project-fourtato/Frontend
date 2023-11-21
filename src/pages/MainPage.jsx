@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import backgoundimg from "../assets/booker-main-v3.gif";
 import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -24,43 +24,57 @@ function MainPage(props) {
   const [useriamgeUrl, setUseriamgeUrl] = useState('');
   const setLoginState = useSetRecoilState(loginState);
   const checkForSession = () => {
-    if(p) {
-      setLoginState({isLogin: true});
+    if (p) {
+      setLoginState({ isLogin: true });
     }
   };
   useEffect(() => {
-    (async() => {
-      try{
-        const url = 'http://localhost:8080/profile/'+p.uid;
+    (async () => {
+      try {
+        const url = 'http://localhost:8080/profile/' + p.uid;
         const response = await axios.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);
         checkForSession();
-      } catch(error) {
+      } catch (error) {
         sessionStorage.removeItem("profile");
       }
-    }) ();
+    })();
   }, [nickname]);
 
-    useEffect(() => {
-    (async() => {
-      try{
-        const url = 'http://localhost:8080/profile/'+p.uid;
+  useEffect(() => {
+    (async () => {
+      try {
+        const url = 'http://localhost:8080/profile/' + p.uid;
         const response = await axios.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);
         checkForSession();
-      } catch(error) {
+      } catch (error) {
         sessionStorage.removeItem("profile");
       }
-    }) ();
+    })();
   }, [nickname]);
 
+  const images = [main1, main2, main3, main4, main5];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentImageIndex]);
+
+  const handleArrowClick = () => {
+    const nextIndex = (currentImageIndex + 1) % images.length;
+    setCurrentImageIndex(nextIndex);
+  };
 
   // console.log('isLogin',isLogin)
   return (
     <>
-      {isLogin.isLogin  ? (
+      {isLogin.isLogin ? (
         <>
           <MainContainer>
             <MainTitleContainer>
@@ -75,17 +89,25 @@ function MainPage(props) {
         </>
       ) : (
         <>
-        <GlobalStyle></GlobalStyle>
-        <BackgroundImgeOutDiv>
-        <Backgoundimg src={backgoundimg} type="video/mp4"/>
-        <Backgoundsub src={main1} type="video/mp4"/>
-        <Backgoundsub src={main2} type="video/mp4"/>
-        <Backgoundsub src={main3} type="video/mp4"/>
-        <Backgoundsub src={main4} type="video/mp4"/>
-        <Backgoundsub src={main5} type="video/mp4"/>
-        </BackgroundImgeOutDiv>
+          <GlobalStyle></GlobalStyle>
+          <BackgroundImgeOutDiv>
+            <Backgoundimg src={backgoundimg} type="video/mp4" />
+            {images.map((image, index) => (
+              <Backgoundsub
+                key={index}
+                id={`main${index + 1}`}
+                src={image}
+                type="video/mp4"
+                ref={index === currentImageIndex ? scrollRef : null}
+              />
+            ))}
+            <ArrowButton onClick={handleArrowClick}>
+              <ArrowIcon>&#8595;</ArrowIcon>
+            </ArrowButton>
+          </BackgroundImgeOutDiv>
         </>
-      )}
+      )
+      }
     </>
   );
 }
@@ -159,3 +181,19 @@ const MainTitleText = styled.h5`
 const NicknameSpan = styled.span`
   color: #5F749F;
 `
+const ArrowButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #afafaf;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+`;
+
+const ArrowIcon = styled.span`
+  font-size: 50px;
+`;
