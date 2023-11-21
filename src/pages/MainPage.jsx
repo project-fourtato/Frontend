@@ -14,6 +14,8 @@ import axios from "axios";
 import "../../src/App.css";
 import Session from 'react-session-api';
 import { useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 function MainPage(props) {
   const profile = sessionStorage.getItem("profile");
@@ -67,6 +69,7 @@ function MainPage(props) {
   }, [currentImageIndex]);
 
   const handleArrowClick = () => {
+    console.log(currentImageIndex);
     const nextIndex = (currentImageIndex + 1) % images.length;
     setCurrentImageIndex(nextIndex);
   };
@@ -102,7 +105,7 @@ function MainPage(props) {
               />
             ))}
             <ArrowButton onClick={handleArrowClick}>
-              <ArrowIcon>&#8595;</ArrowIcon>
+              <ArrowIcon><FontAwesomeIcon icon={faChevronDown} /></ArrowIcon>
             </ArrowButton>
           </BackgroundImgeOutDiv>
         </>
@@ -183,17 +186,40 @@ const NicknameSpan = styled.span`
 `
 const ArrowButton = styled.button`
   position: fixed;
-  bottom: 20px;
+  bottom: 35px;
   right: 20px;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  color: #afafaf;
+  color: rgba(32, 35, 63, 0.2);
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999;
+  width: 100px;
+  height: 20px;
+  animation: bounce 2s infinite;
+  @keyframes bounce {
+    0% {
+      bottom: 20px;
+    }
+    50% {
+      bottom: 40px;
+       height: 20px;
+    }
+   
+    95% {
+      bottom: 20px;
+    }
+    100% {
+      bottom: 20px;
+    }
+  }
 `;
 
 const ArrowIcon = styled.span`
-  font-size: 50px;
+  font-size: 35px;
+  transition: all 0.3s ease-out;
+  &:hover {
+    color: rgb(32, 35, 63);
+  }
 `;
