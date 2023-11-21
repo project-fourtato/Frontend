@@ -3,6 +3,11 @@ import backgoundimg from "../assets/booker-main-v3.gif";
 import { styled, createGlobalStyle } from "styled-components";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../recoil/atom";
+import main1 from "../assets/main1.gif";
+import main2 from "../assets/main2.gif";
+import main3 from "../assets/main3.gif";
+import main4 from "../assets/main4.gif";
+import main5 from "../assets/main5.gif";
 import BookListCard from "../components/main/BookListCard";
 import MyPersonListCard from "../components/main/MyPersonListCard";
 import axios from "axios";
@@ -73,6 +78,11 @@ function MainPage(props) {
         <GlobalStyle></GlobalStyle>
         <BackgroundImgeOutDiv>
         <Backgoundimg src={backgoundimg} type="video/mp4"/>
+        <Backgoundsub src={main1} type="video/mp4"/>
+        <Backgoundsub src={main2} type="video/mp4"/>
+        <Backgoundsub src={main3} type="video/mp4"/>
+        <Backgoundsub src={main4} type="video/mp4"/>
+        <Backgoundsub src={main5} type="video/mp4"/>
         </BackgroundImgeOutDiv>
         </>
       )}
@@ -100,6 +110,11 @@ const Backgoundimg = styled.img`
   background-color: rgb(248, 249, 193);
   display: inline-block;
   width: 70%;
+`;
+const Backgoundsub = styled.img`
+  background-color: rgb(248, 249, 193);
+  display: inline-block;
+  width: 90%;
 `;
 
 const MainContainer = styled.div`
