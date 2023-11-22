@@ -47,7 +47,7 @@ function ReviewBox(props) {
   useEffect(() => {
     const JournalsData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/journalsList/`+userbid);
+        const response = await axios.get(`http://10.50.242.254:8080/journalsList/`+userbid);
         // console.log(response);
         const data = response.data.data;
         // console.log(data);

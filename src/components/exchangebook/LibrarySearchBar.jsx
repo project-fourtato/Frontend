@@ -30,7 +30,7 @@ function LibrarySearchBar(props) {
   const SearchBtnClick = () => {
     (async() => {
       try{
-        const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&isbn='+lastSegment;
+        const url = 'http://10.50.242.254:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&isbn='+lastSegment;
         const response = await axios.get(url);
         // console.log(url);
         setMsgList(response.data.data);

@@ -43,7 +43,7 @@ function JournalDetail(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = "http://localhost:8080/journals/" + jid;
+                const url = "http://10.50.242.254:8080/journals/" + jid;
                 const response = await axios.get(url);
                 setJournalResponse(response.data);
             } catch (error) {
@@ -68,7 +68,7 @@ function JournalDetail(props) {
     const handleDeleteButton = async () => {
         (async () => {
             try {
-                const url = "http://localhost:8080/journals/" + jid + "/delete";
+                const url = "http://10.50.242.254:8080/journals/" + jid + "/delete";
                 
                 const response = await axios.post(url);
 

@@ -15,7 +15,7 @@ function MyPersonListCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/follow/followingsLatestJournals/' + p.uid;
+        const url = 'http://10.50.242.254:8080/follow/followingsLatestJournals/' + p.uid;
         const response = JSON.parse((await axios.get(url)).request.response).followData;
         setProfileResponse(response);        
       } catch(error) {

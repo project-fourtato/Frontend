@@ -20,7 +20,7 @@ function UserSearchList(props) {
       try {
         // console.log(searchValue);
         const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
-        const url = 'http://localhost:8080/profile/search/'+stringWithoutSpaces;
+        const url = 'http://10.50.242.254:8080/profile/search/'+stringWithoutSpaces;
         // console.log(url);
         const response = await axios.get(url);
         const responseData = JSON.parse(response.request.responseText);

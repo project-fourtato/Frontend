@@ -25,7 +25,7 @@ function BestBookCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/bestseller';
+        const url = 'http://10.50.242.254:8080/bestseller';
         const response = await axios.get(url);
         // console.log(response);
   
@@ -43,7 +43,7 @@ function BestBookCard(props) {
 
   const goDetailPage = async (uid, isbn) => {
     try{
-      const url = 'http://localhost:8080/booksState/uid='+uid+'&isbn='+isbn;
+      const url = 'http://10.50.242.254:8080/booksState/uid='+uid+'&isbn='+isbn;
       const response = await axios.get(url);
       const responseData = response.data;
       // console.log(responseData);

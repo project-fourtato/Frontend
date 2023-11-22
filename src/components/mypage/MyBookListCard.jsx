@@ -49,7 +49,7 @@ const MyBookListCard = (props) => {
         // console.log("자식");
         // console.log(selectedUserbid);
 
-        const url = 'http://localhost:8080/books/salestateUpdate/' + selectedUserbid;
+        const url = 'http://10.50.242.254:8080/books/salestateUpdate/' + selectedUserbid;
         const response = await axios.put(url, {
           bookstate: 1,
           salestate: selectedSaleState

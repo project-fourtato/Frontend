@@ -31,7 +31,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
         const fetchMessages = async () => {
             try {
                 // 받은 쪽지와 보낸 쪽지를 모두 담은 URL로 데이터를 가져옵니다.
-                const allMessagesUrl = 'http://localhost:8080/profile-directm/' + p.uid;
+                const allMessagesUrl = 'http://10.50.242.254:8080/profile-directm/' + p.uid;
                 const allMessagesResponse = await axios.get(allMessagesUrl);
 
 
@@ -61,7 +61,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
     const markMessageAsRead = async (messageId) => {
         try {
             // markMessageAsReadUrl를 적절히 수정해주세요.
-            const markMessageAsReadUrl = `http://localhost:8080/directmessages/mcheckUpdate/${messageId}`;
+            const markMessageAsReadUrl = `http://10.50.242.254:8080/directmessages/mcheckUpdate/${messageId}`;
             // UpdateMcheckRequest 객체를 생성하고 mcheck 값을 설정합니다.
             const updateMcheckRequest = {
                 mcheck: 1 // 혹은 원하는 값으로 설정해주세요.
@@ -70,7 +70,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
             await axios.put(markMessageAsReadUrl, updateMcheckRequest);
     
             // 읽은 상태로 표시한 후, 받은 쪽지와 보낸 쪽지 데이터를 다시 가져오는 작업 진행
-            const allMessagesUrl = 'http://localhost:8080/profile-directm/' + p.uid;
+            const allMessagesUrl = 'http://10.50.242.254:8080/profile-directm/' + p.uid;
             const allMessagesResponse = await axios.get(allMessagesUrl);
     
             // 받은 쪽지와 보낸 쪽지를 각각의 상태로 설정
@@ -142,7 +142,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
                 senderuid: currentMsg.recipientuid
             };
 
-            const sendMsgResponse = await axios.post('http://localhost:8080/directmessages/new', messageToSend);
+            const sendMsgResponse = await axios.post('http://10.50.242.254:8080/directmessages/new', messageToSend);
 
             if (sendMsgResponse.status === 200) {
                 swal({
@@ -222,7 +222,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
             };
             setCurrentMsg(messageToSend);
 
-            const sendMsgResponse = await axios.post('http://localhost:8080/directmessages/new', messageToSend);
+            const sendMsgResponse = await axios.post('http://10.50.242.254:8080/directmessages/new', messageToSend);
 
             if (sendMsgResponse.status === 200) {
                 swal({
@@ -253,7 +253,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
     const handleDelete = async (id, event) => {
         event.stopPropagation();
         try {
-            const deleteMsgResponse = await axios.post(`http://localhost:8080/directmessages/messageid=${id}/delete`);
+            const deleteMsgResponse = await axios.post(`http://10.50.242.254:8080/directmessages/messageid=${id}/delete`);
     
             if (deleteMsgResponse.status === 200) {
                 swal({

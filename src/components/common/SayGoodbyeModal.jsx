@@ -27,7 +27,7 @@ function SayGoodbyeModal({ setShowModal, ...props }) {
 
     const handleGoodbye = async () => {
       try {
-      const url = `http://localhost:8080/profile/`+userIdObject+`/delete`;
+      const url = `http://10.50.242.254:8080/profile/`+userIdObject+`/delete`;
       const response = await axios.post(url);
         const responseData = response.data;
         // console.log(responseData);

@@ -15,7 +15,7 @@ function FollowerCard(props) {
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followingsList/" + lastSegment);
+        const response = await axios.get("http://10.50.242.254:8080/follow/followingsList/" + lastSegment);
         // console.log(response.data);
         setFollowerList(response.data.data);
       } catch (error) {

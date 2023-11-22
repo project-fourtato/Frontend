@@ -44,7 +44,7 @@ function SignInCard(props) {
   const LoginEffect = () => {
     (async() => {
       try{
-        const url = 'http://localhost:8080/login/uid='+idValue+'&pw='+pwValue;
+        const url = 'http://10.50.242.254:8080/login/uid='+idValue+'&pw='+pwValue;
         const response = await axios.get(url);
         posts = response.data.uid;
         

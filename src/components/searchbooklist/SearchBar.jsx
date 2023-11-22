@@ -19,7 +19,7 @@ function ExchangeSearchBar(props) {
     try {
       // console.log(searchValue);
       const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
-      const url = 'http://localhost:8080/books/sale/searchOne/' + stringWithoutSpaces;
+      const url = 'http://10.50.242.254:8080/books/sale/searchOne/' + stringWithoutSpaces;
       const response = (await axios.get(url)).data.data;
       // console.log(url);
       // console.log("왜 안됑");
