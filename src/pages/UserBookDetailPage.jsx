@@ -33,7 +33,7 @@ const UserBookDetailPage = (props) => {
   useEffect(() => {
     const BookData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/books/booksDetail/` + isbn);
+        const response = await axios.get(`http://10.50.242.254:8080/books/booksDetail/` + isbn);
         // console.log(response);
         const data = response.data.data;
         const title = data.title;

@@ -33,7 +33,7 @@ function MainPage(props) {
   useEffect(() => {
     (async () => {
       try {
-        const url = 'http://localhost:8080/profile/' + p.uid;
+        const url = 'http://10.50.242.254:8080/profile/' + p.uid;
         const response = await axios.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);
@@ -47,7 +47,7 @@ function MainPage(props) {
   useEffect(() => {
     (async () => {
       try {
-        const url = 'http://localhost:8080/profile/' + p.uid;
+        const url = 'http://10.50.242.254:8080/profile/' + p.uid;
         const response = await axios.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);

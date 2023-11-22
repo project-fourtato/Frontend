@@ -21,7 +21,7 @@ const MyPage = (props) => {
     const UserData = async () => {
       try {
         // console.log("부모까지왔다");
-        const response = await axios.get(`http://localhost:8080/booksList/`+p.uid);
+        const response = await axios.get(`http://10.50.242.254:8080/booksList/`+p.uid);
         // console.log(response);
         const data = response.data.data;
         setMyBookList(data);

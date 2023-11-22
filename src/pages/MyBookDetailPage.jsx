@@ -32,7 +32,7 @@ const MyBookDetailPage = (props) => {
   useEffect(() => {
     const BookData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/books/booksDetail/`+isbn);
+        const response = await axios.get(`http://10.50.242.254:8080/books/booksDetail/`+isbn);
         // console.log(response);
         const data = response.data.data;
         // console.log(data);
@@ -69,7 +69,7 @@ const MyBookDetailPage = (props) => {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/booksState/uid=`+uid+`&isbn=`+isbn);
+        const response = await axios.get(`http://10.50.242.254:8080/booksState/uid=`+uid+`&isbn=`+isbn);
         const data = response.data;
         // console.log(data);
         const option = data.bookState;
@@ -102,7 +102,7 @@ const MyBookDetailPage = (props) => {
         (async() => {
           try{
             // console.log(userbid);
-            const url = 'http://localhost:8080/books/'+userbid+'/delete';
+            const url = 'http://10.50.242.254:8080/books/'+userbid+'/delete';
             const response = await axios.post(url, {
               "isbn" : isbn,
               "bookstate" : 0,
@@ -136,7 +136,7 @@ const MyBookDetailPage = (props) => {
     // console.log("들어오남");
     // console.log(option);
     try{
-      const url = 'http://localhost:8080/journals/bookstateUpdate/uid='+uid+'&isbn='+isbn;
+      const url = 'http://10.50.242.254:8080/journals/bookstateUpdate/uid='+uid+'&isbn='+isbn;
       const response = await axios.put(url, {
         bookstate: option, 
         salestate: 0
