@@ -22,7 +22,7 @@
 -   BE - 최지민 :  서재 / 책 검색 / 독서록
 
 ## 3. 프로젝트 시연영상 📌
-https://www.youtube.com/watch?v=Lj7Wr-x3Y0
+[https://www.youtube.com/watch?v=Lj7Wr-x3Y0](https://youtu.be/1n506S7Sv2E?si=jpLs5GTl-S3bkk4_)
 
 ## 4. 기술 스택 🛠
 ![img](https://github.com/project-fourtato/Backend_v3/assets/84323684/76d8421b-c17e-4f82-9018-1a97560aea6d)
