@@ -13,22 +13,26 @@ import Session from 'react-session-api';
 
 
 function SignInCard(props) {
-  const profile = sessionStorage.getItem("profile");
-  const p = JSON.parse(profile);
+  const p = null;
   const setLoginState = useSetRecoilState(loginState);
+  const navigate = useNavigate();
 
+
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  }
+  );
   ////뒤로가기 버튼을 통해 해당 페이지에 왔을 때 처리///////
-  const checkForSession = () => {
-    if(p) {
-      setLoginState({isLogin: true});
-    }
-  };
-  checkForSession();
-  sessionStorage.removeItem("profile");
+  // const checkForSession = () => {
+  //   if(p) {
+  //     setLoginState({isLogin: true});
+  //   }
+  // };
+  // checkForSession();
+  // sessionStorage.removeItem("profile");
 
 
   ///////////////////////////////////////////////////////
-  const navigate = useNavigate();
   //api
   let posts = "hello";
   const [idValue, setId] = useState('');
@@ -45,9 +49,9 @@ function SignInCard(props) {
     (async() => {
       try{
         const url = 'http://localhost:8080/login/uid='+idValue+'&pw='+pwValue;
-        const response = await axios.get(url);
+        const response = await axiosBaseURL.get(url);
         posts = response.data.uid;
-        
+        // console.log(response);
 
         if(typeof posts === "undefined"){
           swal({
