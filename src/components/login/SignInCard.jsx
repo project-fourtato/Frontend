@@ -13,6 +13,8 @@ import Session from 'react-session-api';
 
 
 function SignInCard(props) {
+  //일단 이 페이지는 세션으로 관리가 안되도록 수정했음
+  //나중에 필요하면 수정하도록
   const p = null;
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
@@ -48,28 +50,37 @@ function SignInCard(props) {
   const LoginEffect = () => {
     (async() => {
       try{
-        const url = 'http://localhost:8080/login/uid='+idValue+'&pw='+pwValue;
-        const response = await axiosBaseURL.get(url);
-        posts = response.data.uid;
-        // console.log(response);
-
-        if(typeof posts === "undefined"){
-          swal({
-            title: "로그인 실패했습니다.",
-            icon: "warning",
-            buttons: "확인",
-          }).then(() => {
-            setIsLogin({ isLogin: false });
-            navigate("/login");
-          })
-        }
-        else{
-          handleLogin();      
-        }
-
-        
+        const url = 'http://localhost:8080/login';
+        const response = await axiosBaseURL.post(url, {
+          id : idValue,
+          pw : pwValue
+        });
+        handleLogin();
       } catch(error) {
-        // console.log(error)
+        console.log(error);
+        if (error.response.status == 404){
+          if (error.response.data.message == "login 데이터가 존재하지 않는 회원입니다."){
+            swal({
+                  title: "로그인 실패했습니다.",
+                  icon: "warning",
+                  buttons: "확인",
+                }).then(() => {
+                  setIsLogin({ isLogin: false });
+                  navigate("/login");
+                })
+          }
+          else if(error.response.data.message == "회원정보를 입력하지 않은 회원입니다."){
+            swal({
+                  title: "회원가입을 완료하지 않았습니다.",
+                  text: "회원정보 입력 페이지로 이동합니다. \n (해당 ID로 회원가입을 원할 시 문의바랍니다.) ",
+                  icon: "warning",
+                  buttons: "확인",
+                }).then(() => {
+                  setIsLogin({ isLogin: false });
+                  navigate("/signup");
+                })
+              }
+        }
       }
     }) ();
   };
@@ -95,16 +106,13 @@ function SignInCard(props) {
   const handleLogin = () => {
     
     // 로그인 로직을 여기에 구현
-    
-    // console.log("로그인!");
+
     swal({
       title: "로그인 되었습니다.",
       icon: "success",
       buttons: "확인",
     }).then(() => {
       let profile = {"uid": idValue};
-      sessionStorage.setItem("profile", JSON.stringify(profile)); // 여기가 session 전달하는 부분
-      setIsLogin({ isLogin: true });
       navigate("/");
     })
   }

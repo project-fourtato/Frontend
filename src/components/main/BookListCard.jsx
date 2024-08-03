@@ -17,7 +17,7 @@ function BookListCard(props) {
   const [p, setProfile] = useState(-1);
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
-  const axiosBaseURL = axios.create({
+  const axiosBaseURL = axios.create({ //cors 해결
     withCredentials: true,
   });
   useEffect(() => {
