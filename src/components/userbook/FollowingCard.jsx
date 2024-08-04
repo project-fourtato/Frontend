@@ -10,14 +10,18 @@ function FollowerCard(props) {
   const [followerList, setFollowerList] = useState([]);
   const navigate = useNavigate();
   const lastSegment = props.lastSegment; //uid
-
+  
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  }
+  );
 
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/follow/followingsList/" + lastSegment);
+        const response = await axiosBaseURL.post("http://localhost:8080/follow/followingsList");
         // console.log(response.data);
-        setFollowerList(response.data.data);
+        setFollowerList(response.data);
       } catch (error) {
         // console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
       }
@@ -38,7 +42,7 @@ function FollowerCard(props) {
         <FollowingBox>팔로잉</FollowingBox>
       </FollowingContainer>
       {followerList.map((follower, index) => (
-        <BookListCardContainer key={index} onClick={() => studyPage(follower.toUserId)}>
+        <BookListCardContainer key={index} onClick={() => studyPage(follower.profileUid)}>
           <ProfileImage src={follower.userimageUrl} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>

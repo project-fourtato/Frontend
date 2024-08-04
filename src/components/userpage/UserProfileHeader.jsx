@@ -21,6 +21,10 @@ const UserProfileHeader = (props) => {
   const [count, setCount] = useState(0);
   const [FollowButtonText, setFollowButtonText] = useState("");
 
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  }
+  );
 
   const handleButtonClick = async () => {
     if (FollowButtonText === "팔로잉") { //팔로우 취소를 한다면
@@ -32,13 +36,20 @@ const UserProfileHeader = (props) => {
         .then(async (value) => {
           if (value) {
             try {
-              const url = 'http://localhost:8080/follow/delete?toUserId=' + p + '&fromUserId=' + pSession.uid;
-              const response = await axios.post(url);
+              const url = 'http://localhost:8080/follow/delete';
+              const response = await axiosBaseURL.post(url,{
+                toUserId : "0", //가짜
+                fromUserId : pSession.uid
+              });
               // console.log(response);
               const responseData = response.data;
               setCount(count + 1);
             } catch (error) {
-              // console.log(error);
+              swal({
+                title: "일시적으로 문제가 생겼습니다",
+                text: "다시 시도해주십시오",
+                icon: "error",
+              });
             }
           }
           else {
@@ -62,7 +73,7 @@ const UserProfileHeader = (props) => {
           if (value) {
             try {
               const url = 'http://localhost:8080/follow/new';
-              const response = await axios.post(url,{
+              const response = await axiosBaseURL.post(url,{
                 toUserId : "0", //가짜
                 fromUserId : pSession.uid
               });
@@ -87,14 +98,18 @@ const UserProfileHeader = (props) => {
     }
   };
 
+  
 
 
   //팔로우 유무 조회
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/follow/followCheck/toUserId=` + p + `&fromUserId=` + pSession.uid);
-        const data = response.data.data;
+        const response = await axiosBaseURL.post(`http://localhost:8080/follow/followCheck`,{
+          toUserId : "0", //가짜
+          fromUserId : pSession.uid
+        });
+        const data = response.data;
         if (data === true) {
           setFollowButtonText("팔로잉");
         }
