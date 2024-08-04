@@ -12,12 +12,17 @@ function MyPersonListCard(props) {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
   const [ProfileResponse, setProfileResponse] = useState([]);
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  }
+  );
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/follow/followingsLatestJournals/' + p.uid;
-        const response = JSON.parse((await axios.get(url)).request.response).followData;
-        setProfileResponse(response);        
+        const url = 'http://localhost:8080/follow/followingsLatestJournals/';
+        const response = await axiosBaseURL.post(url);
+        setProfileResponse(response.data);        
       } catch(error) {
         console.log(error);
       }
