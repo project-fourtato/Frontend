@@ -15,7 +15,6 @@ import Session from 'react-session-api';
 function SignInCard(props) {
   //일단 이 페이지는 세션으로 관리가 안되도록 수정했음
   //나중에 필요하면 수정하도록
-  const p = null;
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
 
@@ -24,14 +23,18 @@ function SignInCard(props) {
     withCredentials: true,
   }
   );
+
+  const profile = sessionStorage.getItem("profile");
+  const p = JSON.parse(profile);
+  
   ////뒤로가기 버튼을 통해 해당 페이지에 왔을 때 처리///////
-  // const checkForSession = () => {
-  //   if(p) {
-  //     setLoginState({isLogin: true});
-  //   }
-  // };
-  // checkForSession();
-  // sessionStorage.removeItem("profile");
+  const checkForSession = () => {
+    if(p) {
+      setLoginState({isLogin: true});
+    }
+  };
+  checkForSession();
+  sessionStorage.removeItem("profile");
 
 
   ///////////////////////////////////////////////////////
@@ -57,7 +60,6 @@ function SignInCard(props) {
         });
         handleLogin();
       } catch(error) {
-        console.log(error);
         if (error.response.status == 404){
           if (error.response.data.message == "login 데이터가 존재하지 않는 회원입니다."){
             swal({
@@ -112,7 +114,9 @@ function SignInCard(props) {
       icon: "success",
       buttons: "확인",
     }).then(() => {
+      setIsLogin({ isLogin: false });
       let profile = {"uid": idValue};
+      sessionStorage.setItem("profile", JSON.stringify(profile)); // sessionStorage에 저장(추후에 사용안하게 되면 삭제)
       navigate("/");
     })
   }
