@@ -29,7 +29,6 @@ function MainPage(props) {
   });
   const checkForSession = () => {
     if (p) {
-      console.log("뭐가 문제인겨");
       setLoginState({ isLogin: true });
     }
   };

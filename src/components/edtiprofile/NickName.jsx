@@ -24,15 +24,18 @@ function NickName(props) {
   const profileSession = sessionStorage.getItem("profile");
   const p = JSON.parse(profileSession);
 
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const url = 'http://localhost:8080/profile/' + p.uid;
-        const response = await axios.get(url);
+        const response = await axiosBaseURL.get(url);
         setProfileResponse(response.data);
         tempImage = response.data.useriamgeUrl;
       } catch (error) {
-        // console.log(error);
       }
     };
 
@@ -46,6 +49,7 @@ function NickName(props) {
     props.setUserNickname(profileResponse.nickname);
     props.setUserMessage(profileResponse.usermessage);
   }, [profileResponse]);
+
 
   useEffect(() => {
     if (selectedImage === null) {

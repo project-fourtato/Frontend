@@ -61,13 +61,18 @@ const UserProfileHeader = (props) => {
         .then(async (value) => {
           if (value) {
             try {
-              const url = 'http://localhost:8080/follow/new?toUserId=' + p + '&fromUserId=' + pSession.uid;
-              const response = await axios.post(url);
-              // console.log(response);
-              const responseData = response.data;
+              const url = 'http://localhost:8080/follow/new';
+              const response = await axios.post(url,{
+                toUserId : "0", //가짜
+                fromUserId : pSession.uid
+              });
               setCount(count + 1);
             } catch (error) {
-              // console.log(error);
+              swal({
+                title: "잠시 후 다시 시도해주세요!",
+                // text: "취소되었습니다.",
+                icon: "error",
+              });
             }
           }
           else {
@@ -88,12 +93,8 @@ const UserProfileHeader = (props) => {
   useEffect(() => {
     const UserData = async () => {
       try {
-        // console.log("userdata 제발 ㅗ디라~~");
         const response = await axios.get(`http://localhost:8080/follow/followCheck/toUserId=` + p + `&fromUserId=` + pSession.uid);
-        // console.log(response);
         const data = response.data.data;
-        // console.log(data);
-        // console.log(data)
         if (data === true) {
           setFollowButtonText("팔로잉");
         }
@@ -109,7 +110,6 @@ const UserProfileHeader = (props) => {
   }, [count]);
 
   useEffect(() => {
-    // console.log("바뀌는 걸 확인해야 해");
   }, [FollowButtonText]);
 
   const [profile, setProfile] = useRecoilState(profileState);
