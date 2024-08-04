@@ -20,7 +20,7 @@ function MyPersonListCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/follow/followingsLatestJournals/';
+        const url = 'http://localhost:8080/follow/followingsLatestJournals';
         const response = await axiosBaseURL.post(url);
         setProfileResponse(response.data);        
       } catch(error) {

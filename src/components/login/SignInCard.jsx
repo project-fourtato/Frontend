@@ -114,7 +114,7 @@ function SignInCard(props) {
       icon: "success",
       buttons: "확인",
     }).then(() => {
-      setIsLogin({ isLogin: false });
+      setIsLogin({ isLogin: true });
       let profile = {"uid": idValue};
       sessionStorage.setItem("profile", JSON.stringify(profile)); // sessionStorage에 저장(추후에 사용안하게 되면 삭제)
       navigate("/");

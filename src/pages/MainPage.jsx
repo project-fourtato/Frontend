@@ -45,8 +45,8 @@ function MainPage(props) {
         setLoginState({ isLogin: true });
         checkForSession();
       } catch (error) {
-        setLoginState({ isLogin: false });
-        navigate("/login");
+        // setLoginState({ isLogin: false });
+        // navigate("/login");
       }
     })();
   }, [nickname]);
