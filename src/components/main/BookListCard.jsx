@@ -13,31 +13,15 @@ import { loginState } from "../../recoil/atom";
 
 function BookListCard(props) {
   
-  //여기가 sessionStorage에서 profile 값 찾아왔던 것을 세션으로 수정한 부분////////
-  const [p, setProfile] = useState(-1);
+
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
   const axiosBaseURL = axios.create({ //cors 해결
     withCredentials: true,
   });
-  useEffect(() => {
-
-    const fetchData = async () => {
-      try{
-        const url = 'http://localhost:8080/login/id';
-        const response = await axiosBaseURL.get(url);
-        const responseData = response.data.data.uid;
-        setProfile(responseData);
-      } catch(error) {
-        setLoginState({isLogin: false});
-        navigate("/");
-      }
-    };
-    
-    fetchData();
-  }, []);
-  //////////////////////////////////////////////////////////////////////////////
-
+  
+  const pro = sessionStorage.getItem("profile");
+  const p = JSON.parse(pro); //session uid 가져오기
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeDropdownId, setActiveDropdownId] = useState(null);
@@ -50,10 +34,8 @@ function BookListCard(props) {
         const response = await axiosBaseURL.get(url);
         const responseData = JSON.parse(response.request.responseText).data;
         setBookListResponse(responseData);
-        // console.log(responseData);
         
       } catch(error) {
-        console.log(error);
       }
     };
 

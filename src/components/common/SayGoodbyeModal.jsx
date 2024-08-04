@@ -19,19 +19,22 @@ function SayGoodbyeModal({ setShowModal, ...props }) {
     useEffect(() => {
       const setData = () => {
         setUserId(props.userId);
-        // console.log("userId:", props.userId); // userId 값 확인
       };
       setData();
     }, [props.userId]);
   
 
+    const axiosBaseURL = axios.create({
+      withCredentials: true,
+    }
+    );
+
     const handleGoodbye = async () => {
       try {
-      const url = `http://localhost:8080/profile/`+userIdObject+`/delete`;
-      const response = await axios.post(url);
+      const url = `http://localhost:8080/profile/delete`;
+      const response = await axiosBaseURL.post(url);
         const responseData = response.data;
-        // console.log(responseData);
-        if(responseData==="Profile and associated data deleted successfully"){
+        if(responseData==="Remove Success"){
             swal({
             title: "탈퇴되었습니다",
             text: "지금까지 BOOKER를 이용해주셔서 감사합니다.",
@@ -40,20 +43,16 @@ function SayGoodbyeModal({ setShowModal, ...props }) {
           });
           setShowModal(false);
           setLoginState({isLogin: false});
-          // console.log("isLogin false");
           navigate("/");
         }
-        else {
-          // console.log("프로필 삭제 중 오류가 발생했습니다:");
+      } catch(error) {
+        console.log(error);
           swal({
             title: "오류",
             text: "프로필 삭제 중에 오류가 발생했습니다. 나중에 다시 시도해주세요.",
             icon: "error",
             buttons: "확인",
           });
-        }
-      } catch(error) {
-        // console.log(error);
       }
     };
 

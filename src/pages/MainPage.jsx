@@ -12,48 +12,42 @@ import BookListCard from "../components/main/BookListCard";
 import MyPersonListCard from "../components/main/MyPersonListCard";
 import axios from "axios";
 import "../../src/App.css";
-import Session from 'react-session-api';
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+
 function MainPage(props) {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
-  //api
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const [nickname, setNickname] = useState('');
-  const [useriamgeUrl, setUseriamgeUrl] = useState('');
   const setLoginState = useSetRecoilState(loginState);
+  const navigate = useNavigate();
+  
+  //api
+  const axiosBaseURL = axios.create({ //cors 해결
+    withCredentials: true,
+  });
   const checkForSession = () => {
     if (p) {
+      console.log("뭐가 문제인겨");
       setLoginState({ isLogin: true });
     }
   };
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const [nickname, setNickname] = useState('');
+  const [useriamgeUrl, setUseriamgeUrl] = useState('');
   useEffect(() => {
     (async () => {
       try {
-        const url = 'http://localhost:8080/profile/' + p.uid;
-        const response = await axios.get(url);
+        const url = 'http://localhost:8080/profile';
+        const response = await axiosBaseURL.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);
+        setLoginState({ isLogin: true });
         checkForSession();
       } catch (error) {
-        sessionStorage.removeItem("profile");
-      }
-    })();
-  }, [nickname]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const url = 'http://localhost:8080/profile/' + p.uid;
-        const response = await axios.get(url);
-        setNickname(response.data.nickname);
-        setUseriamgeUrl(response.data.useriamgeUrl);
-        checkForSession();
-      } catch (error) {
-        sessionStorage.removeItem("profile");
+        setLoginState({ isLogin: false });
+        navigate("/login");
       }
     })();
   }, [nickname]);
@@ -69,12 +63,10 @@ function MainPage(props) {
   }, [currentImageIndex]);
 
   const handleArrowClick = () => {
-    console.log(currentImageIndex);
     const nextIndex = (currentImageIndex + 1) % images.length;
     setCurrentImageIndex(nextIndex);
   };
 
-  // console.log('isLogin',isLogin)
   return (
     <>
       {isLogin.isLogin ? (

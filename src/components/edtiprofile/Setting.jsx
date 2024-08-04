@@ -13,6 +13,9 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
 
 function Setting(props) {
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
   let posts = "hello";
   const [profile, setProfile] = useRecoilState(profileState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
@@ -45,7 +48,7 @@ useEffect(() => {
 
 const handleSuccess = () => {
   (async () => {
-    if (props.nickname == '' || props.nickname == '' || props.userMessage == '') {
+    if (props.nickname == '' || props.userMessage == '') {
       swal({
         title: "주의",
         text: "모든 항목에 값을 기입해주세요!",
@@ -65,8 +68,7 @@ const handleSuccess = () => {
       })
     } else {
       try {
-        const url = "http://localhost:8080/profile/" + props.uid + "/new";
-        props.formData.append("uid", props.uid);
+        const url = "http://localhost:8080/profile/new";
         props.formData.append("nickname", props.nickname);
         props.formData.append("usermessage", props.userMessage);
 
@@ -74,14 +76,13 @@ const handleSuccess = () => {
           props.formData.append(`uinterest${(index + 1)}`, item);
         });
 
-        const response = await axios.post(url, props.formData, {
+        const response = await axiosBaseURL.post(url, props.formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           }
         });
         posts = response.data;
-        // console.log(response.data.data);
-        if (posts.data === "Register login Success") {
+        if (posts === "Register login Success") {
           swal({
             title: "회원가입 성공!",
             text: "회원가입이 완료되었습니다.",
@@ -93,7 +94,15 @@ const handleSuccess = () => {
           })
         }
       } catch (error) {
-        // console.log(error);
+        swal({
+          title: "일시적으로 문제가 생겼습니다.",
+          text: "다시 시도해주세요.",
+          icon: "warning",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/signup");
+          setIsLogin({ isLogin: false });
+        })
       }
     }
   })();

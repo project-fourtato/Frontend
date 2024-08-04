@@ -11,6 +11,9 @@ import {MdOutlineDateRange} from "react-icons/md";
 import swal from "sweetalert";
 import axios from "axios";
 function SignUpCard(props) {
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
   //api
   let posts = "hello";
   let [emailCheck, setEmailCheck] = useState(0); //email형식 맞지X
@@ -44,7 +47,6 @@ function SignUpCard(props) {
     if (isEmailValid(newValue)) {
       setEmail(newValue);
       setEmailCheck(1);
-      //console.log("되는데 왜 안된다그래")
     }
     else { 
       setEmail(newValue);
@@ -66,12 +68,10 @@ function SignUpCard(props) {
 
   useEffect(() => {
     // emailCheck가 변경될 때 수행할 동작
-    // console.log("emailCheck 값이 변경되었습니다.", emailCheck);
   }, [emailCheck]);
   
   useEffect(() => {
     // DuplicatedIdCheck가 변경될 때 수행할 동작
-    // console.log("DuplicatedIdCheck 값이 변경되었습니다.", DuplicatedIdCheck);
   }, [DuplicatedIdCheck]);
   
 
@@ -84,12 +84,10 @@ function SignUpCard(props) {
           return;
         }
         const url = 'http://localhost:8080/login/checkId/'+idValue;
-        const response = await axios.get(url);
+        const response = await axiosBaseURL.get(url);
         posts = response.data.data;
         
-        
         if(posts === false){
-          // console.log("중복임")
           swal("경고", "다른 아이디를 입력해주세요.", "error")
           .then(() => {
             setDuplicatedIdCheck(0);
@@ -97,7 +95,6 @@ function SignUpCard(props) {
           })
         }
         else{
-          // console.log("중복아님")
           swal({
             title: "사용 가능한 아이디입니다.",
             icon: "success",
@@ -110,14 +107,13 @@ function SignUpCard(props) {
 
         
       } catch(error) {
-        // console.log(error)
       }
     }) ();
   };
 
   const handleNextBtn = () => { //다음으로 버튼 눌렀을 시
     (async() => {
-      if(idValue=='' || pwValue=='' || emailValue=='' || birthValue==''){
+      if(idValue==='' || pwValue==='' || emailValue==='' || birthValue===''){
         swal({
           title: "모든 항목에 값을 기입해주세요.",
           icon: "warning",
@@ -136,7 +132,6 @@ function SignUpCard(props) {
         })
       }
       else if(emailCheck == 0){
-        // console.log(emailCheck);
         swal({
           title: "이메일을 다시 확인해주세요.",
           icon: "warning",
@@ -147,23 +142,25 @@ function SignUpCard(props) {
       }
       else { //로그인 성공
       try{
-        // console.log(emailCheck);
         const url = 'http://localhost:8080/login/new';
-        // console.log(url);
-        const response = await axios.post(url, {
+        const response = await axiosBaseURL.post(url, {
           uid : idValue,
           pw : pwValue,
           email : emailValue,
-          birth : birthValue
+          birth : new Date(birthValue).toISOString()
         });
-        posts = response.data;
-        // console.log(response.data.data);
-        // console.log(posts.data);
-        if(posts.data ===  "Register login Success"){
+        posts = response;
+        if(posts){
           navigate("/edit", { state : {idValue} });
         }
       } catch(error) {
-        // console.log(error)
+        swal({
+          title: "이미 존재하는 회원입니다.",
+          icon: "warning",
+          buttons: "확인",
+        }).then(() => {
+          navigate("/signup");
+        })
       }
     }
     }) ();
