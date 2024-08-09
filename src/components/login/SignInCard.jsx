@@ -20,6 +20,7 @@ function SignInCard(props) {
 
 
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
   }
   );
@@ -53,7 +54,7 @@ function SignInCard(props) {
   const LoginEffect = () => {
     (async() => {
       try{
-        const url = 'http://localhost:8080/login';
+        const url = '/login';
         const response = await axiosBaseURL.post(url, {
           id : idValue,
           pw : pwValue

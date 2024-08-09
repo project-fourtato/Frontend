@@ -12,8 +12,10 @@ import swal from "sweetalert";
 import axios from "axios";
 function SignUpCard(props) {
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
-  });
+  }
+  );
   //api
   let posts = "hello";
   let [emailCheck, setEmailCheck] = useState(0); //email형식 맞지X
@@ -83,7 +85,7 @@ function SignUpCard(props) {
           swal("경고", "닉네임에 띄어쓰기를 사용할 수 없어요.", "error");
           return;
         }
-        const url = 'http://localhost:8080/login/checkId/'+idValue;
+        const url = '/login/checkId/'+idValue;
         const response = await axiosBaseURL.get(url);
         posts = response.data.data;
         
@@ -142,7 +144,7 @@ function SignUpCard(props) {
       }
       else { //로그인 성공
       try{
-        const url = 'http://localhost:8080/login/new';
+        const url = '/login/new';
         const response = await axiosBaseURL.post(url, {
           uid : idValue,
           pw : pwValue,

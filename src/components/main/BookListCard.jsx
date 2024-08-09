@@ -16,9 +16,11 @@ function BookListCard(props) {
 
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
-  const axiosBaseURL = axios.create({ //cors 해결
+  const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
-  });
+  }
+  );
   
   const pro = sessionStorage.getItem("profile");
   const p = JSON.parse(pro); //session uid 가져오기
@@ -30,7 +32,7 @@ function BookListCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/booksList/' + p.uid;
+        const url = '/booksList/' + p.uid;
         const response = await axiosBaseURL.get(url);
         const responseData = JSON.parse(response.request.responseText).data;
         setBookListResponse(responseData);

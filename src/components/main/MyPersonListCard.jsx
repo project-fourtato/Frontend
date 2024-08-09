@@ -13,6 +13,7 @@ function MyPersonListCard(props) {
   const p = JSON.parse(profile);
   const [ProfileResponse, setProfileResponse] = useState([]);
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
   }
   );
@@ -20,7 +21,7 @@ function MyPersonListCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/follow/followingsLatestJournals';
+        const url = '/follow/followingsLatestJournals';
         const response = await axiosBaseURL.post(url);
         setProfileResponse(response.data);        
       } catch(error) {

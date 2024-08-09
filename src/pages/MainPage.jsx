@@ -24,9 +24,11 @@ function MainPage(props) {
   const navigate = useNavigate();
   
   //api
-  const axiosBaseURL = axios.create({ //cors 해결
+  const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
-  });
+  }
+  );
   const checkForSession = () => {
     if (p) {
       setLoginState({ isLogin: true });
@@ -38,7 +40,7 @@ function MainPage(props) {
   useEffect(() => {
     (async () => {
       try {
-        const url = 'http://localhost:8080/profile';
+        const url = '/profile';
         const response = await axiosBaseURL.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.useriamgeUrl);

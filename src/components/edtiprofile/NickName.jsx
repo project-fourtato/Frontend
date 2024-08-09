@@ -25,13 +25,15 @@ function NickName(props) {
   const p = JSON.parse(profileSession);
 
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
-  });
+  }
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/profile/' + p.uid;
+        const url = '/profile/' + p.uid;
         const response = await axiosBaseURL.get(url);
         setProfileResponse(response.data);
         tempImage = response.data.useriamgeUrl;

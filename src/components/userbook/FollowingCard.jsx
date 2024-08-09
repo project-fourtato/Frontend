@@ -12,6 +12,7 @@ function FollowerCard(props) {
   const lastSegment = props.lastSegment; //uid
   
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
   }
   );
@@ -19,7 +20,7 @@ function FollowerCard(props) {
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axiosBaseURL.post("http://localhost:8080/follow/followingsList");
+        const response = await axiosBaseURL.post("/follow/followingsList");
         // console.log(response.data);
         setFollowerList(response.data);
       } catch (error) {

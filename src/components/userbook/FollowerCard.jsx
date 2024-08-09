@@ -12,6 +12,7 @@ function FollowerCard(props) {
   const lastSegment = props.lastSegment; //uid
 
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
   }
   );
@@ -19,7 +20,7 @@ function FollowerCard(props) {
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axiosBaseURL.post("http://localhost:8080/follow/followersList");
+        const response = await axiosBaseURL.post("/follow/followersList");
         setFollowerList(response.data);
       } catch (error) {
         // console.error("팔로워 목록을 불러오는 중 오류 발생:", error);

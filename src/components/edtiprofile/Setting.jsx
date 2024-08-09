@@ -14,8 +14,10 @@ import axios from "axios";
 
 function Setting(props) {
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
-  });
+  }
+  );
   let posts = "hello";
   const [profile, setProfile] = useRecoilState(profileState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
@@ -68,7 +70,7 @@ const handleSuccess = () => {
       })
     } else {
       try {
-        const url = "http://localhost:8080/profile/new";
+        const url = "/profile/new";
         props.formData.append("nickname", props.nickname);
         props.formData.append("usermessage", props.userMessage);
 
@@ -111,7 +113,7 @@ const handleSuccess = () => {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const url = "http://localhost:8080/profile/find/interests/" + p.uid;
+      const url = "/profile/find/interests/" + p.uid;
       const response = await axios.get(url);
       const responseData = JSON.parse(response.request.responseText);
       const temp = Object.values(responseData);
@@ -129,7 +131,7 @@ useEffect(() => {
 
 const handleEditSuccess = async () => {
   try {
-    const url = "http://localhost:8080/profile/" + p.uid + "/edit";
+    const url = "/profile/" + p.uid + "/edit";
     props.formData.append("uid", p.uid);
     props.formData.append("usermessage", props.userMessage);
     if (selectedTags[0]) {
