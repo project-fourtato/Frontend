@@ -8,6 +8,10 @@ import axios from "axios";
 import journalBasis from "../../assets/journal-basis.png";
 
 function JournalContentCard(props) {
+    const axiosBaseURL = axios.create({ //cors 해결
+        withCredentials: true,
+      });
+      
     let posts = "hello";
     const fileInputRef = React.useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -86,12 +90,10 @@ function JournalContentCard(props) {
                 })
             } else {
                 try {
-                    const url = "http://localhost:8080/journals/new";
                     image.append("ptitle", title);
-                    image.append("userbid", userbid);
                     image.append("pcontents", contents);
 
-                    const response = await axios.post(url, image, {
+                    const response = await axiosBaseURL.post("/journals/new/" + userbid, image, {
                         header: {
                             "Content-Type": "multipart/form-data",
                         }
