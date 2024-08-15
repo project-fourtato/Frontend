@@ -12,6 +12,11 @@ import Session from 'react-session-api';
 import "../../App.css";
 
 function BestBookCard(props) {
+  const urlAddress = 'http://localhost:8080';
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
+  
   const profile = sessionStorage.getItem("profile");
   const navigate = useNavigate();
   const p = JSON.parse(profile);
@@ -25,12 +30,10 @@ function BestBookCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://localhost:8080/bestseller';
-        const response = await axios.get(url);
-        // console.log(response);
+        const response = await axiosBaseURL.get(urlAddress + '/bestseller');
   
         // response.data가 이미 배열 형태일 것이므로 추가적인 JSON.parse가 필요하지 않음
-        setBooksearchList(response.data.data);
+        setBooksearchList(response.data.result);
         // console.log("확인");
         // console.log(booksearchList);
       } catch (error) {
@@ -68,13 +71,13 @@ function BestBookCard(props) {
         <FontAwesomeIcon icon={faBookBookmark} /> 베스트 셀러
       </TitleText>
 
-      {Array.isArray(booksearchList) && booksearchList.map((book) => (
+      {booksearchList && booksearchList.map((book) => (
         <BookListBox key={book.isbn} onClick={() => goDetailPage(p.uid, book.isbn)}>
-          <BookImg src={book.cover} />
+          <BookImg src={book.coverImg} />
           <BookInfoOutDiv>
-            <BookTitleText>{book.bookName}</BookTitleText>
+            <BookTitleText>{book.bookTitle}</BookTitleText>
             <BookSubText>{book.bookAuthor}</BookSubText>
-            <BookSubText>{book.publisher}</BookSubText>
+            <BookSubText>{book.bookPublisher}</BookSubText>
           </BookInfoOutDiv>
         </BookListBox>
       ))}

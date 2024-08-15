@@ -31,9 +31,9 @@ const MyBookListCard = (props) => {
     // console.log(props.myBookList);
   }, [props.myBookList]);
 
-  const goDetailPage = (uid, isbn, userbid) => {
+  const goDetailPage = (isbn, userbid) => {
     navigate(`/myDetail`, {
-      state: { uid, isbn, userbid },
+      state: { isbn, userbid },
     });
   };
 
@@ -105,27 +105,26 @@ const MyBookListCard = (props) => {
           {chunk.map((book) => (
             <BookItem key={book.id}>
               <BookimgBox
-                src={book.cover}
+                src={book.coverImageUrl}
                 onClick={() =>
                   goDetailPage(
-                    book.uid,
                     book.isbn,
-                    book.userbid
+                    book.bookUid
                   )
                 }
               />
               <BookButtonsContainer>
                 <ActionButton completed0={book.bookstate} id='book'>
-                  {(book.bookstate === 0 ? <FontAwesomeIcon icon={faBook} /> :
-                    book.bookstate === 1 ? <FontAwesomeIcon icon={faHeart} /> :
-                      book.bookstate === 2 ? <FontAwesomeIcon icon={faBookOpenReader} /> :
-                        book.bookstate === 3 ? <FontAwesomeIcon icon={faSquareCheck} /> : null)}
+                  {(book.readStatus === 0 ? <FontAwesomeIcon icon={faBook} /> :
+                    book.readStatus === 1 ? <FontAwesomeIcon icon={faHeart} /> :
+                      book.readStatus === 2 ? <FontAwesomeIcon icon={faBookOpenReader} /> :
+                        book.readStatus === 3 ? <FontAwesomeIcon icon={faSquareCheck} /> : null)}
                 </ActionButton>
                 <ActionButton
                   completed1={book.salestate} id='sale'
-                  onClick={() => { fetchOne(book.salestate, book.userbid); }}
+                  onClick={() => { fetchOne(book.saleStatus, book.userbid); }}
                 >
-                  {(book.salestate) === 0 ? <FontAwesomeIcon icon={faStoreSlash} /> : <FontAwesomeIcon icon={faStore} />}
+                  {(book.saleStatus) === 0 ? <FontAwesomeIcon icon={faStoreSlash} /> : <FontAwesomeIcon icon={faStore} />}
                 </ActionButton>
               </BookButtonsContainer>
             </BookItem>

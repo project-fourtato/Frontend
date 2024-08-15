@@ -6,7 +6,12 @@ import { faUserCheck, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 function BestUserCard() {
+  const urlAddress = 'http://localhost:8080';
   const navigate = useNavigate();
+
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
   // 프로필 정보는 세션 스토리지에서 가져오기
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
@@ -17,10 +22,9 @@ function BestUserCard() {
     const fetchData = async () => {
       try {
         // console.log('p.uid:', p.uid);
-        const url = 'http://localhost:8080/profile/interests/' + p.uid;
-        const response = await axios.get(url);
-        // console.log(response);
-        setUsersearchList(response.data.data);
+        const response = await axiosBaseURL.get(urlAddress + '/profile/interests');
+        console.log(response);
+        setUsersearchList(response.data.result);
         // console.log('호잇호잇');
         // console.log(usersearchList);
       } catch (error) {
@@ -43,20 +47,14 @@ function BestUserCard() {
 
       {Array.isArray(usersearchList) && usersearchList.map((user) => {
         return (
-          <UserListBox key={user.uid} onClick={() => studyPage(user.uid)}>
+          <UserListBox key={user.uid} onClick={() => studyPage(user.loginId)}>
             <UserImgBox>
-              <UserImg src={user.useriamgeUrl} />
+              <UserImg src={user.imageUrl} />
             </UserImgBox>
             <UserInfoOutDiv>
               <UserTitleText><NicknameSpan>{user.nickname}</NicknameSpan> 님</UserTitleText>
               <TagContainer>
-                {[
-                  user.uinterest1,
-                  user.uinterest2,
-                  user.uinterest3,
-                  user.uinterest4,
-                  user.uinterest5,
-                ].map((interest, index) => (
+                {user.interests.map((interest, index) => (
                   !!interest && <Tagbox key={index}>{interest}</Tagbox>
                 ))}
               </TagContainer>
