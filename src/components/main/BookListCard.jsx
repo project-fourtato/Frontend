@@ -12,7 +12,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom";
 
 function BookListCard(props) {
-  
+  const urlAddress = 'http://localhost:8080';
 
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
@@ -30,18 +30,18 @@ function BookListCard(props) {
   const [bookListResponse, setBookListResponse] = useState([]);
   
   useEffect(() => {
-    const fetchData = async () => {
+    /*const fetchData = async () => {
       try {
-        const url = '/booksList/' + p.uid;
+        const url = urlAddress + '/books';
         const response = await axiosBaseURL.get(url);
-        const responseData = JSON.parse(response.request.responseText).data;
-        setBookListResponse(responseData);
+        console.log(response.data.result);
+        setBookListResponse(response.data.result);
         
       } catch(error) {
       }
     };
 
-    fetchData();
+    fetchData();*/
   }, []);
 
 
@@ -91,8 +91,8 @@ function BookListCard(props) {
           <Dropdown visibility={dropdownVisibility}>
             <ul>
               {profiles.map((user, index) => (
-                <li key={index} onClick={() => studyPage(user.uid)}>
-                  <img src={user.useriamgeUrl} alt="user" />
+                <li key={index} onClick={() => studyPage(user.loginId)}>
+                  <img src={user.userimageUrl} alt="user" />
                   <p>{user.nickname}</p>
                 </li>
               ))}
@@ -125,15 +125,15 @@ function BookListCard(props) {
         <CardTitle>읽고 있는 책 목록</CardTitle>
       </MainTitleContainer>  
       {bookListResponse.map((book) => (
-        <BookListContainer key={book.uid}>
-          <BookImage src={book.cover} alt="bookimg" onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}/>
+        <BookListContainer key={book.bookUid}>
+          <BookImage src={book.coverImageUrl} alt="bookimg" onClick={() => goDetailPage(book.uid, book.isbn, book.bookUid)}/>
           <BookDetailContainer>
             <BookListContent>
-              <ContentTitleText onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>{book.title}</ContentTitleText>
-              <ContentText onClick={() => goDetailPage(book.uid, book.isbn, book.userbid)}>{book.author} | {book.publisher}</ContentText>
+              <ContentTitleText onClick={() => goDetailPage(book.uid, book.isbn, book.bookUid)}>{book.bookTitle}</ContentTitleText>
+              <ContentText onClick={() => goDetailPage(book.uid, book.isbn, book.bookUid)}>{book.author} | {book.publisher}</ContentText>
               <SubBtnBox>
                 {/* DropDownApp 구성 요소를 사용자 프로필에 통합 */}
-                <DropDownApp profiles={book.profile} />
+                <DropDownApp profiles={book.profileList} />
               </SubBtnBox>
             </BookListContent>
           </BookDetailContainer>
