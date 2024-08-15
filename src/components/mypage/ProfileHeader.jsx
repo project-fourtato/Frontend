@@ -7,8 +7,14 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import MsgModal from "../common/MsgModal";
+import swal from "sweetalert";
 
 function ProfileHeader(props) {
+  const urlAddress = 'http://localhost:8080';
+
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
   const pro = sessionStorage.getItem("profile");
   const p = JSON.parse(pro); //session uid 가져오기
   
@@ -23,10 +29,17 @@ function ProfileHeader(props) {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/profile/`+p.uid);
-        // console.log(response);
-        const data = response.data;
-        setUserData(data);
+        const response = await axiosBaseURL.get(urlAddress + `/profile`);
+        // console.log(response.data);
+        // const data = response.data;
+        setUserData(response.data);
+
+        if(response === 'login 데이터가 존재하지 않는 회원입니다.') {
+          swal("페이지 이동 실패", "login 데이터가 존재하지 않는 회원입니다.", "error")
+          .then(() => {
+            navigate("/");
+          })
+        }
       } catch (error) {
         console.error("Error fetching user data", error);
       }
@@ -35,7 +48,7 @@ function ProfileHeader(props) {
     UserData();
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const FollowingData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/follow/followingsCount/`+p.uid);
@@ -58,13 +71,22 @@ function ProfileHeader(props) {
     FollowingData();
     // console.log(followingData);
     // console.log(followerData);
-  }, []);
+  }, []);*/
 
 
+  const [userInterests, setUserInterests] = useState();
   useEffect(() => {
     if(userData){
-    props.setUsermessage(userData.usermessage);
-  }
+      props.setUsermessage(userData.usermessage);
+
+      let interests = []
+      userData.interests.forEach((tag) => {
+        if (tag) {
+          interests.push(tag)
+        }
+      });
+      setUserInterests(interests);
+    }
   }, [userData]);
 
   const followerPage = () => {
@@ -80,14 +102,13 @@ function ProfileHeader(props) {
   if (!userData) {
     return <div>데이터가 없습니다.</div>;
   }
-
-  const userInterest = [userData.uinterest1,userData.uinterest2,userData.uinterest3,userData.uinterest4,userData.uinterest5];
+  
   return (
     <>
     <ProfileSection>
       <ProfileLeftContainer>
         <div>
-          <ProfileImage src={userData.useriamgeUrl} alt="userprofile" />
+          <ProfileImage src={userData.imageUrl} alt="userprofile" />
         </div>
         <div>
           <ProfileNameDirectM>
@@ -96,7 +117,7 @@ function ProfileHeader(props) {
             </ProfileName>
           </ProfileNameDirectM>
           <InterestOutDiv>
-            {userInterest && userInterest.map((interest) => (
+            {userInterests && userInterests.map((interest) => (
               !!interest && <MyTag key={interest}>{interest}</MyTag> //관심사 개수에 맞게 띄어주기 위해 쓰임
             ))}
           </InterestOutDiv>

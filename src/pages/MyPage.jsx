@@ -7,6 +7,11 @@ import axios from "axios";
 
 
 const MyPage = (props) => {
+  const urlAddress = 'http://localhost:8080';
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
+
   const [usermessage, setUsermessage] = useState('');
   const [nickname, setNickname] = useState('');
   const pro = sessionStorage.getItem("profile");
@@ -21,10 +26,8 @@ const MyPage = (props) => {
     const UserData = async () => {
       try {
         // console.log("부모까지왔다");
-        const response = await axios.get(`http://localhost:8080/booksList/`+p.uid);
-        // console.log(response);
-        const data = response.data.data;
-        setMyBookList(data);
+        const response = await axiosBaseURL.get(urlAddress + `/booksList`);
+        setMyBookList(response.data.result);
       } catch (error) {
         console.error("Error fetching user data", error);
       }
