@@ -57,7 +57,7 @@ const handleSuccess = () => {
         icon: "warning",
         buttons: "확인",
       }).then(() => {
-        navigate("/edit");
+        // navigate("/edit");
       })
     } else if (selectedTags < 1) {
       swal({
@@ -66,7 +66,7 @@ const handleSuccess = () => {
         icon: "warning",
         buttons: "확인",
       }).then(() => {
-        navigate("/edit");
+        // navigate("/edit");
       })
     } else {
       try {
@@ -136,20 +136,30 @@ const handleEditSuccess = async () => {
     props.formData.append("usermessage", props.userMessage);
     if (selectedTags[0]) {
       props.formData.append("uinterest1", selectedTags[0]);
+    } else{
+      props.formData.append("uinterest1", null);
     }
     if (selectedTags[1]) {
       props.formData.append("uinterest2", selectedTags[1]);
+    } else{
+      props.formData.append("uinterest1", null);
     }
     if (selectedTags[2]) {
       props.formData.append("uinterest3", selectedTags[2]);
+    } else{
+      props.formData.append("uinterest1", null);
     }
     if (selectedTags[3]) {
       props.formData.append("uinterest4", selectedTags[3]);
+    } else{
+      props.formData.append("uinterest1", null);
     }
     if (selectedTags[4]) {
       props.formData.append("uinterest5", selectedTags[4]);
+    } else{
+      props.formData.append("uinterest1", null);
     }
-
+    console.log(selectedTags[0],"여길봐");
     const response = await axios.put(url, props.formData);
     if (response.data.data == "Profile Update Success") {
       swal({
