@@ -7,6 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 
 function UserSearchList(props) {
+  const urlAddress = 'http://localhost:8080';
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
+
   const [searchValue, setSearch] = useState('');
   const [usersearchList, setUsersearchList] = useState([])
   useEffect(() => {
@@ -20,11 +25,12 @@ function UserSearchList(props) {
       try {
         // console.log(searchValue);
         const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
-        const url = 'http://localhost:8080/profile/search/'+stringWithoutSpaces;
         // console.log(url);
-        const response = await axios.get(url);
-        const responseData = JSON.parse(response.request.responseText);
-        setUsersearchList(responseData.data);
+        // 모든 검색 연결 후, 다시 테스트
+        const response = await axiosBaseURL.get(urlAddress + "/profile/search/" + stringWithoutSpaces);
+        console.log(response.data);
+        // const responseData = JSON.parse(response.request.responseText);
+        setUsersearchList(response.data);
         // console.log(responseData);
         
       } catch(error) {
@@ -46,7 +52,7 @@ function UserSearchList(props) {
     <UserListCardContainer>
       {usersearchList.map((user) => (
         <UserListBox key={user.uid} onClick={() => studyPage(user.uid)}>
-          <UserImgBox src={user.useriamgeUrl} />
+          <UserImgBox src={user.userImageUrl} />
           <UserInfoOutDiv> 
             <UserTitleText><span>{user.nickname}</span> 님</UserTitleText>
             <UserSpeechBox>

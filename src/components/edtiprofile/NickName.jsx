@@ -2,16 +2,22 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUpload, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { loginState } from "../../recoil/atom";
+import { useRecoilState } from "recoil";
 import "../../App.css";
 
 import swal from "sweetalert";
 import axios from "axios";
 function NickName(props) {
+  const urlAddress = 'http://localhost:8080';
+
   let tempImage = "";
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [selectedImage, setSelectedImage] = useState('');
   const [imageClick, setImageClick] = useState(0);
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
+  const [duplicateColor, setDuplicateColor] = useState("blue");
   const [profileResponse, setProfileResponse] = useState({
     uid: '',
     nickname: '',
@@ -33,15 +39,14 @@ function NickName(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = '/profile/' + p.uid;
-        const response = await axiosBaseURL.get(url);
+        const response = await axiosBaseURL.get(urlAddress + '/profile');
         setProfileResponse(response.data);
         tempImage = response.data.useriamgeUrl;
       } catch (error) {
       }
     };
 
-    if (profileSession !== null) {
+    if (isLogin) {
       fetchData();
     }
   }, []);
@@ -57,7 +62,7 @@ function NickName(props) {
     if (selectedImage === null) {
       const formData = new FormData();
       props.setImage(formData);
-    } else if(selectedImage === "https://storage.googleapis.com/booker-v3/basis-profile.png") {
+    } else if(selectedImage === "https://booker-v4-bucket.s3.amazonaws.com/default/default-profile.png") {
       const formData = new FormData();
       props.setImage(formData);
     } else if(imageClick == 0) {

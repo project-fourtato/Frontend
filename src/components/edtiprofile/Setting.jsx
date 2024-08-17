@@ -13,11 +13,12 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
 
 function Setting(props) {
+  const urlAddress = 'http://localhost:8080';
   const axiosBaseURL = axios.create({
     baseURL: 'http://localhost:8080',
     withCredentials: true,
-  }
-  );
+  });
+  
   let posts = "hello";
   const [profile, setProfile] = useRecoilState(profileState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
@@ -50,6 +51,16 @@ useEffect(() => {
 
 const handleSuccess = () => {
   (async () => {
+    try {
+      const response = await axiosBaseURL.get(urlAddress + '/profile/checkNickname/' + props.nickname);
+    } catch(error) {
+      if (error.response && error.response.status === 400) {
+        const errorMessage = error.response.data.message || "서버에서 에러가 발생했습니다.";
+        swal("경고", errorMessage, "error");
+        return
+      }
+    }
+
     if (props.nickname == '' || props.userMessage == '') {
       swal({
         title: "주의",
@@ -92,7 +103,6 @@ const handleSuccess = () => {
             buttons: "확인",
           }).then(() => {
             navigate("/login");
-            setIsLogin({ isLogin: true });
           })
         }
       } catch (error) {
@@ -131,8 +141,6 @@ useEffect(() => {
 
 const handleEditSuccess = async () => {
   try {
-    const url = "/profile/" + p.uid + "/edit";
-    props.formData.append("uid", p.uid);
     props.formData.append("usermessage", props.userMessage);
     if (selectedTags[0]) {
       props.formData.append("uinterest1", selectedTags[0]);
@@ -161,6 +169,16 @@ const handleEditSuccess = async () => {
     }
     console.log(selectedTags[0],"여길봐");
     const response = await axios.put(url, props.formData);
+
+    let filteredTags = []
+    selectedTags.forEach((tag) => {
+      if (tag) {
+        filteredTags.push(tag)
+      }
+    });
+    props.formData.append("interests", filteredTags);
+
+    const response = await axios.put(urlAddress + "/profile/edit", props.formData);
     if (response.data.data == "Profile Update Success") {
       swal({
         title: "프로필 수정 완료!",

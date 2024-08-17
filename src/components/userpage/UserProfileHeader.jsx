@@ -12,6 +12,8 @@ import swal from "sweetalert";
 
 
 const UserProfileHeader = (props) => {
+  const urlAddress = 'http://localhost:8080';
+
   const navigate = useNavigate();
   const pro = sessionStorage.getItem("profile");
   const pSession = JSON.parse(pro); //session uid 가져오기
@@ -135,11 +137,9 @@ const UserProfileHeader = (props) => {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/profile/` + p);
-        // console.log(response);
-        const data = response.data;
-        setUserData(data);
-        if(data.length === 0) {
+        const response = await axiosBaseURL.get(urlAddress + `/profile/` + p);
+        setUserData(response.data);
+        if(response.data.length === 0) {
           throw new Error("is Null");
         }
       } catch (error) {
@@ -164,7 +164,7 @@ const UserProfileHeader = (props) => {
     setProfile('aa');
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     const FollowingData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/follow/followingsCount/` + p);
@@ -187,16 +187,7 @@ const UserProfileHeader = (props) => {
     FollowingData();
     // console.log(followingData);
     // console.log(followerData);
-  }, [count, p]);
-
-  const [userInterest, setUserInterest] = useState([]);
-  useEffect(() => {
-    if (userData) {
-      props.setUsermessage(userData.usermessage);
-      props.setNickname(userData.nickname);
-      setUserInterest([userData.uinterest1, userData.uinterest2, userData.uinterest3, userData.uinterest4, userData.uinterest5]);
-    }
-  }, [userData]);
+  }, [count, p]);*/
 
   return (
     <>
@@ -205,7 +196,7 @@ const UserProfileHeader = (props) => {
           <ProfileSection>
             <ProfileLeftContainer>
               <div>
-                <ProfileImage src={userData.useriamgeUrl} alt="userprofile" />
+                <ProfileImage src={userData.imageUrl} alt="userprofile" />
               </div>
               <div>
                 <ProfileNameDirectM>
@@ -214,7 +205,7 @@ const UserProfileHeader = (props) => {
                   </ProfileName>
                 </ProfileNameDirectM>
                 <InterestOutDiv>
-                  {userInterest && userInterest.map((interest) => (
+                  {userData.interests && userData.interests.map((interest) => (
                     !!interest && <MyTag key={interest}>{interest}</MyTag>
                   ))}
                 </InterestOutDiv>
@@ -240,7 +231,7 @@ const UserProfileHeader = (props) => {
           </FollowAndFollower>
           <BookListCardHeader>
             <LeftBox>
-              <LeftBoxText>{props.usermessage}</LeftBoxText>
+              <LeftBoxText>{userData.usermessage}</LeftBoxText>
             </LeftBox>
             <FollowButton
               onClick={() => {
@@ -250,7 +241,7 @@ const UserProfileHeader = (props) => {
               <FontAwesomeIcon icon={ FollowButtonText === "팔로우" ? faUserPlus : faUserMinus } className="icon-mypage-paper-plane" />
               {FollowButtonText}</FollowButton>
           </BookListCardHeader>
-          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'writeToUser'} userId={p} nickname={userData.nickname} userimageUrl={userData.useriamgeUrl} />}
+          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'writeToUser'} userId={userData.uid} nickname={userData.nickname} userimageUrl={userData.imageUrl} />}
         </>
       ) : (
         <div>Loading...</div>

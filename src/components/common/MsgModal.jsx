@@ -10,6 +10,11 @@ import { faTrashCan, faReply, faPaperPlane, faEnvelope } from "@fortawesome/free
 import axios from 'axios';
 
 function MsgModal({ setShowMsgModal, ...props }) {
+    const axiosBaseURL = axios.create({
+        baseURL: 'http://localhost:8080',
+        withCredentials: true,
+      }
+      );
 
     // list, detail, write
     const [msg, setMsg] = useState(props.msgName);
@@ -133,17 +138,14 @@ function MsgModal({ setShowMsgModal, ...props }) {
     const handleSendMsg = async () => {
         try {
             const messageToSend = {
-                messageid: currentMsg.messageid,
-                mcheck: currentMsg.mcheck,
                 mcontents: content,
-                mdate: currentMsg.mdate,
                 mtitle: title,
                 recipientuid: currentMsg.senderuid,
                 senderuid: currentMsg.recipientuid
             };
 
-            const sendMsgResponse = await axios.post('http://localhost:8080/directmessages/new', messageToSend);
-
+            const sendMsgResponse = await axiosBaseURL.post('/directmessages/new', messageToSend);
+            
             if (sendMsgResponse.status === 200) {
                 swal({
                     title: "쪽지 전송 성공!",
@@ -182,7 +184,6 @@ function MsgModal({ setShowMsgModal, ...props }) {
             setUserimageUrl(props.userimageUrl);
         };
         setData();
-        
     },[props.userId, props.nickname, props.userimageUrl]);
     
     useEffect(()=>{        
@@ -215,14 +216,11 @@ function MsgModal({ setShowMsgModal, ...props }) {
             const messageToSend = {
                 mcontents: content,
                 mtitle: title,
-                recipientuid: userId,
-                senderuid: p.uid,
-                userimageUrl : userimageUrl,
-                nickname : nickname
+                recipientUid: userId
             };
             setCurrentMsg(messageToSend);
-
-            const sendMsgResponse = await axios.post('http://localhost:8080/directmessages/new', messageToSend);
+            console.log(messageToSend);
+            const sendMsgResponse = await axiosBaseURL.post('/directmessages/new', messageToSend);
 
             if (sendMsgResponse.status === 200) {
                 swal({
@@ -253,7 +251,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
     const handleDelete = async (id, event) => {
         event.stopPropagation();
         try {
-            const deleteMsgResponse = await axios.post(`http://localhost:8080/directmessages/messageid=${id}/delete`);
+            const deleteMsgResponse = await axiosBaseURL.post(`/directmessages/messageid=${id}/delete`);
     
             if (deleteMsgResponse.status === 200) {
                 swal({

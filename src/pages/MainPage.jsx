@@ -43,7 +43,7 @@ function MainPage(props) {
         const url = '/profile';
         const response = await axiosBaseURL.get(url);
         setNickname(response.data.nickname);
-        setUseriamgeUrl(response.data.useriamgeUrl);
+        setUseriamgeUrl(response.data.imageUrl);
         setLoginState({ isLogin: true });
         checkForSession();
       } catch (error) {
