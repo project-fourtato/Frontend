@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faStore, faStoreSlash, faBook, faBookOpenReader, faSquareCheck, faHeart } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
+// 완료
+const axiosBaseURL = axios.create({    withCredentials: true,
+});
+
 const MyBookListCard = (props) => {
   const navigate = useNavigate();
   const [usermessage, setUsermessage] = useState('');
@@ -20,43 +24,39 @@ const MyBookListCard = (props) => {
     return resultArray;
   }, []);
 
-
   useEffect(() => {
     setUsermessage(props.usermessage);
-    // console.log(usermessage);
   }, [props.usermessage]);
 
   useEffect(() => {
     setMyBookList(props.myBookList);
-    // console.log(props.myBookList);
   }, [props.myBookList]);
 
-  const goDetailPage = (isbn, userbid) => {
+  const goDetailPage = (isbn, bookUid) => {
     navigate(`/myDetail`, {
-      state: { isbn, userbid },
+      state: { isbn, bookUid },
     });
   };
 
   const goaddbook = () => {
     navigate("/search");
   };
-  const [selectedUserbid, SetSeletectedUserbid] = useState('');
-  const [selectedSaleState, SetSelectedSaleState] = useState(-1);
-  const [count, setCount] = useState(0);
-  const handleButtonClick = async () => {
-    if (selectedUserbid) {
-      try {
-        // console.log("자식");
-        // console.log(selectedUserbid);
 
-        const url = 'http://localhost:8080/books/salestateUpdate/' + selectedUserbid;
-        const response = await axios.put(url, {
-          bookstate: 1,
-          salestate: selectedSaleState
+  const [selectedBookUid, SetSeletectedBookUid] = useState('');
+  const [selectedSaleStatus, SetSelectedSaleStatus] = useState(-1);
+  const [count, setCount] = useState(0);
+
+  const handleButtonClick = async () => {
+    if (selectedBookUid) {
+      try {
+        const url = `http://localhost:8080/saleStatusUpdate/${selectedBookUid}`;
+        const response = await axiosBaseURL.put(url, {
+          readStatus: 1,
+          saleStatus: selectedSaleStatus
         });
         const responseData = response.data.data;
+        console.log(responseData);
         if (responseData === "bookstate update success") {
-          // console.log(responseData);
           setCount(count + 1);
           props.setCount(count);
         }
@@ -66,20 +66,14 @@ const MyBookListCard = (props) => {
     }
   };
 
-  function fetchOne(saleState, userbid) {
-    SetSelectedSaleState(saleState == 0 ? 1 : 0);
-    SetSeletectedUserbid(userbid);
+  function fetchOne(saleStatus, bookUid) {
+    SetSelectedSaleStatus(saleStatus === 0 ? 1 : 0);
+    SetSeletectedBookUid(bookUid);
   }
 
   useEffect(() => {
-    // console.log("useEffect 실행");
-    // console.log(selectedSaleState);
-    // console.log(selectedUserbid);
     handleButtonClick();
-  }, [selectedSaleState, selectedUserbid]);
-
-
-
+  }, [selectedSaleStatus, selectedBookUid]);
 
   return (
     <BookListCardContainer>
@@ -103,7 +97,7 @@ const MyBookListCard = (props) => {
       }, []).map((chunk, chunkIndex) => (
         <BookListBodyContainer key={chunkIndex}>
           {chunk.map((book) => (
-            <BookItem key={book.id}>
+            <BookItem key={book.bookUid}>
               <BookimgBox
                 src={book.coverImageUrl}
                 onClick={() =>
@@ -114,7 +108,7 @@ const MyBookListCard = (props) => {
                 }
               />
               <BookButtonsContainer>
-                <ActionButton completed0={book.bookstate} id='book'>
+                <ActionButton completed0={book.readStatus} id='book'>
                   {(book.readStatus === 0 ? <FontAwesomeIcon icon={faBook} /> :
                     book.readStatus === 1 ? <FontAwesomeIcon icon={faHeart} /> :
                       book.readStatus === 2 ? <FontAwesomeIcon icon={faBookOpenReader} /> :
@@ -122,7 +116,7 @@ const MyBookListCard = (props) => {
                 </ActionButton>
                 <ActionButton
                   completed1={book.salestate} id='sale'
-                  onClick={() => { fetchOne(book.saleStatus, book.userbid); }}
+                  onClick={() => { fetchOne(book.saleStatus, book.bookUid); }}
                 >
                   {(book.saleStatus) === 0 ? <FontAwesomeIcon icon={faStoreSlash} /> : <FontAwesomeIcon icon={faStore} />}
                 </ActionButton>
@@ -136,6 +130,7 @@ const MyBookListCard = (props) => {
 };
 
 export default MyBookListCard;
+
 
 const BookListCardContainer = styled.div`
   width: 850px;
