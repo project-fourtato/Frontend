@@ -1,56 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Session from 'react-session-api';
-import axios from "axios";
+import axios from 'axios';
+// 완료
 function SearchUserCard(props) {
-    const profile = sessionStorage.getItem("profile");
-    const p = JSON.parse(profile);
-    const [haveabookuser, setHaveabookuser] = useState([{"nickname" : "고구마가되고싶어고구마", "useriamgeUrl" : "bb"}, 
-    {"name" : "치크케이크", "img" : "aa"}]);
+    const [haveabookuser, setHaveabookuser] = useState([]);
+    const [message, setMessage] = useState('');
+
+    const axiosBaseURL = axios.create({
+        withCredentials: true,
+    });
 
     // 현재 URL에서 경로 추출
     const currentPath = window.location.pathname;
-      
+    
     // 예시: 경로에서 마지막 부분 추출 (마지막 슬래시 이후의 부분)
     const lastSegment = currentPath.substring(currentPath.lastIndexOf('/') + 1);
 
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const url = 'http://localhost:8080/books/sale/isbn/' +lastSegment;
-            // console.log(url);
-            const response = await axios.get(url);
-            const responseData = JSON.parse(response.request.responseText);
-            setHaveabookuser(responseData.data);
-            // console.log(responseData);
-            
-          } catch(error) {
-            // console.log(error);
-          }
+            try {
+                const url = `http://localhost:8080/sale/isbn/saleStatus/profileList?isbn=${lastSegment}`;
+                const response = await axiosBaseURL.get(url);
+                const responseData = response.data;
+                
+                setHaveabookuser(responseData);
+                
+                // 메시지 설정
+                if (responseData.length === 0) {
+                    setMessage("BOOKER의 유저 중 검색하신 책을 가진 유저가 없어요😢");
+                } else {
+                    setMessage("BOOKER의 유저 중 검색하신 책을 가진 유저가 있어요!");
+                }
+                
+            } catch (error) {
+                setMessage("BOOKER의 유저 중 검색하신 책을 가진 유저가 없어요😢");
+                //console.error('API 호출 에러:', error);
+                //setMessage("서버와의 연결에 문제가 발생했습니다.");
+            }
         };
-    
+
         fetchData();
-      }, []);
-      let a = "";
-      if(haveabookuser.length == 0){
-        a = "BOOKER의 유저 중 검색하신 책을 가진 유저가 없어요😢";
-      }
-      else {
-        a = "BOOKER의 유저 중 검색하신 책을 가진 유저가 있어요!";
-      }
+    }, [lastSegment]);
+
     return (
         <AnnouncementBox>
-            <AnnouncementTitle>{a}</AnnouncementTitle>
-
+            <AnnouncementTitle>{message}</AnnouncementTitle>
             <CardBoxContainer>
-                {haveabookuser.map((bookeruser) => {
-                    return (
-                        <CordBox>
-                            <img src={bookeruser.useriamgeUrl} />
-                            <CardBoxText><span>{bookeruser.nickname}</span> 님</CardBoxText>
-                        </CordBox>
-                    )
-                })}
+                {haveabookuser.map((bookeruser, index) => (
+                    <CordBox key={index}>
+                        <img src={bookeruser.useriamgeUrl} alt={bookeruser.nickname} />
+                        <CardBoxText><span>{bookeruser.nickname}</span> 님</CardBoxText>
+                    </CordBox>
+                ))}
             </CardBoxContainer>
         </AnnouncementBox>
     );

@@ -1,83 +1,85 @@
-import {React, useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import styled from "styled-components";
-import { booksearchList } from "../../data/searchdata";
-import "../../App.css"
+import "../../App.css";
 import axios from "axios";
-import Session from 'react-session-api';
-import { useLocation, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+// 완료
 function BooksearchList(props) {
   const profile = sessionStorage.getItem("profile");
   const navigate = useNavigate();
   const p = JSON.parse(profile);
   const [searchValue, setSearch] = useState('');
-  const [booksearchList, setBooksearchList] = useState([])
+  const [booksearchList, setBooksearchList] = useState([]);
+
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
+
   useEffect(() => {
     const a = props.searchValue;
     setSearch(a);
-  },[props.searchValue]);
+  }, [props.searchValue]);
 
- 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // console.log(searchValue);
-        const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
-        const url = 'http://localhost:8080/books/search/uid='+p.uid+'&searchOne='+stringWithoutSpaces;
-        // console.log(url);
-        const response = await axios.get(url);
-        const responseData = JSON.parse(response.request.responseText);
-        setBooksearchList(responseData.data);
-        // console.log(responseData);
-        
-      } catch(error) {
-        console.log(error);
+        const stringWithoutSpaces = searchValue.replace(/\s/g, ''); // 공백 제거
+        const url = `http://localhost:8080/sale/searchOne/${stringWithoutSpaces}`;
+        console.log(url);
+        const response = await axiosBaseURL.get(url);
+        console.log(response);
+        const responseData = response;
+        setBooksearchList(responseData.data || []); // 데이터가 없을 경우 빈 배열로 설정
+      } catch (error) {
+        //console.log(error);
+        setBooksearchList([]); // 오류가 발생해도 빈 배열로 설정
       }
     };
-    if(props.searchValue){
-    fetchData();
+    
+    if (props.searchValue) {
+      fetchData();
     }
   }, [searchValue]);
 
-  const goDetailPage = async (uid, isbn) => {
-    try{
-      const url = 'http://localhost:8080/booksState/uid='+uid+'&isbn='+isbn;
-      const response = await axios.get(url);
+  const goDetailPage = async (isbn) => {
+    try {
+      const url = `http://localhost:8080/searchByISBN/?isbn=${isbn}`;
+      const response = await axiosBaseURL.get(url);
       const responseData = response.data;
-      // console.log(responseData);
-      if(responseData ===''){
-        navigate(`/newDetail`, {
-          state: { uid, isbn },
+
+      if (responseData.length === 0) {
+        navigate("/newDetail", {
+          state: { isbn },
         });
-      }
-      else {
-        const bid = responseData.userbid;
-        navigate(`/myDetail`, {
-          state: { uid, isbn, bid },
+      } else {
+        const { uid, bookId } = responseData[0];
+        navigate("/myDetail", {
+          state: { uid, isbn, bookId },
         });
       }
     } catch (error) {
-      console.log(error);
+     // console.log("Error fetching book details: ", error);
     }
   };
 
   return (
     <AllOutDiv>
-    <BookListCardContainer>
-
-      {booksearchList.map((book) => (
-        <BookListBox key={book.uid} onClick={() => goDetailPage(book.uid, book.isbn)}>
-          <BookImgBox src={book.cover} />
-          <BookInfoOutDiv>  
-            <BookTitleText>{book.bookName}</BookTitleText>
-            <BookSubText>{book.bookAuthor}</BookSubText>
-            <BookSubText>{book.publisher}</BookSubText>
-          </BookInfoOutDiv>
-
-        </BookListBox>
-        
-      ))}
-    </BookListCardContainer>
+      <BookListCardContainer>
+        {booksearchList.length > 0 ? (
+          booksearchList.map((book) => (
+            <BookListBox key={book.isbn} onClick={() => goDetailPage(book.isbn)}>
+              <BookImgBox src={book.coverImageUrl} />
+              <BookInfoOutDiv>
+                <BookTitleText>{book.bookTitle}</BookTitleText>
+                <BookSubText>{book.author}</BookSubText>
+                <BookSubText>{book.publisher}</BookSubText>
+              </BookInfoOutDiv>
+            </BookListBox>
+          ))
+        ) : (
+          <p></p>
+        )}
+      </BookListCardContainer>
     </AllOutDiv>
   );
 }

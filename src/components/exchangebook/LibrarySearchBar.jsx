@@ -10,7 +10,7 @@ import SearchUserCard from '../exchangebook/SearchUserCard';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-
+// 완료
 function LibrarySearchBar(props) {
   const [selectedRegion, setSelectedRegion] = useState({ code: 'default', name: '지역' });
   const [selectedCity, setSelectedCity] = useState({ code: 'default', name: '도시' }); 
@@ -21,6 +21,11 @@ function LibrarySearchBar(props) {
     // console.log("변경감지");
     // console.log(msgList);
   }, [msgList]);
+
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
+
   // 현재 URL에서 경로 추출
   const currentPath = window.location.pathname;
       
@@ -30,9 +35,9 @@ function LibrarySearchBar(props) {
   const SearchBtnClick = () => {
     (async() => {
       try{
-        const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&isbn='+lastSegment;
-        const response = await axios.get(url);
-        // console.log(url);
+        const url = 'http://localhost:8080/libraryList/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&isbn='+lastSegment;
+        const response = await axiosBaseURL.get(url);
+        console.log(response.data.data);
         setMsgList(response.data.data);
         // console.log(msgList);
       } catch(error) {

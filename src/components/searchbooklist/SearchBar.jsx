@@ -1,71 +1,59 @@
 import { React, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import searchIcon from "../../assets/searchIcon.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import Session from 'react-session-api';
 import axios from "axios";
-import SearchList from "../searchbooklist/SearchList"
-
+import SearchList from "../searchbooklist/SearchList";
+// 완료
 function ExchangeSearchBar(props) {
 
   const [searchValue, setSearch] = useState('');
-  const [bookList, setBookList] = useState([]); //책 리스트
+  const [bookList, setBookList] = useState([]); // 검색된 책 리스트 상태
   const saveSearchValue = event => {
     setSearch(event.target.value);
   };
 
-  const fetchData = async () => { //3. 해당 함수 실행됨
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
+
+  const fetchData = async () => {
     try {
-      // console.log(searchValue);
-      const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
-      const url = 'http://localhost:8080/books/sale/searchOne/' + stringWithoutSpaces;
-      const response = (await axios.get(url)).data.data;
-      // console.log(url);
-      // console.log("왜 안됑");
-      // console.log(response);
-      setBookList(response);
+      const stringWithoutSpaces = searchValue.replace(/\s/g, ''); // 공백 제거
+      const url = `http://localhost:8080/sale/searchOne/${stringWithoutSpaces}`;
+      const response = await axiosBaseURL.get(url);
+      console.log(response.data);
+      setBookList(response.data); // 응답 데이터를 bookList에 설정
     } catch (error) {
-      // console.log(error)
+      window.location.href = "/";
+      console.error("Error fetching books data", error);
     }
   };
 
-  useEffect(() => { //2. 변경감지 후 함수실행
-    fetchData();
-    // console.log(bookList);
-  }, []);
-
-  /*const clickBtn = () => { //1. 버튼 클릭하면 함수실행
-    fetchData();
-  };*/
-
   const handleOnKeyPress = e => {
     if (e.key === 'Enter') {
-      fetchData(); // 1. Enter 입력이 되면 함수실행
+      fetchData(); // Enter 키를 누르면 데이터 검색 함수 실행
     }
   };
 
   return (
     <>
       <SearchBarContainer>
-        {/* <span>책 이름 : </span> */}
         <SearchBarOutDiv>
           <SearchInput
             type="text"
-            //도서관에서 대출하고 싶은 책이나, 교환하고 싶은 책을 검색해보세요!
             placeholder="도서관 소장도서 확인이나 BOOKER 유저와 교환을 원하는 도서의 제목이나 저자를 검색해보세요!"
             value={searchValue}
             onChange={saveSearchValue}
-            onKeyDown={handleOnKeyPress}
+            onKeyDown={handleOnKeyPress} // Enter 키 입력 시 검색
           />
-          {/* <StyledSearchIcon onClick={clickBtn} /> */}
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </SearchBarOutDiv>
       </SearchBarContainer>
       <SearchList bookList={bookList} />
     </>
   );
-};
+}
 
 export default ExchangeSearchBar;
 

@@ -7,115 +7,104 @@ import MainSearch from "../search/MainSearch";
 import BooksearchList from "./BooksearchList";
 import LibrarySearchList from "./LibrarySearchList";
 import UserSearchList from "./UserSearchList";
-
+// 완료
 function SearchTab(props) {
   const [tab, setTab] = useState({
     active: 0,
   });
-  const [selectedRegion, setSelectedRegion] = useState([]);
-  const [selectedCity, setSelectedCity] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState({});
+  const [selectedCity, setSelectedCity] = useState({});
   const [searchValue, setSearch] = useState('');
-  const [msgList,setMsgList] = useState([]);
+  const [msgList, setMsgList] = useState([]);
   const navigate = useNavigate();
 
-  const SearchBtnClick = () => { //도서관검색 api 연결
-      (async() => {
-        try{
-          const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
-          const url = 'http://localhost:8080/books/sale/library/region='+selectedRegion.code+'&dtl_region='+selectedCity.code+'&searchOne='+stringWithoutSpaces;
-          const response = await axios.get(url);
-          // console.log(url);
-          // console.log(response.data.data);
-          setMsgList(response.data.data);
-          // console.log("list확인");
-        } catch(error) {
-          // console.log(error)
-        }
-      }) ();
-    };
-  useEffect(() => {
-    // console.log("SearchTab 변경감지 실행");
-    // console.log(msgList);
-    // console.log(searchValue);
-    let newTablist = {
-      0: <BooksearchList searchValue={searchValue}/>,
-      1: <UserSearchList searchValue={searchValue}/>,
-      2: <LibrarySearchList msgList={msgList}/>
-    };
-    setTablist(newTablist);
-    // console.log(tablist[1]);
-    return () => {
-      // console.log("clean up");
-    }
-  },[msgList, searchValue]);
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
 
-  
+  const SearchBtnClick = async () => {
+    try {
+      const stringWithoutSpaces = searchValue.replace(/\s/g, ''); // 공백 제거
+      const url = `http://localhost:8080/libraryList/region/${selectedRegion.code}/dtl_region/${selectedCity.code}/searchOne/${stringWithoutSpaces}`;
+      const response = await axiosBaseURL.get(url);
+      console.log(response.data.data);
+      setMsgList(response.data.data); // 응답 데이터 설정
+    } catch (error) {
+      // 세션이 없거나 로그인 정보가 없을 때 홈으로 리다이렉트
+      window.location.href = "/";
+      console.error("Error fetching library data", error);
+    }
+  };
+
   useEffect(() => {
-    if(searchValue) { //초기에 렌더링되는 문제 이 if문으로 해결함
-      if ((searchValue.length >= 5) && (tab.active == 2) && (selectedRegion !='') && (selectedCity !='')) {
+    if (searchValue) { // 초기 렌더링 방지
+      if ((searchValue.length >= 5) && (tab.active === 2) && (selectedRegion.code) && (selectedCity.code)) {
         SearchBtnClick();
-      }
-      else if((tab.active == 2) &&(selectedRegion =='' || selectedCity =='')){
+      } else if ((tab.active === 2) && (!selectedRegion.code || !selectedCity.code)) {
         swal({
           title: "지역도 같이 검색해주세요.",
           icon: "warning",
           buttons: "확인",
         }).then(() => {
           navigate("/search");
-        })
-      }
-      else if((tab.active == 2) &&(searchValue.length<6)){
+        });
+      } else if ((tab.active === 2) && (searchValue.length < 5)) {
         swal({
           title: "주의!",
-          text: "도서관은 6글자 이상부터 검색 가능합니다.",
+          text: "도서관은 5글자 이상부터 검색 가능합니다.",
           icon: "warning",
           buttons: "확인",
         }).then(() => {
           navigate("/search");
-        })
+        });
       }
     }
-    
   }, [searchValue]);
 
   const [tablist, setTablist] = useState({
-    0: <BooksearchList searchValue={searchValue}/>,
-    1: <UserSearchList searchValue={searchValue}/>,
-    2: <LibrarySearchList msgList={msgList}/>,
+    0: <BooksearchList searchValue={searchValue} />,
+    1: <UserSearchList searchValue={searchValue} />,
+    2: <LibrarySearchList msgList={msgList} />,
   });
 
   useEffect(() => {
-    // console.log(tablist);
-  },[tablist]);
+    let newTablist = {
+      0: <BooksearchList searchValue={searchValue} />,
+      1: <UserSearchList searchValue={searchValue} />,
+      2: <LibrarySearchList msgList={msgList} />,
+    };
+    setTablist(newTablist);
+  }, [msgList, searchValue]);
 
   const activeTab = (e) => {
     setTab({ active: e });
   };
-  
+
   return (
     <>
-    <MainSearch active={tab.active} setSelectedRegion={setSelectedRegion} setSelectedCity={setSelectedCity} setSearch={setSearch}/>
-    <SearchTabContainer>
-      <TabContainer>
-        <Tab onClick={() => activeTab(0)} active={tab.active === 0}>
-          책 검색
-        </Tab>
-        <Tab onClick={() => activeTab(1)} active={tab.active === 1}>
-          유저 검색
-        </Tab>
-        <Tab onClick={() => activeTab(2)} active={tab.active === 2}>
-          도서관 검색
-        </Tab>
-      </TabContainer>
-      <TabContentOutDiv>
-        <TabContent>{tablist[tab.active]}</TabContent>
-      </TabContentOutDiv>
-    </SearchTabContainer>
+      <MainSearch active={tab.active} setSelectedRegion={setSelectedRegion} setSelectedCity={setSelectedCity} setSearch={setSearch} />
+      <SearchTabContainer>
+        <TabContainer>
+          <Tab onClick={() => activeTab(0)} active={tab.active === 0}>
+            책 검색
+          </Tab>
+          <Tab onClick={() => activeTab(1)} active={tab.active === 1}>
+            유저 검색
+          </Tab>
+          <Tab onClick={() => activeTab(2)} active={tab.active === 2}>
+            도서관 검색
+          </Tab>
+        </TabContainer>
+        <TabContentOutDiv>
+          <TabContent>{tablist[tab.active]}</TabContent>
+        </TabContentOutDiv>
+      </SearchTabContainer>
     </>
   );
 }
 
 export default SearchTab;
+
 
 const SearchTabContainer = styled.div`
   width: 1200px;

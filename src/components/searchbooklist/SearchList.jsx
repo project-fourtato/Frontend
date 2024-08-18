@@ -27,7 +27,7 @@ function BookSearchList(props) {
             {bookList && bookList.map((book) => {
                 return (
                     <BookInfoOutDiv onClick={() => goExchangeDetailPage(book.isbn, book.title)}>
-                        <BookTitle>{book.title}</BookTitle>
+                        <BookTitle>{book.bookTitle}</BookTitle>
                         <RightDivOut>
                         <BookAuthor>{book.author}</BookAuthor>
                         <BookPublisher>{book.publisher}</BookPublisher>
