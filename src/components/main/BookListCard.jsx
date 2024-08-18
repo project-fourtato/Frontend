@@ -30,18 +30,16 @@ function BookListCard(props) {
   const [bookListResponse, setBookListResponse] = useState([]);
   
   useEffect(() => {
-    /*const fetchData = async () => {
+    const fetchData = async () => {
       try {
-        const url = urlAddress + '/books';
-        const response = await axiosBaseURL.get(url);
-        console.log(response.data.result);
+        const response = await axiosBaseURL.get('/books');
         setBookListResponse(response.data.result);
-        
       } catch(error) {
+        console.log(error);
       }
     };
 
-    fetchData();*/
+    fetchData();
   }, []);
 
 
@@ -113,9 +111,9 @@ function BookListCard(props) {
     }
   };
   
-  const goDetailPage = (uid, isbn, userbid) => {
+  const goDetailPage = (isbn, userbid) => {
     navigate(`/myDetail`, {
-      state: { uid, isbn, userbid },
+      state: { isbn, userbid },
     });
   };
   return (
@@ -126,11 +124,11 @@ function BookListCard(props) {
       </MainTitleContainer>  
       {bookListResponse.map((book) => (
         <BookListContainer key={book.bookUid}>
-          <BookImage src={book.coverImageUrl} alt="bookimg" onClick={() => goDetailPage(book.uid, book.isbn, book.bookUid)}/>
+          <BookImage src={book.coverImageUrl} alt="bookimg" onClick={() => goDetailPage(book.isbn, book.bookUid)}/>
           <BookDetailContainer>
             <BookListContent>
-              <ContentTitleText onClick={() => goDetailPage(book.uid, book.isbn, book.bookUid)}>{book.bookTitle}</ContentTitleText>
-              <ContentText onClick={() => goDetailPage(book.uid, book.isbn, book.bookUid)}>{book.author} | {book.publisher}</ContentText>
+              <ContentTitleText onClick={() => goDetailPage(book.isbn, book.bookUid)}>{book.bookTitle}</ContentTitleText>
+              <ContentText onClick={() => goDetailPage(book.isbn, book.bookUid)}>{book.author} | {book.publisher}</ContentText>
               <SubBtnBox>
                 {/* DropDownApp 구성 요소를 사용자 프로필에 통합 */}
                 <DropDownApp profiles={book.profileList} />

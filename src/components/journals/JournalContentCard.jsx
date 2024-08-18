@@ -9,6 +9,7 @@ import journalBasis from "../../assets/journal-basis.png";
 
 function JournalContentCard(props) {
     const axiosBaseURL = axios.create({ //cors 해결
+        baseURL: 'http://localhost:8080',
         withCredentials: true,
       });
       
@@ -35,12 +36,12 @@ function JournalContentCard(props) {
     let uid = p.uid;
 
     const [JournalResponse, setJournalResponse] = useState({
-        jid: '',
-        pdatetime: '',
-        ptitle: '',
-        pcontents: '',
-        pimageUrl: '',
-        pimageName: ''
+        journalId: '',
+        jdatetime: '',
+        jtitle: '',
+        jcontents: '',
+        jimageUrl: '',
+        jimageName: ''
     });
 
     const currentPath = window.location.pathname;
@@ -90,18 +91,17 @@ function JournalContentCard(props) {
                 })
             } else {
                 try {
-                    image.append("ptitle", title);
-                    image.append("pcontents", contents);
+                    image.append("jtitle", title);
+                    image.append("jcontents", contents);
 
                     const response = await axiosBaseURL.post("/journals/new/" + userbid, image, {
                         header: {
                             "Content-Type": "multipart/form-data",
                         }
                     })
-                    posts = response.data;
                     // console.log(response.data);
 
-                    if (posts.data === "Write Journals Success") {
+                    if (response.data === "Save Journals Success") {
                         swal({
                             title: "독서록 등록 완료!",
                             text: "독서록 등록이 완료되었습니다.",
@@ -121,8 +121,7 @@ function JournalContentCard(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = "http://localhost:8080/journals/" + jid;
-                const response = await axios.get(url);
+                const response = await axios.get("journals/" + jid + "/edit");
                 setJournalResponse(response.data);
             } catch (error) {
                 // console.log(error);
@@ -158,7 +157,8 @@ function JournalContentCard(props) {
                         "Content-Type": "multipart/form-data",
                     },
                 });
-            if (response.data.data === "Edit Journals Success") {
+
+            if (response.data === "Edit Journals Success") {
                 swal({
                     title: "독서록 수정 완료!",
                     text: "독서록 수정이 완료되었습니다.",
