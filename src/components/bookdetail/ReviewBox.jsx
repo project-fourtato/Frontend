@@ -2,67 +2,84 @@ import { React, useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { reviewList } from "../../data/reviewpage";
-import { useNavigate } from "react-router-dom";
-import owlImg from "../../assets/owl.png"
+import owlImg from "../../assets/owl.png";
 import axios from "axios";
-import "../../App.css"
-
+import "../../App.css";
+import { useNavigate, useLocation } from "react-router-dom";
+// 닉네임 뻬고 다 됨
 function ReviewBox(props) {
-  const [journalsData, setJournalsData] = useState(null);
-  const userbid = props.userbid;
-  const type = props.type; //user인지 my인지 new인지
+  const [journalsData, setJournalsData] = useState([]);
+  const [bookUid, setBookUid] = useState("");
+  const [type, setType] = useState(""); // 기본값 설정
   const nickname = props.nickname;
   const navigate = useNavigate();
+  const location = useLocation();
+  const axiosBaseURL = axios.create({
+    withCredentials: true,
+  });
 
-  // 현재 URL에서 경로 추출
+  // 상태에서 값 추출
+  useEffect(() => {
+    try {
+      setBookUid(location.state?.bookUid || "");
+      setType(location.state?.type || ""); // type 상태 설정
+    } catch (error) {
+      navigate("/error");
+    }
+  }, [location.state, navigate]);
+
+  // URL에서 경로 추출
   const currentPath = window.location.pathname;
-  // 예시: 경로에서 마지막 부분 추출 (마지막 슬래시 이후의 부분)
-  const lastSegment = currentPath.substring(currentPath.lastIndexOf('/') + 1); //유저 누르면 여기 값 넣어줘서 확인
+  const lastSegment = currentPath.substring(currentPath.lastIndexOf('/') + 1);
 
-  useEffect(()=>{
-    // console.log(props.nickname);
-  }, [nickname]);
+  useEffect(() => {
+    // bookUid와 type이 유효한 경우에만 데이터 요청
+    if (bookUid && type !== 'new') {
+      const fetchJournalsData = async () => {
+        try {
+          console.log(`Requesting data for bookUid: ${bookUid}`); // 디버깅 로그
+          const response = await axiosBaseURL.get(`http://localhost:8080/journals/journalsList/${bookUid}`);
+          const data = response.data.data; // 서버 응답에서 "data" 키를 사용
+          console.log(data);
+          setJournalsData(data);
+        } catch (error) {
+          console.error("Error fetching journals data", error);
+        }
+      };
+      fetchJournalsData();
+    }
+  }, [bookUid, type]); // bookUid와 type이 변경될 때마다 실행
+
   const moveJournalAdd = () => {
-    navigate("/journals", { state : {userbid} });
-  }
+    navigate("/journals", { state: { bookUid } });
+  };
+
   const journalAdd = () => {
-    if (type == 'user') {
-      return '';
-    } else if(type == 'my'){
+    if (type === 'user') {
+      return null;
+    } else if (type === 'my') {
       return <JournalAddButton onClick={moveJournalAdd}>독서록 추가</JournalAddButton>;
     } else {
-      return '';
+      return null;
     }
   };
+
   const textAdd = () => {
-    if (type == 'new') { 
-      return <BookAddMent><img src={owlImg} style={{ width: "70%" }}/>
-      <div>"책 추가하기" 버튼을 눌러 독서록을 작성해보세요!</div></BookAddMent>;
+    if (type === 'new') {
+      return (
+        <BookAddMent>
+          <img src={owlImg} style={{ width: "70%" }} alt="Owl illustration" />
+          <div>"책 추가하기" 버튼을 눌러 독서록을 작성해보세요!</div>
+        </BookAddMent>
+      );
     }
+    return null;
   };
-  useEffect(()=>{
-    journalAdd();
-  }, [type]);
-  useEffect(() => {
-    const JournalsData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/journalsList/`+userbid);
-        // console.log(response);
-        const data = response.data.data;
-        // console.log(data);
-        setJournalsData(data);
-      } catch (error) {
-        console.error("Error fetching user data", error);
-      }
-    };
-    if(type!=='new'){
-    JournalsData();
-    }
-  }, []);
-  const handleMoveJournalDetail = (jid) => {
-    navigate("/journals/" + jid, { state : {jid, lastSegment} });
-  }
+
+  const handleMoveJournalDetail = (journalId) => {
+    navigate(`/journals/${journalId}`, { state: { journalId, lastSegment } });
+  };
+
   return (
     <ReviewBoxContainer>
       <ReviewTitleText><FontAwesomeIcon icon={faPenToSquare} className="icon-review-box" />{nickname} 님이 남긴 감상평</ReviewTitleText>
@@ -70,9 +87,9 @@ function ReviewBox(props) {
         {textAdd()}
       {journalsData && journalsData.map((journal) => {
         return (
-          <ReviewBoxOutDiv onClick={() => handleMoveJournalDetail(journal.jid)}>
-            <JournalTitleText>{journal.ptitle}</JournalTitleText>
-            <JournalDateText>{journal.pdatetime.split("T")[0]}</JournalDateText>
+          <ReviewBoxOutDiv onClick={() => handleMoveJournalDetail(journal.journalId)}>
+            <JournalTitleText>{journal.jtitle}</JournalTitleText>
+            <JournalDateText>{journal.jdatetime.split("T")[0]}</JournalDateText>
           </ReviewBoxOutDiv>
         )
       })}
@@ -83,6 +100,10 @@ function ReviewBox(props) {
 }
 
 export default ReviewBox;
+
+
+
+
 
 const ReviewBoxContainer = styled.div`
   border-radius: 40px;
