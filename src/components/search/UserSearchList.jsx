@@ -26,9 +26,7 @@ function UserSearchList(props) {
         // console.log(searchValue);
         const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
         // console.log(url);
-        // 모든 검색 연결 후, 다시 테스트
         const response = await axiosBaseURL.get(urlAddress + "/profile/search/" + stringWithoutSpaces);
-        console.log(response.data);
         // const responseData = JSON.parse(response.request.responseText);
         setUsersearchList(response.data);
         // console.log(responseData);
@@ -51,7 +49,7 @@ function UserSearchList(props) {
   return (
     <UserListCardContainer>
       {usersearchList.map((user) => (
-        <UserListBox key={user.uid} onClick={() => studyPage(user.uid)}>
+        <UserListBox key={user.uid} onClick={() => studyPage(user.loginId)}>
           <UserImgBox src={user.userImageUrl} />
           <UserInfoOutDiv> 
             <UserTitleText><span>{user.nickname}</span> 님</UserTitleText>
