@@ -12,12 +12,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faComment, faAddressCard, faBell } from "@fortawesome/free-regular-svg-icons";
 import "../../../src/App.css";
+import axios from "axios";
 
 const Header = () => {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
 
-  
+  const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
+    withCredentials: true,
+  });
+
   const setLoginState = useSetRecoilState(loginState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const checkForSession = () => {
@@ -29,6 +34,15 @@ const Header = () => {
   useEffect(()=>{
     checkForSession();
   },[])
+
+  const logOut = async () => {
+    try {
+    const url = `http://localhost:8080/login/logout`;
+    const response = await axiosBaseURL.get(url);
+    } catch(error) {
+    }
+  };
+
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [showMsgModal, setShowMsgModal] = useState(false);
@@ -159,6 +173,7 @@ const Header = () => {
                       setIsLogin(false);
                       setDropdownVisible(false);
                       sessionStorage.removeItem("profile");
+                      logOut();
                       navigate("/");
                     }}
                   >
