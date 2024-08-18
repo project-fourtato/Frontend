@@ -168,7 +168,6 @@ const handleEditSuccess = async () => {
       props.formData.append("uinterest1", null);
     }
     console.log(selectedTags[0],"여길봐");
-    const response = await axios.put(url, props.formData);
 
     let filteredTags = []
     selectedTags.forEach((tag) => {
@@ -178,7 +177,7 @@ const handleEditSuccess = async () => {
     });
     props.formData.append("interests", filteredTags);
 
-    const response = await axios.put(urlAddress + "/profile/edit", props.formData);
+    const response = await axiosBaseURL.put("/profile/edit", props.formData);
     if (response.data.data == "Profile Update Success") {
       swal({
         title: "프로필 수정 완료!",
