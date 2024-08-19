@@ -24,7 +24,7 @@ jobs:
         run: npm install # npm install을 실행할 경로로 설정
 
       - name: Build # React Build
-        run: npm run build # npm run build를 실행할 경로로 설정
+        run: CI=false npm run build # npm run build를 실행할 경로로 설정
 
       - name: AWS Resource에 접근할 수 있게 AWS credentials 설정
         uses: aws-actions/configure-aws-credentials@v4
