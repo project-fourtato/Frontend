@@ -35,7 +35,7 @@ jobs:
 
       - name: S3 기존 파일들 전체 삭제 후 새로 업로드
         run: |
-          aws s3 rm --recursive s3://our-booker-uploaded-file
+          aws s3 rm --recursive s3://our-booker-uploaded-files
           aws s3 cp ./ s3://our-booker-uploaded-files/ --recursive
 
       - name: Cloudfront 캐시 무효화
