@@ -123,14 +123,13 @@ const handleSuccess = () => {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const url = "/profile/find/interests/" + p.uid;
-      const response = await axios.get(url);
+      const url = "/Interests/find";
+      const response = await axiosBaseURL.get(url);
       const responseData = JSON.parse(response.request.responseText);
       const temp = Object.values(responseData);
       const filteredTemp = temp.filter(item => item !== null);
       setSelectedTags([...filteredTemp]);
     } catch (error) {
-      // console.log(error);
     }
   };
 
@@ -142,32 +141,22 @@ useEffect(() => {
 const handleEditSuccess = async () => {
   try {
     props.formData.append("usermessage", props.userMessage);
+    // props.formData.append("interests",selectedTags);
     if (selectedTags[0]) {
       props.formData.append("uinterest1", selectedTags[0]);
-    } else{
-      props.formData.append("uinterest1", null);
-    }
+    } 
     if (selectedTags[1]) {
       props.formData.append("uinterest2", selectedTags[1]);
-    } else{
-      props.formData.append("uinterest1", null);
-    }
+    } 
     if (selectedTags[2]) {
       props.formData.append("uinterest3", selectedTags[2]);
-    } else{
-      props.formData.append("uinterest1", null);
-    }
+    } 
     if (selectedTags[3]) {
       props.formData.append("uinterest4", selectedTags[3]);
-    } else{
-      props.formData.append("uinterest1", null);
-    }
+    } 
     if (selectedTags[4]) {
       props.formData.append("uinterest5", selectedTags[4]);
-    } else{
-      props.formData.append("uinterest1", null);
-    }
-    console.log(selectedTags[0],"여길봐");
+    } 
 
     let filteredTags = []
     selectedTags.forEach((tag) => {
@@ -178,7 +167,7 @@ const handleEditSuccess = async () => {
     props.formData.append("interests", filteredTags);
 
     const response = await axiosBaseURL.put("/profile/edit", props.formData);
-    if (response.data.data == "Profile Update Success") {
+    if (response.data == "Edit Profile Success") {
       swal({
         title: "프로필 수정 완료!",
         text: "프로필 수정이 완료되었습니다.",
