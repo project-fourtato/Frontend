@@ -20,88 +20,87 @@ const NewBookDetailPage = (props) => {
   } catch(error) {
     navigate("/error");
   }
-  // const uid = "hallym"; //더미
-  // const isbn = "9788970509013"; //더미
+  
   const nickname = "회원";
   const [firstPart, setFirstPart] = useState('');
   const [secondPart, setSecondPart] = useState('');
 
+  const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080/',
+    withCredentials: true,
+  });
+
   useEffect(() => {
-    const BookData = async () => {
+    const fetchBookData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/books/booksDetail/`+isbn);
-        // console.log(response);
-        const data = response.data.data;
-        // console.log(data);
+        const response = await axiosBaseURL.get(`/journals/bookDetailsByISBN/${isbn}`);
+        
+        const data = response.data;
+        console.log(response);
+        console.log(data);
         setBookData(data);
-        const title = data.title;
+        const title = data.bookTitle;
 
-        // "-"를 기준으로 나누기
+        // Handling title split by "-"
         const firstHyphenIndex = title.indexOf(" - ");
-
-        // "-"가 없는 경우
         if (firstHyphenIndex === -1) {
           setFirstPart(title);
           setSecondPart('');
         } else {
-          // 첫 번째 부분 설정
           setFirstPart(title.slice(0, firstHyphenIndex));
-
-          // 두 번째 부분 설정 (첫 번째 "-" 이후의 부분)
           setSecondPart(title.slice(firstHyphenIndex));
-        } 
-
+        }
       } catch (error) {
-        console.error("Error fetching user data", error);
+        console.error("Error fetching book data", error);
+        navigate("/error");  // Navigate to error page on failure
       }
     };
 
-    BookData();
+    fetchBookData();
   }, []);
-  
+
+
   function handleDropdownItemClick(option) {
     const showAlert = (title, text, icon) => {
-        swal({
-            title,
-            text,
-            icon,
-        });
+      swal({
+        title,
+        text,
+        icon,
+      });
     };
+
     if (option === "책 추가하기") {
-        swal({
-            title: "책을 추가하시겠습니까?",
-            text: "책을 추가하시면 개인서재로 이동합니다.",
-            buttons: ["취소", "추가"],
-        }).then(async (willAdd) => {
-            if (willAdd) {
-                try {
-                    const url = 'http://localhost:8080/search/books/new/' + uid;
-                    const response = await axios.post(url, {
-                        "isbn": isbn,
-                        "bookstate": 0,
-                        "salestate": 0
-                    });
-                    // console.log(url);
-                    navigate("/mypage");
-                    showAlert("책 추가", "추가되었습니다.", "success");
-                } catch (error) {
-                    // console.log(error);
-                }
-            } else {
-                showAlert("책 추가 취소", "추가가 취소되었습니다.", "error");
-            }
-        });
+      swal({
+        title: "책을 추가하시겠습니까?",
+        text: "책을 추가하시면 개인서재로 이동합니다.",
+        buttons: ["취소", "추가"],
+      }).then(async (willAdd) => {
+        if (willAdd) {
+          try {
+            const url = `/search/books/new/`;
+            await axiosBaseURL.post(url, {
+              "isbn": isbn,
+              "readStatus": 0,
+              "saleStatus": 0
+            });
+            navigate("/mypage");
+            showAlert("책 추가", "추가되었습니다.", "success");
+          } catch (error) {
+            console.error("Error adding book", error);
+            showAlert("책 추가 실패", "추가에 실패했습니다.", "error");
+          }
+        } else {
+          showAlert("책 추가 취소", "추가가 취소되었습니다.", "error");
+        }
+      });
     }
-}
-
-
-
+  }
 
   return (
     <BookDetailContainer>
       <BookDetailBox>
         <BookDetailInnerContainer>
-          <BookImg src={bookData.cover} alt="책 이미지"/>
+          <BookImg src={bookData.coverImageUrl} alt="책 이미지"/>
           <BookDetailTextBox>
             <h2>{firstPart}</h2>
             <h5>{secondPart}</h5>
@@ -110,7 +109,7 @@ const NewBookDetailPage = (props) => {
             <ProgressContainer>
               <DropdownMenu>
                 <DropdownItem onClick={() => handleDropdownItemClick("책 추가하기")}>
-                책 추가하기
+                  책 추가하기
                 </DropdownItem>
               </DropdownMenu>
             </ProgressContainer>

@@ -31,7 +31,7 @@ function BooksearchList(props) {
         const responseData = response;
         setBooksearchList(responseData.data || []); // 데이터가 없을 경우 빈 배열로 설정
       } catch (error) {
-        //console.log(error);
+        console.log(error);
         setBooksearchList([]); // 오류가 발생해도 빈 배열로 설정
       }
     };
@@ -43,24 +43,36 @@ function BooksearchList(props) {
 
   const goDetailPage = async (isbn) => {
     try {
-      const url = `http://localhost:8080/searchByISBN/?isbn=${isbn}`;
-      const response = await axiosBaseURL.get(url);
-      const responseData = response.data;
+        const url = `http://localhost:8080/readStatus?isbn=${isbn}`;
+        const response = await axiosBaseURL.get(url);
+        const responseData = response.data;
 
-      if (responseData.length === 0) {
-        navigate("/newDetail", {
-          state: { isbn },
-        });
-      } else {
-        const { uid, bookId } = responseData[0];
-        navigate("/myDetail", {
-          state: { uid, isbn, bookId },
-        });
-      }
+        console.log(responseData);
+        if (responseData.readStatus === -1) {
+            navigate("/newDetail", {
+                state: { isbn },
+            });
+        } else { 
+            const { bookUid, readStatus, saleStatus } = responseData;
+            navigate("/myDetail", {
+                state: { uid: bookUid, isbn, bookId: bookUid, readStatus, saleStatus },
+            });
+       } 
     } catch (error) {
-     // console.log("Error fetching book details: ", error);
+       /* if (error.response && error.response.status === 404) {
+            console.error("404 Error: Book not found.");
+            // 404 오류에 대한 추가 처리 로직을 작성할 수 있습니다.
+            navigate("/newDetail", {
+                state: { isbn },
+            });
+        } else {
+            console.error("Error fetching book details: ", error);
+            // 다른 오류에 대한 일반적인 처리 로직
+        }*/
+       console.error();
     }
-  };
+};
+
 
   return (
     <AllOutDiv>
