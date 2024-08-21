@@ -22,11 +22,11 @@ function JournalContentCard(props) {
     const [contents, setContents] = useState();
     const navigate = useNavigate();
     let location = useLocation();
-    let userbid= "";
-    let jid = "";
+    let bookUid= "";
+    let journalId = "";
     try {
-        userbid = location.state.userbid;
-        jid = location.state.jid;
+        bookUid = location.state.bookUid;
+        journalId = location.state.journalId;
     } catch(error) {
         navigate("/error");
     }
@@ -94,7 +94,7 @@ function JournalContentCard(props) {
                     image.append("jtitle", title);
                     image.append("jcontents", contents);
 
-                    const response = await axiosBaseURL.post("/journals/new/" + userbid, image, {
+                    const response = await axiosBaseURL.post("/journals/new/" + bookUid, image, {
                         header: {
                             "Content-Type": "multipart/form-data",
                         }
@@ -134,19 +134,19 @@ function JournalContentCard(props) {
     }, []);
 
     useEffect(() => {
-        setSelectedImage(JournalResponse.pimageUrl);
-        setTitle(JournalResponse.ptitle);
-        setContents(JournalResponse.pcontents);
+        setSelectedImage(JournalResponse.jimageUrl);
+        setTitle(JournalResponse.jtitle);
+        setContents(JournalResponse.jcontents);
     }, [JournalResponse]);
 
     const handleUpdateJournal = async () => {
         try {
-            const url = "http://localhost:8080/journals/" + jid + "/edit";
+            const url = "http://localhost:8080/journals/" + journalId + "/edit";
             if (title) {
-                image.append("ptitle", title);
+                image.append("jtitle", title);
             }
             if (contents) {
-                image.append("pcontents", contents);
+                image.append("jcontents", contents);
             }
 
             // console.log(image.get("pcontents"));
@@ -165,7 +165,7 @@ function JournalContentCard(props) {
                     icon: "success",
                     buttons: "확인",
                 }).then(() => {
-                    navigate(-1, { state: { userbid } });
+                    navigate(-1, { state: { bookUid } });
                 })
             }
         } catch (error) {

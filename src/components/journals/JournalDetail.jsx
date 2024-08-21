@@ -8,16 +8,20 @@ import axios from "axios";
 import journalBasis from "../../assets/booker-basis.svg";
 
 function JournalDetail(props) {
+    const axiosBaseURL = axios.create({
+        withCredentials: true,
+      });
+
     let posts = "hello";
     const fileInputRef = React.useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [JournalResponse, setJournalResponse] = useState({
         jid: '',
-        pdatetime: '',
-        ptitle: '',
-        pcontents: '',
-        pimageUrl: '',
-        pimageName: ''
+        jdatetime: '',
+        jtitle: '',
+        jcontents: '',
+        jimageUrl: '',
+        jimageName: ''
     });
     const navigate = useNavigate();
     let location = useLocation();
@@ -43,8 +47,9 @@ function JournalDetail(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = "http://localhost:8080/journals/" + jid;
-                const response = await axios.get(url);
+                const url = `http://localhost:8080/journals/${jid}`;
+                const response = await axiosBaseURL.get(url);
+                console.log(response.data);
                 setJournalResponse(response.data);
             } catch (error) {
                 swal({
@@ -68,13 +73,13 @@ function JournalDetail(props) {
     const handleDeleteButton = async () => {
         (async () => {
             try {
-                const url = "http://localhost:8080/journals/" + jid + "/delete";
+                const url = `http://localhost:8080/journals/${jid}/delete`;
                 
-                const response = await axios.post(url);
+                const response = await axiosBaseURL.post(url);
 
                 posts = response.data;
-                // console.log(response.data);
-
+                console.log(response.data);
+                
                 if(posts.data === "Delete Books Success") {
                     swal({
                         title: "경고",
@@ -105,15 +110,15 @@ function JournalDetail(props) {
         <>
             <OutDivInput>
                 <ImageOutDiv>
-                <ImagePreview src={(JournalResponse.pimageName) ? JournalResponse.pimageUrl : journalBasis} alt="Selected profile" />
+                <ImagePreview src={(JournalResponse.jimageName) ? JournalResponse.jimageUrl : journalBasis} alt="Selected profile" />
                 </ImageOutDiv>
                 <ContentButtonOutDiv>
                     <ContentDiv>
                         <JournalTitle><FontAwesomeIcon icon={faPencil} className="icon-journal-pencil" />제목</JournalTitle>
-                        <JournalDetailTitle>{JournalResponse.ptitle}</JournalDetailTitle>
+                        <JournalDetailTitle>{JournalResponse.jtitle}</JournalDetailTitle>
                         <JournalContent><FontAwesomeIcon icon={faPencil} className="icon-journal-pencil" />독서록</JournalContent>
-                        <JournalDateilContent>{JournalResponse.pcontents}</JournalDateilContent>
-                        <JournalDateTimeDiv><FontAwesomeIcon icon={faPencil} className="icon-journal-pencil" />작성 시간 : {JournalResponse.pdatetime.split('T')[0]} &nbsp;{JournalResponse.pdatetime.split('T')[1]}</JournalDateTimeDiv>
+                        <JournalDateilContent>{JournalResponse.jcontents}</JournalDateilContent>
+                        <JournalDateTimeDiv><FontAwesomeIcon icon={faPencil} className="icon-journal-pencil" />작성 시간 : {JournalResponse.jdatetime.split('T')[0]} &nbsp;{JournalResponse.jdatetime.split('T')[1]}</JournalDateTimeDiv>
                     </ContentDiv>
                     <UploadBtnContainer>
                         <Button2 onClick={handleCancel}><FontAwesomeIcon icon={faShare} flip="horizontal" />뒤로가기</Button2>
@@ -133,6 +138,7 @@ function JournalDetail(props) {
 }
 
 export default JournalDetail;
+
 
 const OutDivInput = styled.div`
     width: 100%;
