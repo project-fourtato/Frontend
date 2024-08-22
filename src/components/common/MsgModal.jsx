@@ -240,25 +240,36 @@ function MsgModal({ setShowMsgModal, ...props }) {
     const handleDelete = async (id, event) => {
         event.stopPropagation();
         try {
-            const deleteMsgResponse = await axiosBaseURL.post(`/directmessages/${id}/delete`);
-    
-            if (deleteMsgResponse.status === 200) {
-                swal({
-                    title: "쪽지 삭제",
-                    text: "쪽지가 삭제되었습니다.",
-                    icon: "success",
-                });
-    
-                // 삭제가 성공하면 UI에서 해당 쪽지를 지웁니다.
-                setReceivedMessages(receivedMessages.filter(msg => msg.messageId !== id));
-                setSentMessages(sentMessages.filter(msg => msg.messageId !== id));
-            } else {
-                swal({
-                    title: "쪽지 삭제 실패",
-                    text: "쪽지를 삭제하는 중에 오류가 발생했습니다.",
-                    icon: "error",
-                });
-            }
+            swal({
+                title: "쪽지를 삭제하시겠습니까?",
+                text: "삭제하신 후에는 쪽지의 내용을 확인하실 수 없습니다.",
+                icon: "warning",
+                buttons: ["취소", "확인"],
+                dangerMode: true,
+            })
+            .then(async (result) => {
+                if (result) {
+                    const deleteMsgResponse = await axiosBaseURL.post(`/directmessages/${id}/delete`);
+
+                    if (deleteMsgResponse.status === 200) {
+                        swal({
+                            title: "쪽지 삭제",
+                            text: "쪽지가 삭제되었습니다.",
+                            icon: "success",
+                        });
+            
+                        // 삭제가 성공하면 UI에서 해당 쪽지를 지웁니다.
+                        setReceivedMessages(receivedMessages.filter(msg => msg.messageId !== id));
+                        setSentMessages(sentMessages.filter(msg => msg.messageId !== id));
+                    } else {
+                        swal({
+                            title: "쪽지 삭제 실패",
+                            text: "쪽지를 삭제하는 중에 오류가 발생했습니다.",
+                            icon: "error",
+                        });
+                    }
+                }
+            });
         } catch (error) {
             console.error('쪽지 삭제 중 오류가 발생했습니다:', error);
             swal({
