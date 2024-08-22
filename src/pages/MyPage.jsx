@@ -7,8 +7,8 @@ import axios from "axios";
 
 
 const MyPage = (props) => {
-  const urlAddress = 'http://localhost:8080';
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
   });
 
@@ -26,7 +26,7 @@ const MyPage = (props) => {
     const UserData = async () => {
       try {
         // console.log("부모까지왔다");
-        const response = await axiosBaseURL.get(urlAddress + `/booksList`);
+        const response = await axiosBaseURL.get(`/booksList`);
         setMyBookList(response.data.result);
       } catch (error) {
         console.error("Error fetching user data", error);
