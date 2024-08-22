@@ -110,6 +110,7 @@ const BookListCardContainer = styled.div`
 
 const BookListBox = styled.div`
   display: flex;
+  cursor: pointer;
 `;
 
 const BookImgBox = styled.img`

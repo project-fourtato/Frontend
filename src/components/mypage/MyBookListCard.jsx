@@ -55,8 +55,8 @@ const MyBookListCard = (props) => {
           saleStatus: selectedSaleStatus
         });
         const responseData = response.data.data;
-        console.log(responseData);
-        if (responseData === "bookstate update success") {
+        
+        if (responseData === "판매 상태 변경 성공") {
           setCount(count + 1);
           props.setCount(count);
         }
@@ -73,7 +73,7 @@ const MyBookListCard = (props) => {
 
   useEffect(() => {
     handleButtonClick();
-  }, [selectedSaleStatus, selectedBookUid]);
+  }, [selectedSaleStatus]);
 
   return (
     <BookListCardContainer>

@@ -19,8 +19,7 @@ function BookListCard(props) {
   const axiosBaseURL = axios.create({
     baseURL: 'http://localhost:8080',
     withCredentials: true,
-  }
-  );
+  });
   
   const pro = sessionStorage.getItem("profile");
   const p = JSON.parse(pro); //session uid 가져오기
@@ -111,9 +110,9 @@ function BookListCard(props) {
     }
   };
   
-  const goDetailPage = (isbn, userbid) => {
+  const goDetailPage = (isbn, bookUid, type) => {
     navigate(`/myDetail`, {
-      state: { isbn, userbid },
+      state: { isbn, bookUid, type },
     });
   };
   return (
@@ -124,11 +123,11 @@ function BookListCard(props) {
       </MainTitleContainer>  
       {bookListResponse.map((book) => (
         <BookListContainer key={book.bookUid}>
-          <BookImage src={book.coverImageUrl} alt="bookimg" onClick={() => goDetailPage(book.isbn, book.bookUid)}/>
+          <BookImage src={book.coverImageUrl} alt="bookimg" onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}/>
           <BookDetailContainer>
             <BookListContent>
-              <ContentTitleText onClick={() => goDetailPage(book.isbn, book.bookUid)}>{book.bookTitle}</ContentTitleText>
-              <ContentText onClick={() => goDetailPage(book.isbn, book.bookUid)}>{book.author} | {book.publisher}</ContentText>
+              <ContentTitleText onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}>{book.bookTitle}</ContentTitleText>
+              <ContentText onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}>{book.author} | {book.publisher}</ContentText>
               <SubBtnBox>
                 {/* DropDownApp 구성 요소를 사용자 프로필에 통합 */}
                 <DropDownApp profiles={book.profileList} />

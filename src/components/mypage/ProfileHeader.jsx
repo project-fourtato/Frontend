@@ -142,13 +142,13 @@ function ProfileHeader(props) {
                     onClick={() => {
                       followerPage();
                     }}>팔로워</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>{followerData}</FollowAndFollowerNumberText>
+        <FollowAndFollowerNumberText>{userData.countFollowers}</FollowAndFollowerNumberText>
         <Dot>•</Dot>
         <FollowAndFollowerText
                      onClick={() => {
                       followingPage();
                     }}>팔로잉</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
+        <FollowAndFollowerNumberText>{userData.countFollowings}</FollowAndFollowerNumberText>
       </FollowAndFollower>
       {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'mailbox'}/>}
     </>
