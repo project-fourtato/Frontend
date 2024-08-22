@@ -15,14 +15,17 @@ function ReviewBox(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
   });
 
   // 상태에서 값 추출
   useEffect(() => {
     try {
-      setBookUid(location.state?.bookUid || "");
-      setType(location.state?.type || ""); // type 상태 설정
+      // setBookUid(location.state?.bookUid || "");
+      setBookUid(props.bookUid);
+      // setType(location.state?.type || ""); // type 상태 설정
+      setType(props.type);
     } catch (error) {
       navigate("/error");
     }
@@ -37,11 +40,8 @@ function ReviewBox(props) {
     if (bookUid && type !== 'new') {
       const fetchJournalsData = async () => {
         try {
-          console.log(`Requesting data for bookUid: ${bookUid}`); // 디버깅 로그
-          const response = await axiosBaseURL.get(`http://localhost:8080/journals/journalsList/${bookUid}`);
-          const data = response.data.data; // 서버 응답에서 "data" 키를 사용
-          console.log(data);
-          setJournalsData(data);
+          const response = await axiosBaseURL.get(`/journals/journalsList/${bookUid}`);
+          setJournalsData(response.data.data);
         } catch (error) {
           console.error("Error fetching journals data", error);
         }

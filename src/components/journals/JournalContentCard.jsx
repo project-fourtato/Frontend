@@ -26,7 +26,8 @@ function JournalContentCard(props) {
     let journalId = "";
     try {
         bookUid = location.state.bookUid;
-        journalId = location.state.journalId;
+        journalId = location.state.jid;
+        console.log(journalId);
     } catch(error) {
         navigate("/error");
     }
@@ -121,7 +122,7 @@ function JournalContentCard(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("journals/" + jid + "/edit");
+                const response = await axiosBaseURL.get("journals/" + journalId + "/edit");
                 setJournalResponse(response.data);
             } catch (error) {
                 // console.log(error);
@@ -141,7 +142,6 @@ function JournalContentCard(props) {
 
     const handleUpdateJournal = async () => {
         try {
-            const url = "http://localhost:8080/journals/" + journalId + "/edit";
             if (title) {
                 image.append("jtitle", title);
             }
@@ -151,7 +151,7 @@ function JournalContentCard(props) {
 
             // console.log(image.get("pcontents"));
 
-            const response = await axios.put(url, image,
+            const response = await axiosBaseURL.put("/journals/" + journalId + "/edit", image,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",

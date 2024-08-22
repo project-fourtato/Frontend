@@ -9,14 +9,15 @@ import journalBasis from "../../assets/booker-basis.svg";
 
 function JournalDetail(props) {
     const axiosBaseURL = axios.create({
+        baseURL: 'http://localhost:8080',
         withCredentials: true,
-      });
+    });
 
     let posts = "hello";
     const fileInputRef = React.useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [JournalResponse, setJournalResponse] = useState({
-        jid: '',
+        journalId: '',
         jdatetime: '',
         jtitle: '',
         jcontents: '',
@@ -28,8 +29,8 @@ function JournalDetail(props) {
     let jid = "";
     let lastSegment = "";
     try {
-        jid = location.state.jid;
-        lastSegment = location.state.lastSegment;
+        jid = location.state.journalId;
+        lastSegment = location.state?.lastSegment;
     } catch(error) {
         navigate("/error");
     }
@@ -47,9 +48,7 @@ function JournalDetail(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = `http://localhost:8080/journals/${jid}`;
-                const response = await axiosBaseURL.get(url);
-                console.log(response.data);
+                const response = await axiosBaseURL.get("/journals/" + jid);
                 setJournalResponse(response.data);
             } catch (error) {
                 swal({
@@ -58,9 +57,9 @@ function JournalDetail(props) {
                     icon: "error",
                     buttons: "확인"
                 }).then(() => {
-                    navigate("/");
+                    navigate(-1);
                 })
-                // console.log(error);
+                console.log(error);
             }
         };
         fetchData();
@@ -71,37 +70,34 @@ function JournalDetail(props) {
     };
 
     const handleDeleteButton = async () => {
-        (async () => {
-            try {
-                const url = `http://localhost:8080/journals/${jid}/delete`;
-                
-                const response = await axiosBaseURL.post(url);
+        try {
+            swal({
+                title: "경고",
+                text: "독서록을 삭제하시겠습니까?",
+                icon: "warning",
+                buttons: ["취소", "확인"],
+                dangerMode: true,
+            }).then(async (result) => {
+                console.log(result);
+                if (result) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+                    const response = await axiosBaseURL.post("/journals/" + jid + "/delete");
+                    posts = response.data;
 
-                posts = response.data;
-                console.log(response.data);
-                
-                if(posts.data === "Delete Books Success") {
-                    swal({
-                        title: "경고",
-                        text: "독서록을 삭제하시겠습니까?",
-                        icon: "warning",
-                        buttons: ["취소", "확인"],
-                        dangerMode: true,
-                    }).then(() => {
+                    if(posts === "독서록 삭제 완료") {
                         navigate(-1, {state : {uid}});
                         swal({
                             title: "삭제되었습니다.",
                             icon: "success",
                             buttons: "확인",
                         });
-                    })
+                    }
                 }
-            } catch(error) {
-                // console.log(error);
-            }
-        })();
+            })
+        } catch(error) {
+            console.log(error);
+        }
     }
-
+    
     const handleEditButton = () => {
         navigate("/journals/edit", { state : {jid} });
     }
