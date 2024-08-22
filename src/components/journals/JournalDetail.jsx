@@ -106,7 +106,7 @@ function JournalDetail(props) {
         <>
             <OutDivInput>
                 <ImageOutDiv>
-                <ImagePreview src={(JournalResponse.jimageName) ? JournalResponse.jimageUrl : journalBasis} alt="Selected profile" />
+                <ImagePreview src={(JournalResponse.jimageUrl) ? JournalResponse.jimageUrl : journalBasis} alt="Selected profile" />
                 </ImageOutDiv>
                 <ContentButtonOutDiv>
                     <ContentDiv>
