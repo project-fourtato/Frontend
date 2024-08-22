@@ -7,6 +7,7 @@ import MainSearch from "../search/MainSearch";
 import BooksearchList from "./BooksearchList";
 import LibrarySearchList from "./LibrarySearchList";
 import UserSearchList from "./UserSearchList";
+
 // 완료
 function SearchTab(props) {
   const [tab, setTab] = useState({
@@ -31,8 +32,7 @@ function SearchTab(props) {
       setMsgList(response.data.data); // 응답 데이터 설정
     } catch (error) {
       // 세션이 없거나 로그인 정보가 없을 때 홈으로 리다이렉트
-      window.location.href = "/";
-      console.error("Error fetching library data", error);
+      console.error(error);
     }
   };
 

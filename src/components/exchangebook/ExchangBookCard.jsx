@@ -1,9 +1,10 @@
 import { React, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+
+const { kakao } = window;
 
 function ExchangBookCard(props) {
   const [libraryList,setLibraryList] = useState([]);
@@ -26,32 +27,35 @@ function ExchangBookCard(props) {
   };
 
   const YourComponent = ({ lat, lng }) => {
-    const [map, setMap] = useState(null);
-    const [marker, setMarker] = useState(null);
-    const ref = useRef();
-
+    
     useEffect(() => {
-      const newMap = new window.google.maps.Map(ref.current, {
-        center: { lat, lng },
-        zoom: 16,
+      const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+      const options = { //지도를 생성할 때 필요한 기본 옵션
+	      center: new kakao.maps.LatLng(lat, lng), //지도의 중심좌표.
+	      level: 3 //지도의 레벨(확대, 축소 정도)
+      };
+
+      const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+      let markerPosition = new kakao.maps.LatLng(
+        lat, lng
+      );
+
+      let marker = new kakao.maps.Marker({
+        position: markerPosition,
       });
 
-  const markerInstance = new window.google.maps.Marker({
-        position: { lat, lng },
-        map: newMap,
-        title: '도서관 위치',
-      });
-
-      setMap(newMap);
-      setMarker(markerInstance);
+      marker.setMap(map);
     }, [])
+    
 
     return (
-      <div ref={ref} id="map" style={{ width: "300px", height: "300px" }}></div>
+      <div id="map" style={{ width: "300px", height: "300px" }}></div>
     )
   }
+
   let a = "";
-  if(libraryList.length == 0 ){
+  if(libraryList.length == 0){
     a = "해당 지역의 도서관에는 검색하신 책이 없어요😢";
   }
   return (
@@ -64,12 +68,7 @@ function ExchangBookCard(props) {
 
             return (
           <LibraryInfo>
-            <Wrapper apiKey={"AIzaSyCkxnfE1Y-05ue4N_q5ba4gEstlkg-0iF4"} 
-                        render={render}
-                        options={{disableDefaultUI: true}}>
-                  <YourComponent lat={latitude} lng={longitude} />
-            </Wrapper>
-
+            <YourComponent lat={latitude} lng={longitude} />
             <ExchangeInfo>
             <LibraryName><FontAwesomeIcon icon={faLocationDot} className='icon-library-marker' /><a href={mapdata.homepage} target={'_blank'} style={{ textDecoration: 'none', color:'#142343' }}>{mapdata.libName}</a></LibraryName>
             <div>
