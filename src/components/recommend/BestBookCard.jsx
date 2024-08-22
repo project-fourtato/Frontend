@@ -12,8 +12,8 @@ import Session from 'react-session-api';
 import "../../App.css";
 
 function BestBookCard(props) {
-  const urlAddress = 'http://localhost:8080';
   const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
     withCredentials: true,
   });
   
@@ -30,7 +30,7 @@ function BestBookCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosBaseURL.get(urlAddress + '/bestseller');
+        const response = await axiosBaseURL.get('/bestseller');
   
         // response.data가 이미 배열 형태일 것이므로 추가적인 JSON.parse가 필요하지 않음
         setBooksearchList(response.data.result);
@@ -46,19 +46,18 @@ function BestBookCard(props) {
 
   const goDetailPage = async (uid, isbn) => {
     try{
-      const url = 'http://localhost:8080/booksState/uid='+uid+'&isbn='+isbn;
-      const response = await axios.get(url);
+      const response = await axiosBaseURL.get('/readStatus?isbn=' + isbn);
       const responseData = response.data;
       // console.log(responseData);
-      if(responseData ===''){
+      if(responseData.readStatus === -1){
         navigate(`/newDetail`, {
           state: { uid, isbn },
         });
       }
       else {
-        const bid = responseData.userbid;
+        const bookUid = responseData.bookUid;
         navigate(`/myDetail`, {
-          state: { uid, isbn, bid },
+          state: { uid, isbn, bookUid },
         });
       }
     } catch (error) {
