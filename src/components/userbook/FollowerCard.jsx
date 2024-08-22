@@ -42,7 +42,7 @@ function FollowerCard(props) {
         <FollowingBox>팔로워</FollowingBox>
       </FollowingContainer>
       {followerList.map((follower, index) => (
-        <BookListCardContainer key={index} onClick={() => studyPage(follower.profileUid)}>
+        <BookListCardContainer key={index} onClick={() => studyPage(follower.loginId)}>
           <ProfileImage src={follower.userimageUrl} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>

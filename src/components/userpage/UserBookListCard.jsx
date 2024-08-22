@@ -21,9 +21,9 @@ const UserBookListCard = (props) => {
     // console.log(props.myBookList);
   }, [props.myBookList]);
 
-  const goDetailPage = (uid, isbn, userbid, bookstate, nickname) => {
+  const goDetailPage = (isbn, userbid, bookstate, nickname) => {
     navigate(`/userDetail`, {
-      state: { uid, isbn, userbid, bookstate, nickname },
+      state: { isbn, userbid, bookstate, nickname },
     });
   };
 
@@ -41,27 +41,26 @@ const UserBookListCard = (props) => {
       }, []).map((chunk, chunkIndex) => (
         <BookListBodyContainer key={chunkIndex}>
           {chunk.map((book) => (
-            <BookItem key={book.id}>
+            <BookItem key={book.bookUid}>
               <BookimgBox
-                src={book.cover}
+                src={book.coverImageUrl}
                 onClick={() =>
                   goDetailPage(
-                    book.uid,
                     book.isbn,
-                    book.userbid,
-                    book.bookstate,
+                    book.bookUid,
+                    book.readStatus,
                     nickname
                   )
                 }
               />
               <BookButtonsContainer>
                 <ActionButton
-                  completed0={book.bookstate} id='book'
+                  completed0={book.readStatus} id='book'
                 >
-                  {(book.bookstate === 0 ? <FontAwesomeIcon icon={faBook} /> :
-                    book.bookstate === 1 ? <FontAwesomeIcon icon={faHeart} /> :
-                      book.bookstate === 2 ? <FontAwesomeIcon icon={faBookOpenReader} /> :
-                        book.bookstate === 3 ? <FontAwesomeIcon icon={faSquareCheck} /> : null)}
+                  {(book.readStatus === 0 ? <FontAwesomeIcon icon={faBook} /> :
+                    book.readStatus === 1 ? <FontAwesomeIcon icon={faHeart} /> :
+                      book.readStatus === 2 ? <FontAwesomeIcon icon={faBookOpenReader} /> :
+                        book.readStatus === 3 ? <FontAwesomeIcon icon={faSquareCheck} /> : null)}
                 </ActionButton>
                 <ActionButton
                   completed1={book.salestate} id='sale'

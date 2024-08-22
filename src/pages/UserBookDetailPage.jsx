@@ -19,7 +19,6 @@ const UserBookDetailPage = (props) => {
   let nickname = "";
 
   try {
-    uid = location.state.uid;
     isbn = location.state.isbn;
     userbid = location.state.userbid;
     bookstate = location.state.bookstate;
@@ -30,16 +29,17 @@ const UserBookDetailPage = (props) => {
   const [firstPart, setFirstPart] = useState('');
   const [secondPart, setSecondPart] = useState('');
 
+  const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
+    withCredentials: true,
+  });
+
   useEffect(() => {
     const BookData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/books/booksDetail/` + isbn);
-        // console.log(response);
-        const data = response.data.data;
-        const title = data.title;
-        // console.log(data);
-        setBookData(data);
-
+        const response = await axiosBaseURL.get(`/journals/bookDetailsByISBN/` + isbn);
+        const title = response.data.bookTitle;
+        setBookData(response.data);
 
         // "-"를 기준으로 나누기
         const firstHyphenIndex = title.indexOf(" - ");
@@ -71,7 +71,7 @@ const UserBookDetailPage = (props) => {
     <BookDetailContainer>
       <BookDetailBox>
         <BookDetailInnerContainer>
-          <BookImg src={bookData.cover} alt="책 이미지" />
+          <BookImg src={bookData.coverImageUrl} alt="책 이미지" />
           <BookDetailTextBox>
             <h2>{firstPart}</h2>
             <h5>{secondPart}</h5>
@@ -91,7 +91,7 @@ const UserBookDetailPage = (props) => {
         </BookDetailInnerContainer>
         <IntroAndIndexFooter categoryName={bookData.categoryName} description={bookData.description} />
       </BookDetailBox>
-      <ReviewBox userbid={userbid} type={'user'} nickname={nickname} />
+      <ReviewBox bookUid={userbid} type={'user'} nickname={nickname} />
     </BookDetailContainer>
   );
 }

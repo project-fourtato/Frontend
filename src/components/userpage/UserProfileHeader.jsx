@@ -17,7 +17,7 @@ const UserProfileHeader = (props) => {
   const navigate = useNavigate();
   const pro = sessionStorage.getItem("profile");
   const pSession = JSON.parse(pro); //session uid 가져오기
-  const p = props.UserUid;
+  const p = props.UserUid; // user loginId
   const [showMsgModal, setShowMsgModal] = useState(false);
 
   const [count, setCount] = useState(0);
@@ -138,6 +138,7 @@ const UserProfileHeader = (props) => {
     const UserData = async () => {
       try {
         const response = await axiosBaseURL.get(urlAddress + `/profile/` + p);
+        props.setNickname(response.data.nickname);
         setUserData(response.data);
         if(response.data.length === 0) {
           throw new Error("is Null");
@@ -224,10 +225,10 @@ const UserProfileHeader = (props) => {
           </ProfileSection>
           <FollowAndFollower>
             <FollowAndFollowerText onClick={followerPage}>팔로워</FollowAndFollowerText>
-            <FollowAndFollowerNumberText>{followerData}</FollowAndFollowerNumberText>
+            <FollowAndFollowerNumberText>{userData.countFollowers}</FollowAndFollowerNumberText>
             <Dot>•</Dot>
             <FollowAndFollowerText onClick={followingPage}>팔로잉</FollowAndFollowerText>
-            <FollowAndFollowerNumberText>{followingData}</FollowAndFollowerNumberText>
+            <FollowAndFollowerNumberText>{userData.countFollowings}</FollowAndFollowerNumberText>
           </FollowAndFollower>
           <BookListCardHeader>
             <LeftBox>

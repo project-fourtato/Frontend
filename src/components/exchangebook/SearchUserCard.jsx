@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 // 완료
 function SearchUserCard(props) {
     const [haveabookuser, setHaveabookuser] = useState([]);
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const axiosBaseURL = axios.create({
         withCredentials: true,
@@ -42,13 +45,18 @@ function SearchUserCard(props) {
         fetchData();
     }, [lastSegment]);
 
+    const studyPage = (profileId) => {
+        // console.log(uid);
+        navigate("/studyPage/"+profileId);
+    };
+
     return (
         <AnnouncementBox>
             <AnnouncementTitle>{message}</AnnouncementTitle>
             <CardBoxContainer>
                 {haveabookuser.map((bookeruser, index) => (
-                    <CordBox key={index}>
-                        <img src={bookeruser.useriamgeUrl} alt={bookeruser.nickname} />
+                    <CordBox onClick={() => studyPage(bookeruser.loginId)} key={index}>
+                        <img src={bookeruser.userimageUrl} alt={bookeruser.nickname} />
                         <CardBoxText><span>{bookeruser.nickname}</span> 님</CardBoxText>
                     </CordBox>
                 ))}

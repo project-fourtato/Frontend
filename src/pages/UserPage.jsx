@@ -12,6 +12,11 @@ const UserPage = (props) => {
   const p = props.UserUid;
   const navigate = useNavigate();
 
+  const axiosBaseURL = axios.create({
+    baseURL: 'http://localhost:8080',
+    withCredentials: true,
+  });
+
   const [myBookList, setMyBookList] = useState([]);
   useEffect(() => {
     // console.log(usermessage);
@@ -20,10 +25,9 @@ const UserPage = (props) => {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/booksList/`+p);
+        const response = await axiosBaseURL.get(`/booksList?userId=` + p);
         // console.log(response);
-        const data = response.data.data;
-        console.log(data);
+        const data = response.data.result;
 
         setMyBookList(data);
       } catch (error) {

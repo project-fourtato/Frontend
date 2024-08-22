@@ -64,7 +64,7 @@ const MyBookDetailPage = (props) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axiosBaseURL.get(`/readStatus?uid=${uid}&isbn=${isbn}`);
+        const response = await axiosBaseURL.get(`/readStatus?isbn=${isbn}`);
         const data = response.data;
         setSelectedOption(data.readStatus);  // 서버에서 받아온 값 그대로 사용
       } catch (error) {
@@ -91,7 +91,8 @@ const MyBookDetailPage = (props) => {
           if (willDelete) {
             (async () => {
               try {
-                await axiosBaseURL.post(`/books/${bookUid}/delete`);
+                const response = await axiosBaseURL.post(`/books/${bookUid}/delete`);
+                console.log(response);
                 navigate("/mypage");
               } catch (error) {
                 console.error("Error deleting book", error);
@@ -176,7 +177,7 @@ const MyBookDetailPage = (props) => {
         </BookDetailInnerContainer>
         <IntroAndIndexFooter categoryName={bookData.categoryName} description={bookData.description} />
       </BookDetailBox>
-      <ReviewBox bookUid={uid} type={'my'} nickname={'회원'} />
+      <ReviewBox bookUid={bookUid} type={'my'} nickname={'회원'} />
     </BookDetailContainer>
   );
 }
