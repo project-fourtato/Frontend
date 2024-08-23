@@ -72,11 +72,11 @@ function BestBookCard(props) {
 
       {booksearchList && booksearchList.map((book) => (
         <BookListBox key={book.isbn} onClick={() => goDetailPage(p.uid, book.isbn)}>
-          <BookImg src={book.coverImg} />
+          <BookImg src={book.coverImageUrl} />
           <BookInfoOutDiv>
             <BookTitleText>{book.bookTitle}</BookTitleText>
-            <BookSubText>{book.bookAuthor}</BookSubText>
-            <BookSubText>{book.bookPublisher}</BookSubText>
+            <BookSubText>{book.author}</BookSubText>
+            <BookSubText>{book.publisher}</BookSubText>
           </BookInfoOutDiv>
         </BookListBox>
       ))}

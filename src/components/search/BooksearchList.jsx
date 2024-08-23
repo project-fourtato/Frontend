@@ -29,7 +29,7 @@ function BooksearchList(props) {
         const response = await axiosBaseURL.get(url);
         console.log(response);
         const responseData = response;
-        setBooksearchList(responseData.data || []); // 데이터가 없을 경우 빈 배열로 설정
+        setBooksearchList(responseData.data.result || []); // 데이터가 없을 경우 빈 배열로 설정
       } catch (error) {
         console.log(error);
         setBooksearchList([]); // 오류가 발생해도 빈 배열로 설정

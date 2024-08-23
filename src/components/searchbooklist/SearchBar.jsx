@@ -22,8 +22,7 @@ function ExchangeSearchBar(props) {
       const stringWithoutSpaces = searchValue.replace(/\s/g, ''); // 공백 제거
       const url = `http://localhost:8080/sale/searchOne/${stringWithoutSpaces}`;
       const response = await axiosBaseURL.get(url);
-      console.log(response.data);
-      setBookList(response.data); // 응답 데이터를 bookList에 설정
+      setBookList(response.data.result); // 응답 데이터를 bookList에 설정
     } catch (error) {
       window.location.href = "/";
       console.error("Error fetching books data", error);

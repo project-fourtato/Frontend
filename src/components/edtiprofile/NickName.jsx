@@ -52,7 +52,7 @@ function NickName(props) {
   }, []);
 
   useEffect(() => {
-    setSelectedImage(profileResponse.useriamgeUrl);
+    setSelectedImage(profileResponse.imageUrl);
     props.setUserNickname(profileResponse.nickname);
     props.setUserMessage(profileResponse.usermessage);
   }, [profileResponse]);
