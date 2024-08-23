@@ -26,10 +26,12 @@ function ExchangBookCard(props) {
     </>);
   };
 
-  const YourComponent = ({ lat, lng }) => {
+  const YourComponent = ({ lat, lng, num }) => {
+    const idName = 'map' + num;
     
     useEffect(() => {
-      const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+      const container = document.getElementById(idName); //지도를 담을 영역의 DOM 레퍼런스
+
       const options = { //지도를 생성할 때 필요한 기본 옵션
 	      center: new kakao.maps.LatLng(lat, lng), //지도의 중심좌표.
 	      level: 3 //지도의 레벨(확대, 축소 정도)
@@ -50,7 +52,7 @@ function ExchangBookCard(props) {
     
 
     return (
-      <div id="map" style={{ width: "300px", height: "300px" }}></div>
+      <div id={idName} style={{ width: "300px", height: "300px" }}></div>
     )
   }
 
@@ -62,13 +64,13 @@ function ExchangBookCard(props) {
     <>
       <AnnouncementTitle>{a}</AnnouncementTitle>
       <ContentArea>
-        {libraryList && libraryList.map((mapdata) => {
+        {libraryList && libraryList.map((mapdata, index) => {
             let latitude = parseFloat(mapdata.latitude);
             let longitude = parseFloat(mapdata.longitude);
 
             return (
           <LibraryInfo>
-            <YourComponent lat={latitude} lng={longitude} />
+            <YourComponent lat={latitude} lng={longitude} num={index}/>
             <ExchangeInfo>
             <LibraryName><FontAwesomeIcon icon={faLocationDot} className='icon-library-marker' /><a href={mapdata.homepage} target={'_blank'} style={{ textDecoration: 'none', color:'#142343' }}>{mapdata.libName}</a></LibraryName>
             <div>
