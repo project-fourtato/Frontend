@@ -1,26 +1,25 @@
 import styled from "styled-components";
 import MyBookListCard from "../components/mypage/MyBookListCard";
 import ProfileHeader from "../components/mypage/ProfileHeader";
-import { myBookList } from "../data/mypagedata"; 
-import {useEffect, useState} from "react";
+import { myBookList } from "../data/mypagedata";
+import { useEffect, useState } from "react";
 import axios from "axios";
-
 
 const MyPage = (props) => {
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "http://localhost:8080",
     withCredentials: true,
   });
 
-  const [usermessage, setUsermessage] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [usermessage, setUsermessage] = useState("");
+  const [nickname, setNickname] = useState("");
   const pro = sessionStorage.getItem("profile");
   const p = JSON.parse(pro); //session uid 가져오기
   const [myBookList, setMyBookList] = useState([]);
   useEffect(() => {
     // console.log(usermessage);
-  },[usermessage]);
-  const [count, setCount] = useState('');
+  }, [usermessage]);
+  const [count, setCount] = useState("");
 
   useEffect(() => {
     const UserData = async () => {
@@ -38,8 +37,13 @@ const MyPage = (props) => {
   return (
     <Container>
       <AllOutDiv>
-        <ProfileHeader setUsermessage={setUsermessage}/>
-        <MyBookListCard usermessage={usermessage} myBookList={myBookList} setCount={setCount}/> {/* 데이터를 전달 */}
+        <ProfileHeader setUsermessage={setUsermessage} />
+        <MyBookListCard
+          usermessage={usermessage}
+          myBookList={myBookList}
+          setCount={setCount}
+        />{" "}
+        {/* 데이터를 전달 */}
       </AllOutDiv>
     </Container>
   );
@@ -67,5 +71,6 @@ const AllOutDiv = styled.div`
   border-radius: 45px;
   padding-top: 70px;
   padding-bottom: 43px;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
 `;

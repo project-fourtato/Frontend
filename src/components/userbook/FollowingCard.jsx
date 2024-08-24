@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import "../../App.css"
+import "../../App.css";
 import { useNavigate } from "react-router-dom";
 
 function FollowerCard(props) {
@@ -10,18 +10,17 @@ function FollowerCard(props) {
   const [followerList, setFollowerList] = useState([]);
   const navigate = useNavigate();
   const lastSegment = props.lastSegment; //uid
-  
+
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "http://localhost:8080",
     withCredentials: true,
-  }
-  );
+  });
 
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
         const response = await axiosBaseURL.post("/follow/followingsList");
-        // console.log(response.data);
+        console.log(response.data);
         setFollowerList(response.data);
       } catch (error) {
         // console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
@@ -33,9 +32,8 @@ function FollowerCard(props) {
 
   const studyPage = (uid) => {
     // console.log(uid);
-    navigate("/studyPage/"+uid);
+    navigate("/studyPage/" + uid);
   };
-
 
   return (
     <>
@@ -43,7 +41,10 @@ function FollowerCard(props) {
         <FollowingBox>팔로잉</FollowingBox>
       </FollowingContainer>
       {followerList.map((follower, index) => (
-        <BookListCardContainer key={index} onClick={() => studyPage(follower.loginId)}>
+        <BookListCardContainer
+          key={index}
+          onClick={() => studyPage(follower.profileUid)}
+        >
           <ProfileImage src={follower.userimageUrl} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>
@@ -63,20 +64,20 @@ const BookListCardContainer = styled.div`
   display: flex; /* Make the container flex */
   width: 1200px;
   // margin-bottom: 30px;
-  padding-top:20px;
-  padding-bottom:10px;
+  padding-top: 20px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #c1c1c1;
   align-items: center; /* Align items vertically */
-  &:hover{
-  background: #fff;
-  cursor: pointer;
-  border-radius : 25px;
-  opacity : 0.8;
+  &:hover {
+    background: #fff;
+    cursor: pointer;
+    border-radius: 25px;
+    opacity: 0.8;
   }
 `;
 
 const ProfileImage = styled.img`
-  min-width:80px;
+  min-width: 80px;
   min-height: 80px;
   width: 80px;
   height: 80px;
@@ -138,15 +139,13 @@ const LeftBoxText = styled.h5`
 `;
 
 const FollowingContainer = styled.div`
-  cursor : default;
+  cursor: default;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 50px;
-  margin-top : -50px;
-  
-  
+  margin-top: -50px;
 `;
 
 const FollowingBox = styled.p`

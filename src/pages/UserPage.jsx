@@ -1,19 +1,19 @@
 import styled from "styled-components";
 import UserBookListCard from "../components/userpage/UserBookListCard";
 import UserProfileHeader from "../components/userpage/UserProfileHeader";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 const UserPage = (props) => {
-  const [usermessage, setUsermessage] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [usermessage, setUsermessage] = useState("");
+  const [nickname, setNickname] = useState("");
   const p = props.UserUid;
   const navigate = useNavigate();
 
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "http://localhost:8080",
     withCredentials: true,
   });
 
@@ -21,7 +21,7 @@ const UserPage = (props) => {
   useEffect(() => {
     // console.log(usermessage);
     // console.log(nickname);
-  },[usermessage, nickname]);
+  }, [usermessage, nickname]);
   useEffect(() => {
     const UserData = async () => {
       try {
@@ -35,12 +35,21 @@ const UserPage = (props) => {
       }
     };
     UserData();
-  }, []); 
+  }, []);
   return (
     <Container>
       <AllOutDiv>
-        <UserProfileHeader usermessage={usermessage} setUsermessage={setUsermessage} setNickname={setNickname} UserUid={p}/>
-        <UserBookListCard usermessage={usermessage} nickname={nickname} myBookList={myBookList}/>
+        <UserProfileHeader
+          usermessage={usermessage}
+          setUsermessage={setUsermessage}
+          setNickname={setNickname}
+          UserUid={p}
+        />
+        <UserBookListCard
+          usermessage={usermessage}
+          nickname={nickname}
+          myBookList={myBookList}
+        />
       </AllOutDiv>
     </Container>
   );
@@ -68,5 +77,6 @@ const AllOutDiv = styled.div`
   border-radius: 45px;
   padding-top: 70px;
   padding-bottom: 43px;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
-`
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
+`;
