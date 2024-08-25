@@ -9,7 +9,7 @@ function BestUserCard() {
   const navigate = useNavigate();
 
   const axiosBaseURL = axios.create({
-    baseURL: "https://our-booker.site:8080",
+    baseURL: "https://www.our-booker.site:8080",
     withCredentials: true,
   });
   // 프로필 정보는 세션 스토리지에서 가져오기

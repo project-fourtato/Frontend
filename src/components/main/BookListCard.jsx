@@ -16,12 +16,10 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom";
 
 function BookListCard(props) {
-  const urlAddress = "http://localhost:8080";
-
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
   const axiosBaseURL = axios.create({
-    baseURL: "https://our-booker.site:8080",
+    baseURL: "https://www.our-booker.site:8080",
     withCredentials: true,
   });
 

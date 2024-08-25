@@ -13,7 +13,7 @@ const UserPage = (props) => {
   const navigate = useNavigate();
 
   const axiosBaseURL = axios.create({
-    baseURL: "https://our-booker.site:8080",
+    baseURL: "https://www.our-booker.site:8080",
     withCredentials: true,
   });
 

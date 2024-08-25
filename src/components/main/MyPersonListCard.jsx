@@ -13,7 +13,7 @@ function MyPersonListCard(props) {
   const p = JSON.parse(profile);
   const [ProfileResponse, setProfileResponse] = useState([]);
   const axiosBaseURL = axios.create({
-    baseURL: "https://our-booker.site:8080",
+    baseURL: "https://www.our-booker.site:8080",
     withCredentials: true,
   });
 

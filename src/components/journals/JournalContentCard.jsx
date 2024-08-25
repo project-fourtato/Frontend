@@ -9,8 +9,7 @@ import journalBasis from "../../assets/journal-basis.png";
 
 function JournalContentCard(props) {
   const axiosBaseURL = axios.create({
-    //cors 해결
-    baseURL: "https://our-booker.site:8080",
+    baseURL: "https://www.our-booker.site:8080",
     withCredentials: true,
   });
 

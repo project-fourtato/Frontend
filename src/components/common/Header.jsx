@@ -26,7 +26,7 @@ const Header = () => {
   const p = JSON.parse(profile);
 
   const axiosBaseURL = axios.create({
-    baseURL: "https://our-booker.site:8080",
+    baseURL: "https://www.our-booker.site:8080",
     withCredentials: true,
   });
 
@@ -44,7 +44,7 @@ const Header = () => {
 
   const logOut = async () => {
     try {
-      const url = `http://localhost:8080/login/logout`;
+      const url = `/login/logout`;
       const response = await axiosBaseURL.get(url);
     } catch (error) {}
   };

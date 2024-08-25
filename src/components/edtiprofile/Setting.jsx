@@ -13,9 +13,8 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
 
 function Setting(props) {
-  const urlAddress = "http://localhost:8080";
   const axiosBaseURL = axios.create({
-    baseURL: "https://our-booker.site:8080",
+    baseURL: "https://www.our-booker.site:8080",
     withCredentials: true,
   });
 
@@ -51,7 +50,7 @@ function Setting(props) {
     (async () => {
       try {
         const response = await axiosBaseURL.get(
-          urlAddress + "/profile/checkNickname/" + props.nickname
+          "/profile/checkNickname/" + props.nickname
         );
       } catch (error) {
         if (error.response && error.response.status === 400) {

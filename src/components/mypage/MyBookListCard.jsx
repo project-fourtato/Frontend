@@ -15,7 +15,7 @@ import axios from "axios";
 
 // 완료
 const axiosBaseURL = axios.create({
-  baseURL: "https://our-booker.site:8080",
+  baseURL: "https://www.our-booker.site:8080",
   withCredentials: true,
 });
 
