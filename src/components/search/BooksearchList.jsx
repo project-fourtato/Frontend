@@ -8,10 +8,11 @@ function BooksearchList(props) {
   const profile = sessionStorage.getItem("profile");
   const navigate = useNavigate();
   const p = JSON.parse(profile);
-  const [searchValue, setSearch] = useState('');
+  const [searchValue, setSearch] = useState("");
   const [booksearchList, setBooksearchList] = useState([]);
 
   const axiosBaseURL = axios.create({
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
@@ -23,8 +24,8 @@ function BooksearchList(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const stringWithoutSpaces = searchValue.replace(/\s/g, ''); // 공백 제거
-        const url = `http://localhost:8080/sale/searchOne/${stringWithoutSpaces}`;
+        const stringWithoutSpaces = searchValue.replace(/\s/g, ""); // 공백 제거
+        const url = `/sale/searchOne/${stringWithoutSpaces}`;
         console.log(url);
         const response = await axiosBaseURL.get(url);
         console.log(response);
@@ -35,7 +36,7 @@ function BooksearchList(props) {
         setBooksearchList([]); // 오류가 발생해도 빈 배열로 설정
       }
     };
-    
+
     if (props.searchValue) {
       fetchData();
     }
@@ -43,23 +44,29 @@ function BooksearchList(props) {
 
   const goDetailPage = async (isbn) => {
     try {
-        const url = `http://localhost:8080/readStatus?isbn=${isbn}`;
-        const response = await axiosBaseURL.get(url);
-        const responseData = response.data;
+      const url = `/readStatus?isbn=${isbn}`;
+      const response = await axiosBaseURL.get(url);
+      const responseData = response.data;
 
-        console.log(responseData);
-        if (responseData.readStatus === -1) {
-            navigate("/newDetail", {
-                state: { isbn },
-            });
-        } else { 
-            const { bookUid, readStatus, saleStatus } = responseData;
-            navigate("/myDetail", {
-                state: { uid: bookUid, isbn, bookId: bookUid, readStatus, saleStatus },
-            });
-       } 
+      console.log(responseData);
+      if (responseData.readStatus === -1) {
+        navigate("/newDetail", {
+          state: { isbn },
+        });
+      } else {
+        const { bookUid, readStatus, saleStatus } = responseData;
+        navigate("/myDetail", {
+          state: {
+            uid: bookUid,
+            isbn,
+            bookId: bookUid,
+            readStatus,
+            saleStatus,
+          },
+        });
+      }
     } catch (error) {
-       /* if (error.response && error.response.status === 404) {
+      /* if (error.response && error.response.status === 404) {
             console.error("404 Error: Book not found.");
             // 404 오류에 대한 추가 처리 로직을 작성할 수 있습니다.
             navigate("/newDetail", {
@@ -69,17 +76,19 @@ function BooksearchList(props) {
             console.error("Error fetching book details: ", error);
             // 다른 오류에 대한 일반적인 처리 로직
         }*/
-       console.error();
+      console.error();
     }
-};
-
+  };
 
   return (
     <AllOutDiv>
       <BookListCardContainer>
         {booksearchList.length > 0 ? (
           booksearchList.map((book) => (
-            <BookListBox key={book.isbn} onClick={() => goDetailPage(book.isbn)}>
+            <BookListBox
+              key={book.isbn}
+              onClick={() => goDetailPage(book.isbn)}
+            >
               <BookImgBox src={book.coverImageUrl} />
               <BookInfoOutDiv>
                 <BookTitleText>{book.bookTitle}</BookTitleText>
@@ -101,7 +110,7 @@ export default BooksearchList;
 const AllOutDiv = styled.div`
   margin-left: 13.8%;
   margin-bottom: 5%;
-`
+`;
 
 const BookListCardContainer = styled.div`
   display: grid;
@@ -122,7 +131,7 @@ const BookImgBox = styled.img`
 
 const BookInfoOutDiv = styled.div`
   padding-top: 5px;
-`
+`;
 
 const BookTitleText = styled.h5`
   color: #000;

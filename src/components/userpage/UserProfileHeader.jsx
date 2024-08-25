@@ -27,7 +27,7 @@ const UserProfileHeader = (props) => {
   const [FollowButtonText, setFollowButtonText] = useState("");
 
   const axiosBaseURL = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
@@ -46,7 +46,6 @@ const UserProfileHeader = (props) => {
               toUserId: p,
               fromUserId: pSession.uid,
             });
-            console.log("팔로우delete" + response);
             const responseData = response.data;
             setCount(count + 1);
           } catch (error) {
@@ -74,7 +73,6 @@ const UserProfileHeader = (props) => {
         if (value) {
           try {
             const url = "/follow/new";
-            console.log(p + "왜죠");
             const response = await axiosBaseURL.post(url, {
               toUserId: p,
               fromUserId: pSession.uid,

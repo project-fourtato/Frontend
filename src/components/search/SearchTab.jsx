@@ -15,18 +15,19 @@ function SearchTab(props) {
   });
   const [selectedRegion, setSelectedRegion] = useState({});
   const [selectedCity, setSelectedCity] = useState({});
-  const [searchValue, setSearch] = useState('');
+  const [searchValue, setSearch] = useState("");
   const [msgList, setMsgList] = useState([]);
   const navigate = useNavigate();
 
   const axiosBaseURL = axios.create({
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
   const SearchBtnClick = async () => {
     try {
-      const stringWithoutSpaces = searchValue.replace(/\s/g, ''); // 공백 제거
-      const url = `http://localhost:8080/libraryList/region/${selectedRegion.code}/dtl_region/${selectedCity.code}/searchOne/${stringWithoutSpaces}`;
+      const stringWithoutSpaces = searchValue.replace(/\s/g, ""); // 공백 제거
+      const url = `/libraryList/region/${selectedRegion.code}/dtl_region/${selectedCity.code}/searchOne/${stringWithoutSpaces}`;
       const response = await axiosBaseURL.get(url);
       console.log(response.data.data);
       setMsgList(response.data.data); // 응답 데이터 설정
@@ -37,10 +38,19 @@ function SearchTab(props) {
   };
 
   useEffect(() => {
-    if (searchValue) { // 초기 렌더링 방지
-      if ((searchValue.length >= 5) && (tab.active === 2) && (selectedRegion.code) && (selectedCity.code)) {
+    if (searchValue) {
+      // 초기 렌더링 방지
+      if (
+        searchValue.length >= 5 &&
+        tab.active === 2 &&
+        selectedRegion.code &&
+        selectedCity.code
+      ) {
         SearchBtnClick();
-      } else if ((tab.active === 2) && (!selectedRegion.code || !selectedCity.code)) {
+      } else if (
+        tab.active === 2 &&
+        (!selectedRegion.code || !selectedCity.code)
+      ) {
         swal({
           title: "지역도 같이 검색해주세요.",
           icon: "warning",
@@ -48,7 +58,7 @@ function SearchTab(props) {
         }).then(() => {
           navigate("/search");
         });
-      } else if ((tab.active === 2) && (searchValue.length < 5)) {
+      } else if (tab.active === 2 && searchValue.length < 5) {
         swal({
           title: "주의!",
           text: "도서관은 5글자 이상부터 검색 가능합니다.",
@@ -82,7 +92,12 @@ function SearchTab(props) {
 
   return (
     <>
-      <MainSearch active={tab.active} setSelectedRegion={setSelectedRegion} setSelectedCity={setSelectedCity} setSearch={setSearch} />
+      <MainSearch
+        active={tab.active}
+        setSelectedRegion={setSelectedRegion}
+        setSelectedCity={setSelectedCity}
+        setSearch={setSearch}
+      />
       <SearchTabContainer>
         <TabContainer>
           <Tab onClick={() => activeTab(0)} active={tab.active === 0}>
@@ -105,7 +120,6 @@ function SearchTab(props) {
 
 export default SearchTab;
 
-
 const SearchTabContainer = styled.div`
   width: 1200px;
   /* height: 100%; */
@@ -120,7 +134,7 @@ const TabContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px solid #E8E8E8;
+  border-bottom: 2px solid #e8e8e8;
   margin-bottom: 3rem;
 `;
 
@@ -151,4 +165,4 @@ const TabContent = styled.div`
 
 const TabContentOutDiv = styled.div`
   width: 100%;
-`
+`;

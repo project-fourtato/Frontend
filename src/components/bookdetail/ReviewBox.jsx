@@ -15,7 +15,7 @@ function ReviewBox(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
@@ -33,14 +33,16 @@ function ReviewBox(props) {
 
   // URL에서 경로 추출
   const currentPath = window.location.pathname;
-  const lastSegment = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+  const lastSegment = currentPath.substring(currentPath.lastIndexOf("/") + 1);
 
   useEffect(() => {
     // bookUid와 type이 유효한 경우에만 데이터 요청
-    if (bookUid && type !== 'new') {
+    if (bookUid && type !== "new") {
       const fetchJournalsData = async () => {
         try {
-          const response = await axiosBaseURL.get(`/journals/journalsList/${bookUid}`);
+          const response = await axiosBaseURL.get(
+            `/journals/journalsList/${bookUid}`
+          );
           setJournalsData(response.data.data);
         } catch (error) {
           console.error("Error fetching journals data", error);
@@ -55,17 +57,21 @@ function ReviewBox(props) {
   };
 
   const journalAdd = () => {
-    if (type === 'user') {
+    if (type === "user") {
       return null;
-    } else if (type === 'my') {
-      return <JournalAddButton onClick={moveJournalAdd}>독서록 추가</JournalAddButton>;
+    } else if (type === "my") {
+      return (
+        <JournalAddButton onClick={moveJournalAdd}>
+          독서록 추가
+        </JournalAddButton>
+      );
     } else {
       return null;
     }
   };
 
   const textAdd = () => {
-    if (type === 'new') {
+    if (type === "new") {
       return (
         <BookAddMent>
           <img src={owlImg} style={{ width: "70%" }} alt="Owl illustration" />
@@ -82,17 +88,25 @@ function ReviewBox(props) {
 
   return (
     <ReviewBoxContainer>
-      <ReviewTitleText><FontAwesomeIcon icon={faPenToSquare} className="icon-review-box" />{nickname} 님이 남긴 감상평</ReviewTitleText>
+      <ReviewTitleText>
+        <FontAwesomeIcon icon={faPenToSquare} className="icon-review-box" />
+        {nickname} 님이 남긴 감상평
+      </ReviewTitleText>
       <JournalListOutDiv>
         {textAdd()}
-      {journalsData && journalsData.map((journal) => {
-        return (
-          <ReviewBoxOutDiv onClick={() => handleMoveJournalDetail(journal.journalId)}>
-            <JournalTitleText>{journal.jtitle}</JournalTitleText>
-            <JournalDateText>{journal.jdatetime.split("T")[0]}</JournalDateText>
-          </ReviewBoxOutDiv>
-        )
-      })}
+        {journalsData &&
+          journalsData.map((journal) => {
+            return (
+              <ReviewBoxOutDiv
+                onClick={() => handleMoveJournalDetail(journal.journalId)}
+              >
+                <JournalTitleText>{journal.jtitle}</JournalTitleText>
+                <JournalDateText>
+                  {journal.jdatetime.split("T")[0]}
+                </JournalDateText>
+              </ReviewBoxOutDiv>
+            );
+          })}
       </JournalListOutDiv>
       {journalAdd()}
     </ReviewBoxContainer>
@@ -101,13 +115,10 @@ function ReviewBox(props) {
 
 export default ReviewBox;
 
-
-
-
-
 const ReviewBoxContainer = styled.div`
   border-radius: 40px;
-  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16), 2px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
   width: 460px;
   height: 470px;
   padding: 45px 55px;
@@ -143,30 +154,26 @@ const ReviewTitleText = styled.h3`
 `;
 
 const JournalListOutDiv = styled.div`
-  margin-top : ${({ type }) => {
-    if(type === 'user'){
+  margin-top: ${({ type }) => {
+    if (type === "user") {
       return "20px";
-    }
-    else if(type === 'my'){
+    } else if (type === "my") {
       return "0";
-    }
-    else{
+    } else {
       return "0";
     }
   }};
   overflow: auto;
   height: ${({ type }) => {
-    if(type === 'user'){
+    if (type === "user") {
       return "90%";
-    }
-    else if(type === 'my'){
+    } else if (type === "my") {
       return "81%";
-    }
-    else{
+    } else {
       return "81%";
     }
   }};
-`
+`;
 
 const JournalTitleText = styled.div`
   font-size: 18px;
@@ -188,14 +195,14 @@ const JournalDateText = styled.p`
 const ReviewBoxOutDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #CDCDCD;
+  border-bottom: 1px solid #cdcdcd;
   padding: 20px 15px;
   &:hover {
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
     border-radius: 5px;
     cursor: pointer;
   }
-`
+`;
 
 const JournalAddButton = styled.div`
   width: 150px;
@@ -206,17 +213,17 @@ const JournalAddButton = styled.div`
   font-size: 17px;
   text-align: center;
   line-height: 50px;
-  box-shadow: 2.5px 2.5px rgba(0,0,0,0.23);
+  box-shadow: 2.5px 2.5px rgba(0, 0, 0, 0.23);
   margin-left: 70%;
   margin-top: 13px;
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const BookAddMent = styled.div`
   // padding-top : 10px;
-  font-weight : bold;
-  font-size : 110%;
+  font-weight: bold;
+  font-size: 110%;
   text-align: center;
-`
+`;

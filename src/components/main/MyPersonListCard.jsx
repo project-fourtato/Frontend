@@ -4,7 +4,7 @@ import { mainPersonList } from "../../data/maindata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
 import texticon from "../../assets/texticon.png";
-import Session from 'react-session-api';
+import Session from "react-session-api";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -13,18 +13,17 @@ function MyPersonListCard(props) {
   const p = JSON.parse(profile);
   const [ProfileResponse, setProfileResponse] = useState([]);
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
-  }
-  );
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = '/follow/followingsLatestJournals';
+        const url = "/follow/followingsLatestJournals";
         const response = await axiosBaseURL.post(url);
-        setProfileResponse(response.data);        
-      } catch(error) {
+        setProfileResponse(response.data);
+      } catch (error) {
         console.log(error);
       }
     };
@@ -32,11 +31,10 @@ function MyPersonListCard(props) {
     fetchData();
   }, []);
 
-
   const navigate = useNavigate();
   const studyPage = (uid) => {
     // console.log(uid);
-    navigate("/studyPage/"+uid);
+    navigate("/studyPage/" + uid);
   };
 
   return (
@@ -48,13 +46,21 @@ function MyPersonListCard(props) {
 
       {ProfileResponse.map((book) => {
         return (
-          <BookListContainer key={book.toUserId} onClick={() => studyPage(book.toUserId)}>
-            
+          <BookListContainer
+            key={book.toUserId}
+            onClick={() => studyPage(book.toUserId)}
+          >
             <ProfileImage src={book.userimageUrl} alt="bookimg" />
             <BookListContent>
-              <ContentTitleText><NicknameSpan>{book.nickname}</NicknameSpan> 님</ContentTitleText>
+              <ContentTitleText>
+                <NicknameSpan>{book.nickname}</NicknameSpan> 님
+              </ContentTitleText>
               <ContentText>{book.pcontents}</ContentText>
-              <SubText>{book.pdatetime.split("T")[0]+" "+book.pdatetime.split("T")[1]}</SubText>
+              <SubText>
+                {book.pdatetime.split("T")[0] +
+                  " " +
+                  book.pdatetime.split("T")[1]}
+              </SubText>
             </BookListContent>
           </BookListContainer>
         );
@@ -68,7 +74,8 @@ export default MyPersonListCard;
 const CardContainer = styled.div`
   border-radius: 40px;
   background: white;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23); 
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
   width: 700px;
   padding: 48px 60px 21px 60px;
   margin-bottom: 40px;
@@ -95,7 +102,7 @@ const BookListContainer = styled.div`
   cursor: pointer;
   &:hover {
     border-radius: 15px;
-    background: #F8F8F8;
+    background: #f8f8f8;
   }
 `;
 
@@ -103,7 +110,7 @@ const ProfileImage = styled.img`
   width: 62px;
   height: 62px;
   border-radius: 50%;
-`
+`;
 
 const BookListContent = styled.div`
   display: flex;
@@ -122,8 +129,8 @@ const ContentTitleText = styled.p`
 `;
 
 const NicknameSpan = styled.span`
-  color: #7283A6;
-`
+  color: #7283a6;
+`;
 
 const ContentText = styled.p`
   margin-top: 10px;
@@ -136,7 +143,7 @@ const ContentText = styled.p`
 
 const SubText = styled.p`
   margin-top: 10px;
-  color: #A2A2A2;
+  color: #a2a2a2;
   font-size: 11px;
   font-style: normal;
   font-weight: 700;

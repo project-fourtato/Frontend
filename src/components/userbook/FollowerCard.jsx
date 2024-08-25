@@ -12,13 +12,12 @@ function FollowerCard(props) {
   const lastSegment = props.lastSegment; //uid
 
   const axiosBaseURL = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
   useEffect(() => {
     const fetchFollowerList = async () => {
-      console.log(lastSegment + "확인");
       try {
         const response = await axiosBaseURL.post("/follow/followersList", {
           toUserId: "0",
@@ -34,7 +33,6 @@ function FollowerCard(props) {
   }, []);
 
   const studyPage = (uid) => {
-    // console.log(uid);
     navigate("/studyPage/" + uid);
   };
 

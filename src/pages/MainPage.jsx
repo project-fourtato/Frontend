@@ -16,31 +16,29 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-
 function MainPage(props) {
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
-  
+
   //api
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
-  }
-  );
+  });
   const checkForSession = () => {
     if (p) {
       setLoginState({ isLogin: true });
     }
   };
   const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const [nickname, setNickname] = useState('');
-  const [useriamgeUrl, setUseriamgeUrl] = useState('');
+  const [nickname, setNickname] = useState("");
+  const [useriamgeUrl, setUseriamgeUrl] = useState("");
   useEffect(() => {
     (async () => {
       try {
-        const url = '/profile';
+        const url = "/profile";
         const response = await axiosBaseURL.get(url);
         setNickname(response.data.nickname);
         setUseriamgeUrl(response.data.imageUrl);
@@ -59,7 +57,7 @@ function MainPage(props) {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [currentImageIndex]);
 
@@ -75,7 +73,9 @@ function MainPage(props) {
           <MainContainer>
             <MainTitleContainer>
               <ProfileImg src={useriamgeUrl} />
-              <MainTitleText><NicknameSpan>{nickname}</NicknameSpan> 님, 안녕하세요!</MainTitleText>
+              <MainTitleText>
+                <NicknameSpan>{nickname}</NicknameSpan> 님, 안녕하세요!
+              </MainTitleText>
             </MainTitleContainer>
           </MainContainer>
           <MainContentContainer>
@@ -98,12 +98,13 @@ function MainPage(props) {
               />
             ))}
             <ArrowButton onClick={handleArrowClick}>
-              <ArrowIcon><FontAwesomeIcon icon={faChevronDown} /></ArrowIcon>
+              <ArrowIcon>
+                <FontAwesomeIcon icon={faChevronDown} />
+              </ArrowIcon>
             </ArrowButton>
           </BackgroundImgeOutDiv>
         </>
-      )
-      }
+      )}
     </>
   );
 }
@@ -116,13 +117,13 @@ html,
 body {
     background: #FDF9EF;
 }
-`
+`;
 
 const BackgroundImgeOutDiv = styled.div`
-  background-color: #FDF9EF;
+  background-color: #fdf9ef;
   width: 100%;
   text-align: center;
-`
+`;
 
 const Backgoundimg = styled.img`
   background-color: rgb(248, 249, 193);
@@ -175,8 +176,8 @@ const MainTitleText = styled.h5`
 `;
 
 const NicknameSpan = styled.span`
-  color: #5F749F;
-`
+  color: #5f749f;
+`;
 const ArrowButton = styled.button`
   position: fixed;
   bottom: 35px;
@@ -197,9 +198,9 @@ const ArrowButton = styled.button`
     }
     50% {
       bottom: 40px;
-       height: 20px;
+      height: 20px;
     }
-   
+
     95% {
       bottom: 20px;
     }

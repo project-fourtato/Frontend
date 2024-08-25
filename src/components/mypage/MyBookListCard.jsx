@@ -2,16 +2,26 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faStore, faStoreSlash, faBook, faBookOpenReader, faSquareCheck, faHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faStore,
+  faStoreSlash,
+  faBook,
+  faBookOpenReader,
+  faSquareCheck,
+  faHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 // 완료
-const axiosBaseURL = axios.create({    withCredentials: true,
+const axiosBaseURL = axios.create({
+  baseURL: "https://our-booker.site:8080",
+  withCredentials: true,
 });
 
 const MyBookListCard = (props) => {
   const navigate = useNavigate();
-  const [usermessage, setUsermessage] = useState('');
+  const [usermessage, setUsermessage] = useState("");
   const [myBookList, setMyBookList] = useState([]);
   const chunkedBooks = myBookList.reduce((resultArray, item, index) => {
     const chunkIndex = Math.floor(index / 4);
@@ -42,20 +52,20 @@ const MyBookListCard = (props) => {
     navigate("/search");
   };
 
-  const [selectedBookUid, SetSeletectedBookUid] = useState('');
+  const [selectedBookUid, SetSeletectedBookUid] = useState("");
   const [selectedSaleStatus, SetSelectedSaleStatus] = useState(-1);
   const [count, setCount] = useState(0);
 
   const handleButtonClick = async () => {
     if (selectedBookUid) {
       try {
-        const url = `http://localhost:8080/saleStatusUpdate/${selectedBookUid}`;
+        const url = `/saleStatusUpdate/${selectedBookUid}`;
         const response = await axiosBaseURL.put(url, {
           readStatus: 1,
-          saleStatus: selectedSaleStatus
+          saleStatus: selectedSaleStatus,
         });
         const responseData = response.data.data;
-        
+
         if (responseData === "판매 상태 변경 성공") {
           setCount(count + 1);
           props.setCount(count);
@@ -82,55 +92,67 @@ const MyBookListCard = (props) => {
           <LeftBoxText>{usermessage}</LeftBoxText>
         </LeftBox>
         <AddBookButton onClick={goaddbook}>
-          <FontAwesomeIcon icon={faPlus} />
-          책 추가
+          <FontAwesomeIcon icon={faPlus} />책 추가
         </AddBookButton>
       </BookListCardHeader>
       <TopStatusContainer>
-        <StatusText><FontAwesomeIcon icon={faStore} />  거래 가능</StatusText>
-        <StatusText><FontAwesomeIcon icon={faStoreSlash} /> 거래 불가능</StatusText>
+        <StatusText>
+          <FontAwesomeIcon icon={faStore} /> 거래 가능
+        </StatusText>
+        <StatusText>
+          <FontAwesomeIcon icon={faStoreSlash} /> 거래 불가능
+        </StatusText>
       </TopStatusContainer>
-      {myBookList && myBookList.reduce((chunks, book, index) => {
-        if (index % 5 === 0) chunks.push([]);
-        chunks[chunks.length - 1].push(book);
-        return chunks;
-      }, []).map((chunk, chunkIndex) => (
-        <BookListBodyContainer key={chunkIndex}>
-          {chunk.map((book) => (
-            <BookItem key={book.bookUid}>
-              <BookimgBox
-                src={book.coverImageUrl}
-                onClick={() =>
-                  goDetailPage(
-                    book.isbn,
-                    book.bookUid
-                  )
-                }
-              />
-              <BookButtonsContainer>
-                <ActionButton completed0={book.readStatus} id='book'>
-                  {(book.readStatus === 0 ? <FontAwesomeIcon icon={faBook} /> :
-                    book.readStatus === 1 ? <FontAwesomeIcon icon={faHeart} /> :
-                      book.readStatus === 2 ? <FontAwesomeIcon icon={faBookOpenReader} /> :
-                        book.readStatus === 3 ? <FontAwesomeIcon icon={faSquareCheck} /> : null)}
-                </ActionButton>
-                <ActionButton
-                  completed1={book.salestate} id='sale'
-                  onClick={() => { fetchOne(book.saleStatus, book.bookUid); }}
-                >
-                  {(book.saleStatus) === 0 ? <FontAwesomeIcon icon={faStoreSlash} /> : <FontAwesomeIcon icon={faStore} />}
-                </ActionButton>
-              </BookButtonsContainer>
-            </BookItem>
+      {myBookList &&
+        myBookList
+          .reduce((chunks, book, index) => {
+            if (index % 5 === 0) chunks.push([]);
+            chunks[chunks.length - 1].push(book);
+            return chunks;
+          }, [])
+          .map((chunk, chunkIndex) => (
+            <BookListBodyContainer key={chunkIndex}>
+              {chunk.map((book) => (
+                <BookItem key={book.bookUid}>
+                  <BookimgBox
+                    src={book.coverImageUrl}
+                    onClick={() => goDetailPage(book.isbn, book.bookUid)}
+                  />
+                  <BookButtonsContainer>
+                    <ActionButton completed0={book.readStatus} id="book">
+                      {book.readStatus === 0 ? (
+                        <FontAwesomeIcon icon={faBook} />
+                      ) : book.readStatus === 1 ? (
+                        <FontAwesomeIcon icon={faHeart} />
+                      ) : book.readStatus === 2 ? (
+                        <FontAwesomeIcon icon={faBookOpenReader} />
+                      ) : book.readStatus === 3 ? (
+                        <FontAwesomeIcon icon={faSquareCheck} />
+                      ) : null}
+                    </ActionButton>
+                    <ActionButton
+                      completed1={book.salestate}
+                      id="sale"
+                      onClick={() => {
+                        fetchOne(book.saleStatus, book.bookUid);
+                      }}
+                    >
+                      {book.saleStatus === 0 ? (
+                        <FontAwesomeIcon icon={faStoreSlash} />
+                      ) : (
+                        <FontAwesomeIcon icon={faStore} />
+                      )}
+                    </ActionButton>
+                  </BookButtonsContainer>
+                </BookItem>
+              ))}
+            </BookListBodyContainer>
           ))}
-        </BookListBodyContainer>
-      ))}
     </BookListCardContainer>
   );
 };
 
 export default MyBookListCard;
-
 
 const BookListCardContainer = styled.div`
   width: 850px;
@@ -214,7 +236,7 @@ const BookimgBox = styled.img`
   width: 100px;
   height: 140px;
   cursor: pointer;
-  margin-left:20px;
+  margin-left: 20px;
 `;
 
 const BookItem = styled.div`
@@ -230,29 +252,33 @@ const BookButtonsContainer = styled.div`
 const ActionButton = styled.button`
   background : rgba(90,90,90,0);
   font-color: ${({ completed0, completed1, id }) => {
-    if (id === 'book') {
+    if (id === "book") {
       if (completed0 === 0 || completed0 === 2 || completed0 === 3) {
         return "#fff";
+      } else {
+        return "#5f749f";
       }
-      else { return "#5f749f"; }
     } else {
       if (completed1 === 0) {
         return "#fff";
+      } else {
+        return "#5f749f";
       }
-      else { return "#5f749f"; }
     }
   }};
   color: ${({ completed0, completed1, id }) => {
-    if (id === 'book') {
+    if (id === "book") {
       if (completed0 === 0 || completed0 === 2 || completed0 === 3) {
         return "#5f749f";
+      } else {
+        return "#ff7676";
       }
-      else { return "#ff7676"; }
     } else {
       if (completed1 === 0) {
         return "#5f749f";
+      } else {
+        return "#5f749f";
       }
-      else { return "#5f749f"; }
     }
   }};
   cursor: pointer;
@@ -281,7 +307,7 @@ const ActionButton = styled.button`
     //         return "#5f749f";
     //       }
     //       else { return "#fff";}
-    //     } 
+    //     }
     //     }
   }};
   }

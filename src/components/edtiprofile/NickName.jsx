@@ -9,21 +9,21 @@ import "../../App.css";
 import swal from "sweetalert";
 import axios from "axios";
 function NickName(props) {
-  const urlAddress = 'http://localhost:8080';
+  const urlAddress = "http://localhost:8080";
 
   let tempImage = "";
   const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState("");
   const [imageClick, setImageClick] = useState(0);
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
   const [duplicateColor, setDuplicateColor] = useState("blue");
   const [profileResponse, setProfileResponse] = useState({
-    uid: '',
-    nickname: '',
-    useriamgeUrl: '',
-    userimageName: '',
-    usermessage: ''
+    uid: "",
+    nickname: "",
+    useriamgeUrl: "",
+    userimageName: "",
+    usermessage: "",
   });
   const fileInputRef = React.useRef(null);
 
@@ -31,19 +31,17 @@ function NickName(props) {
   const p = JSON.parse(profileSession);
 
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
-  }
-  );
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosBaseURL.get(urlAddress + '/profile');
+        const response = await axiosBaseURL.get(urlAddress + "/profile");
         setProfileResponse(response.data);
         tempImage = response.data.useriamgeUrl;
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     if (isLogin) {
@@ -57,24 +55,26 @@ function NickName(props) {
     props.setUserMessage(profileResponse.usermessage);
   }, [profileResponse]);
 
-
   useEffect(() => {
     if (selectedImage === null) {
       const formData = new FormData();
       props.setImage(formData);
-    } else if(selectedImage === "https://booker-v4-bucket.s3.amazonaws.com/default/default-profile.png") {
+    } else if (
+      selectedImage ===
+      "https://booker-v4-bucket.s3.amazonaws.com/default/default-profile.png"
+    ) {
       const formData = new FormData();
       props.setImage(formData);
-    } else if(imageClick == 0) {
+    } else if (imageClick == 0) {
       const formData = new FormData();
       props.setImage(formData);
     }
-  }, [selectedImage])
+  }, [selectedImage]);
 
   const handleNicknameChange = (e) => {
     const inputValue = e.target.value;
 
-    if (inputValue.includes(' ')) {
+    if (inputValue.includes(" ")) {
       swal("경고", "닉네임에 띄어쓰기를 사용할 수 없어요.", "error");
       return;
     }
@@ -107,7 +107,7 @@ function NickName(props) {
     }
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
     props.setImage(formData);
   };
   const handleEditButtonClick = () => {
@@ -128,7 +128,10 @@ function NickName(props) {
           ) : (
             <label htmlFor="fileInput">
               <UploadContainer>
-                <FontAwesomeIcon icon={faUpload} className="icon-editprofile-upload" />
+                <FontAwesomeIcon
+                  icon={faUpload}
+                  className="icon-editprofile-upload"
+                />
               </UploadContainer>
             </label>
           )}
@@ -138,9 +141,8 @@ function NickName(props) {
             type="file"
             multiple="multiple"
             onChange={handleImageChange}
-            onClick={(e) => e.target.value = null}
+            onClick={(e) => (e.target.value = null)}
           />
-
         </UploadWrapper>
 
         <MyNameText>
@@ -152,7 +154,7 @@ function NickName(props) {
           placeholder="닉네임을 입력해 주세요!"
           value={props.nickname}
           onChange={handleNicknameChange}
-          disabled ={(profileSession !== null) ? true : false}
+          disabled={profileSession !== null ? true : false}
         />
 
         <MyNameText>
@@ -199,10 +201,10 @@ const UploadContainer = styled.div`
   border-radius: 50%;
   margin-bottom: 20px;
   background-color: white;
-  border: 1px solid #DBDBDB;
+  border: 1px solid #dbdbdb;
 
   &:hover {
-    background-color: #5F749F;
+    background-color: #5f749f;
     cursor: pointer;
     svg {
       color: white;

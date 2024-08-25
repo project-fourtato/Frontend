@@ -12,7 +12,7 @@ function FollowerCard(props) {
   const lastSegment = props.lastSegment; //uid
 
   const axiosBaseURL = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
@@ -21,8 +21,8 @@ function FollowerCard(props) {
       try {
         const response = await axiosBaseURL.post("/follow/followingsList", {
           toUserId: lastSegment,
+          fromUserId: "0",
         });
-        console.log(response.data);
         setFollowerList(response.data);
       } catch (error) {
         // console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
@@ -33,7 +33,6 @@ function FollowerCard(props) {
   }, []);
 
   const studyPage = (uid) => {
-    // console.log(uid);
     navigate("/studyPage/" + uid);
   };
 

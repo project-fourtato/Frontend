@@ -1,26 +1,26 @@
-import { React, useState, useEffect } from 'react';
-import styled from 'styled-components';
+import { React, useState, useEffect } from "react";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import SearchList from "../searchbooklist/SearchList";
 // 완료
 function ExchangeSearchBar(props) {
-
-  const [searchValue, setSearch] = useState('');
+  const [searchValue, setSearch] = useState("");
   const [bookList, setBookList] = useState([]); // 검색된 책 리스트 상태
-  const saveSearchValue = event => {
+  const saveSearchValue = (event) => {
     setSearch(event.target.value);
   };
 
   const axiosBaseURL = axios.create({
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
   const fetchData = async () => {
     try {
-      const stringWithoutSpaces = searchValue.replace(/\s/g, ''); // 공백 제거
-      const url = `http://localhost:8080/sale/searchOne/${stringWithoutSpaces}`;
+      const stringWithoutSpaces = searchValue.replace(/\s/g, ""); // 공백 제거
+      const url = `/sale/searchOne/${stringWithoutSpaces}`;
       const response = await axiosBaseURL.get(url);
       setBookList(response.data.result); // 응답 데이터를 bookList에 설정
     } catch (error) {
@@ -29,8 +29,8 @@ function ExchangeSearchBar(props) {
     }
   };
 
-  const handleOnKeyPress = e => {
-    if (e.key === 'Enter') {
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
       fetchData(); // Enter 키를 누르면 데이터 검색 함수 실행
     }
   };
@@ -62,8 +62,8 @@ const SearchBarContainer = styled.div`
   align-items: center;
   margin-bottom: 4rem;
   margin-top: 40px;
-  >span {
-    font-size : 19px;
+  > span {
+    font-size: 19px;
     font-weight: bold;
     margin-right: 17px;
     color: #142343;
@@ -81,7 +81,7 @@ const SearchBarOutDiv = styled.div`
   border-radius: 50px;
   border: 1px solid #e5e5e5;
   color: #71717a;
-  box-shadow: 1px 1px rgba(0,0,0,0.16), 1px 1px 1px rgba(0,0,0,0.23);
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.16), 1px 1px 1px rgba(0, 0, 0, 0.23);
   svg {
     font-size: 30px;
     width: 20px;
@@ -93,7 +93,7 @@ const SearchBarOutDiv = styled.div`
   &:hover {
     border: 1px solid #344a39;
   }
-`
+`;
 
 const SearchInput = styled.input`
   margin-left: 5px;
@@ -108,13 +108,13 @@ const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   background: #fff;
-  width: ${(props) => ((props.activeTabProps == 2) ? "410px" : "550px")};
+  width: ${(props) => (props.activeTabProps == 2 ? "410px" : "550px")};
   height: 3px;
   padding: 22px 0px 22px 25px;
   border-radius: 50px;
   border: 1px solid #e5e5e5;
   color: #71717a;
-  box-shadow: 1px 1px rgba(0,0,0,0.16), 1px 1px 1px rgba(0,0,0,0.23);
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.16), 1px 1px 1px rgba(0, 0, 0, 0.23);
   &:hover {
     border: 1px solid #344a39;
   }

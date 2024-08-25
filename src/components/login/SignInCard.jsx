@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom";
@@ -9,8 +9,7 @@ import swal from "sweetalert";
 import "../../App.css";
 import axios from "axios";
 import { async } from "q";
-import Session from 'react-session-api';
-
+import Session from "react-session-api";
 
 function SignInCard(props) {
   //일단 이 페이지는 세션으로 관리가 안되도록 수정했음
@@ -18,74 +17,76 @@ function SignInCard(props) {
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
 
-
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
-  }
-  );
+  });
 
   const profile = sessionStorage.getItem("profile");
   const p = JSON.parse(profile);
-  
+
   ////뒤로가기 버튼을 통해 해당 페이지에 왔을 때 처리///////
   const checkForSession = () => {
-    if(p) {
-      setLoginState({isLogin: true});
+    if (p) {
+      setLoginState({ isLogin: true });
     }
   };
   checkForSession();
   sessionStorage.removeItem("profile");
 
-
   ///////////////////////////////////////////////////////
   //api
   let posts = "hello";
-  const [idValue, setId] = useState('');
-  const [pwValue, setPw] = useState('');
+  const [idValue, setId] = useState("");
+  const [pwValue, setPw] = useState("");
   const [isLogin, setIsLogin] = useRecoilState(loginState);
 
-  const saveUserId = event => {
+  const saveUserId = (event) => {
     setId(event.target.value);
   };
-  const saveUserPw = event => {
+  const saveUserPw = (event) => {
     setPw(event.target.value);
   };
   const LoginEffect = () => {
-    (async() => {
-      try{
-        const url = '/login';
+    (async () => {
+      try {
+        const url = "/login";
         const response = await axiosBaseURL.post(url, {
-          id : idValue,
-          pw : pwValue
+          id: idValue,
+          pw: pwValue,
         });
         handleLogin();
-      } catch(error) {
-        if (error.response.status == 404){
-          if (error.response.data.message == "login 데이터가 존재하지 않는 회원입니다."){
+      } catch (error) {
+        if (error.response.status == 404) {
+          if (
+            error.response.data.message ==
+            "login 데이터가 존재하지 않는 회원입니다."
+          ) {
             swal({
-                  title: "로그인 실패했습니다.",
-                  icon: "warning",
-                  buttons: "확인",
-                }).then(() => {
-                  setIsLogin({ isLogin: false });
-                  navigate("/login");
-                })
+              title: "로그인 실패했습니다.",
+              icon: "warning",
+              buttons: "확인",
+            }).then(() => {
+              setIsLogin({ isLogin: false });
+              navigate("/login");
+            });
+          } else if (
+            error.response.data.message ==
+            "회원정보를 입력하지 않은 회원입니다."
+          ) {
+            swal({
+              title: "회원가입을 완료하지 않았습니다.",
+              text: "회원정보 입력 페이지로 이동합니다. \n (해당 ID로 회원가입을 원할 시 문의바랍니다.) ",
+              icon: "warning",
+              buttons: "확인",
+            }).then(() => {
+              setIsLogin({ isLogin: false });
+              navigate("/signup");
+            });
           }
-          else if(error.response.data.message == "회원정보를 입력하지 않은 회원입니다."){
-            swal({
-                  title: "회원가입을 완료하지 않았습니다.",
-                  text: "회원정보 입력 페이지로 이동합니다. \n (해당 ID로 회원가입을 원할 시 문의바랍니다.) ",
-                  icon: "warning",
-                  buttons: "확인",
-                }).then(() => {
-                  setIsLogin({ isLogin: false });
-                  navigate("/signup");
-                })
-              }
         }
       }
-    }) ();
+    })();
   };
 
   useEffect(() => {
@@ -94,20 +95,17 @@ function SignInCard(props) {
     }
   }, []);
 
-
-  const handleOnKeyPress = e => {
-    if (e.key === 'Enter') {
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
       LoginEffect(); // Enter 입력이 되면 클릭 이벤트 실행
     }
   };
-
 
   const goSignUpPage = () => {
     navigate("/signup");
   };
 
   const handleLogin = () => {
-    
     // 로그인 로직을 여기에 구현
 
     swal({
@@ -116,12 +114,11 @@ function SignInCard(props) {
       buttons: "확인",
     }).then(() => {
       setIsLogin({ isLogin: true });
-      let profile = {"uid": idValue};
+      let profile = { uid: idValue };
       sessionStorage.setItem("profile", JSON.stringify(profile)); // sessionStorage에 저장(추후에 사용안하게 되면 삭제)
       navigate("/");
-    })
-  }
-
+    });
+  };
 
   return (
     <LoginCardbox>
@@ -131,12 +128,22 @@ function SignInCard(props) {
       </TitleHeaderContainer>
       <IconInputContainer>
         <StyledIconFaUserAlt />
-        <AuthInput placeholder="아이디를 입력하세요." value={idValue} onChange={saveUserId}/>
+        <AuthInput
+          placeholder="아이디를 입력하세요."
+          value={idValue}
+          onChange={saveUserId}
+        />
       </IconInputContainer>
 
       <IconInputContainer>
         <StyledIconFaLock />
-        <AuthInput placeholder="비밀번호를 입력하세요." value={pwValue} onChange={saveUserPw} onKeyDown={handleOnKeyPress} type="password"/>
+        <AuthInput
+          placeholder="비밀번호를 입력하세요."
+          value={pwValue}
+          onChange={saveUserPw}
+          onKeyDown={handleOnKeyPress}
+          type="password"
+        />
       </IconInputContainer>
 
       <LoginBtn onClick={LoginEffect}>로그인</LoginBtn>
@@ -259,7 +266,7 @@ const ButtonStyle = styled.button`
 `;
 
 const LoginBtn = styled(ButtonStyle)`
-  background-color: #32497B;
+  background-color: #32497b;
   color: #fff;
   font-size: 18px;
   font-weight: 500;

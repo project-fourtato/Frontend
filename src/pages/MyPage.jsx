@@ -7,7 +7,7 @@ import axios from "axios";
 
 const MyPage = (props) => {
   const axiosBaseURL = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 

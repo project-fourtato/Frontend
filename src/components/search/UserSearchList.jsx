@@ -1,49 +1,48 @@
-import {React, useState, useEffect} from "react";
+import { React, useState, useEffect } from "react";
 import styled from "styled-components";
 // import { usersearchList } from "../../data/searchdata";
 import axios from "axios";
-import Session from 'react-session-api';
+import Session from "react-session-api";
 import { useNavigate } from "react-router-dom";
 
-
 function UserSearchList(props) {
-  const urlAddress = 'http://localhost:8080';
   const axiosBaseURL = axios.create({
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
-  const [searchValue, setSearch] = useState('');
-  const [usersearchList, setUsersearchList] = useState([])
+  const [searchValue, setSearch] = useState("");
+  const [usersearchList, setUsersearchList] = useState([]);
   useEffect(() => {
     const a = props.searchValue;
     setSearch(a);
-  },[props.searchValue]);
+  }, [props.searchValue]);
 
- 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // console.log(searchValue);
-        const stringWithoutSpaces = searchValue.replace(/\s/g, ''); //공백제거 코드
+        const stringWithoutSpaces = searchValue.replace(/\s/g, ""); //공백제거 코드
         // console.log(url);
-        const response = await axiosBaseURL.get(urlAddress + "/profile/search/" + stringWithoutSpaces);
+        const response = await axiosBaseURL.get(
+          "/profile/search/" + stringWithoutSpaces
+        );
         // const responseData = JSON.parse(response.request.responseText);
         setUsersearchList(response.data);
         // console.log(responseData);
-        
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
     };
-    if(props.searchValue){
-    fetchData();
+    if (props.searchValue) {
+      fetchData();
     }
   }, [searchValue]);
 
   const navigate = useNavigate();
   const studyPage = (uid) => {
     // console.log(uid);
-    navigate("/studyPage/"+uid);
+    navigate("/studyPage/" + uid);
   };
 
   return (
@@ -51,8 +50,10 @@ function UserSearchList(props) {
       {usersearchList.map((user) => (
         <UserListBox key={user.uid} onClick={() => studyPage(user.loginId)}>
           <UserImgBox src={user.userImageUrl} />
-          <UserInfoOutDiv> 
-            <UserTitleText><span>{user.nickname}</span> 님</UserTitleText>
+          <UserInfoOutDiv>
+            <UserTitleText>
+              <span>{user.nickname}</span> 님
+            </UserTitleText>
             <UserSpeechBox>
               <UserSpeechBoxText>{user.usermessage}</UserSpeechBoxText>
             </UserSpeechBox>
@@ -90,7 +91,7 @@ const UserImgBox = styled.img`
 const UserInfoOutDiv = styled.div`
   margin-top: 5px;
   margin-left: 1px;
-`
+`;
 
 const UserTitleText = styled.h5`
   color: #000;
@@ -100,8 +101,8 @@ const UserTitleText = styled.h5`
   line-height: 109.867%; /* 37.37px */
   letter-spacing: -0.17px;
   margin-bottom: 10px;
-  >span {
-    color: #32497B
+  > span {
+    color: #32497b;
   }
 `;
 
@@ -123,17 +124,16 @@ const UserSpeechBox = styled.div`
     border-bottom: 0;
     margin-top: -1.2em;
     margin-left: -0.519em;
-    
   }
 `;
 
 const UserSpeechBoxText = styled.h5`
-  max-width : 260px;
+  max-width: 260px;
   color: #fff;
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
   line-height: 130%;
   letter-spacing: -0.17px;
-  word-wrap:break-word; 
+  word-wrap: break-word;
 `;

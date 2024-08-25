@@ -6,10 +6,10 @@ import { faUserCheck, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 function BestUserCard() {
-  const urlAddress = 'http://localhost:8080';
   const navigate = useNavigate();
 
   const axiosBaseURL = axios.create({
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
   // 프로필 정보는 세션 스토리지에서 가져오기
@@ -22,7 +22,7 @@ function BestUserCard() {
     const fetchData = async () => {
       try {
         // console.log('p.uid:', p.uid);
-        const response = await axiosBaseURL.get(urlAddress + '/profile/interests');
+        const response = await axiosBaseURL.get("/profile/interests");
         console.log(response);
         setUsersearchList(response.data.result);
         // console.log('호잇호잇');
@@ -45,28 +45,39 @@ function BestUserCard() {
         취향이 비슷한 유저
       </TitleText>
 
-      {Array.isArray(usersearchList) && usersearchList.map((user) => {
-        return (
-          <UserListBox key={user.uid} onClick={() => studyPage(user.loginId)}>
-            <UserImgBox>
-              <UserImg src={user.imageUrl} />
-            </UserImgBox>
-            <UserInfoOutDiv>
-              <UserTitleText><NicknameSpan>{user.nickname}</NicknameSpan> 님</UserTitleText>
-              <TagContainer>
-                {user.interests.map((interest, index) => (
-                  !!interest && <Tagbox key={index}>{interest}</Tagbox>
-                ))}
-              </TagContainer>
-            </UserInfoOutDiv>
-          </UserListBox>
-        );
-      })}
-      {(usersearchList.length == 4) ? <FontAwesomeIcon icon={faChevronDown} className="icon-bestbook-arrow" size="lg" /> : ""}
+      {Array.isArray(usersearchList) &&
+        usersearchList.map((user) => {
+          return (
+            <UserListBox key={user.uid} onClick={() => studyPage(user.loginId)}>
+              <UserImgBox>
+                <UserImg src={user.imageUrl} />
+              </UserImgBox>
+              <UserInfoOutDiv>
+                <UserTitleText>
+                  <NicknameSpan>{user.nickname}</NicknameSpan> 님
+                </UserTitleText>
+                <TagContainer>
+                  {user.interests.map(
+                    (interest, index) =>
+                      !!interest && <Tagbox key={index}>{interest}</Tagbox>
+                  )}
+                </TagContainer>
+              </UserInfoOutDiv>
+            </UserListBox>
+          );
+        })}
+      {usersearchList.length == 4 ? (
+        <FontAwesomeIcon
+          icon={faChevronDown}
+          className="icon-bestbook-arrow"
+          size="lg"
+        />
+      ) : (
+        ""
+      )}
     </Container>
   );
 }
-
 
 export default BestUserCard;
 
@@ -76,7 +87,8 @@ const Container = styled.div`
   background-color: white;
   padding: 45px 50px;
   border-radius: 40px;
-  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16), 2px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -118,7 +130,7 @@ const UserImgBox = styled.div`
 `;
 
 const UserImg = styled.img`
-  min-width:75px;
+  min-width: 75px;
   min-height: 75px;
   width: 65px;
   height: 65px;

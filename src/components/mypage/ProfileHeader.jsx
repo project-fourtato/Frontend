@@ -10,14 +10,13 @@ import MsgModal from "../common/MsgModal";
 import swal from "sweetalert";
 
 function ProfileHeader(props) {
-  const urlAddress = 'http://localhost:8080';
-
   const axiosBaseURL = axios.create({
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
   const pro = sessionStorage.getItem("profile");
   const p = JSON.parse(pro); //session uid 가져오기
-  
+
   const navigate = useNavigate();
   const [profile, setProfile] = useRecoilState(profileState);
   const [userData, setUserData] = useState(null);
@@ -29,16 +28,17 @@ function ProfileHeader(props) {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axiosBaseURL.get(urlAddress + `/profile`);
-        // console.log(response.data);
-        // const data = response.data;
+        const response = await axiosBaseURL.get(`/profile`);
         setUserData(response.data);
 
-        if(response === 'login 데이터가 존재하지 않는 회원입니다.') {
-          swal("페이지 이동 실패", "login 데이터가 존재하지 않는 회원입니다.", "error")
-          .then(() => {
+        if (response === "login 데이터가 존재하지 않는 회원입니다.") {
+          swal(
+            "페이지 이동 실패",
+            "login 데이터가 존재하지 않는 회원입니다.",
+            "error"
+          ).then(() => {
             navigate("/");
-          })
+          });
         }
       } catch (error) {
         console.error("Error fetching user data", error);
@@ -73,16 +73,15 @@ function ProfileHeader(props) {
     // console.log(followerData);
   }, []);*/
 
-
   const [userInterests, setUserInterests] = useState();
   useEffect(() => {
-    if(userData){
+    if (userData) {
       props.setUsermessage(userData.usermessage);
 
-      let interests = []
+      let interests = [];
       userData.interests.forEach((tag) => {
         if (tag) {
-          interests.push(tag)
+          interests.push(tag);
         }
       });
       setUserInterests(interests);
@@ -90,67 +89,81 @@ function ProfileHeader(props) {
   }, [userData]);
 
   const followerPage = () => {
-    navigate("/follower/"+p.uid);
-    setProfile('aa');
+    navigate("/follower/" + p.uid);
+    setProfile("aa");
   };
 
   const followingPage = () => {
-    navigate("/following/"+p.uid);
-    setProfile('aa');
+    navigate("/following/" + p.uid);
+    setProfile("aa");
   };
 
   if (!userData) {
     return <div>데이터가 없습니다.</div>;
   }
-  
+
   return (
     <>
-    <ProfileSection>
-      <ProfileLeftContainer>
+      <ProfileSection>
+        <ProfileLeftContainer>
+          <div>
+            <ProfileImage src={userData.imageUrl} alt="userprofile" />
+          </div>
+          <div>
+            <ProfileNameDirectM>
+              <ProfileName>
+                <UserNameColor>{userData.nickname}</UserNameColor> 님의 개인서재
+              </ProfileName>
+            </ProfileNameDirectM>
+            <InterestOutDiv>
+              {userInterests &&
+                userInterests.map(
+                  (interest) =>
+                    !!interest && <MyTag key={interest}>{interest}</MyTag> //관심사 개수에 맞게 띄어주기 위해 쓰임
+                )}
+            </InterestOutDiv>
+          </div>
+        </ProfileLeftContainer>
         <div>
-          <ProfileImage src={userData.imageUrl} alt="userprofile" />
+          <SendMsgButton
+            onClick={() => {
+              setShowMsgModal(true);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faPaperPlane}
+              className="icon-mypage-paper-plane"
+            />
+            쪽지 목록
+          </SendMsgButton>
         </div>
-        <div>
-          <ProfileNameDirectM>
-            <ProfileName>
-              <UserNameColor>{userData.nickname}</UserNameColor> 님의 개인서재
-            </ProfileName>
-          </ProfileNameDirectM>
-          <InterestOutDiv>
-            {userInterests && userInterests.map((interest) => (
-              !!interest && <MyTag key={interest}>{interest}</MyTag> //관심사 개수에 맞게 띄어주기 위해 쓰임
-            ))}
-          </InterestOutDiv>
-        </div>
-      </ProfileLeftContainer>
-      <div>
-        <SendMsgButton
-          onClick={() => {
-            setShowMsgModal(true);
-          }}
-        >
-          <FontAwesomeIcon
-            icon={faPaperPlane}
-            className="icon-mypage-paper-plane"
-          />
-          쪽지 목록
-        </SendMsgButton>
-      </div>
-    </ProfileSection>
+      </ProfileSection>
       <FollowAndFollower>
         <FollowAndFollowerText
-                    onClick={() => {
-                      followerPage();
-                    }}>팔로워</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>{userData.countFollowers}</FollowAndFollowerNumberText>
+          onClick={() => {
+            followerPage();
+          }}
+        >
+          팔로워
+        </FollowAndFollowerText>
+        <FollowAndFollowerNumberText>
+          {userData.countFollowers}
+        </FollowAndFollowerNumberText>
         <Dot>•</Dot>
         <FollowAndFollowerText
-                     onClick={() => {
-                      followingPage();
-                    }}>팔로잉</FollowAndFollowerText>
-        <FollowAndFollowerNumberText>{userData.countFollowings}</FollowAndFollowerNumberText>
+          onClick={() => {
+            followingPage();
+          }}
+        >
+          팔로잉
+        </FollowAndFollowerText>
+        <FollowAndFollowerNumberText>
+          {userData.countFollowings}
+        </FollowAndFollowerNumberText>
       </FollowAndFollower>
-      {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'mailbox'}/>}
+      {showMsgModal && (
+        <MsgModal setShowMsgModal={setShowMsgModal} msgName={"mailbox"} />
+      )}
     </>
   );
 }
@@ -200,7 +213,7 @@ const ProfileName = styled.h2`
 const DisrectMDiv = styled.div`
   width: 160px;
   height: 35px;
-  border: 1px solid #BABABA;
+  border: 1px solid #bababa;
   border-radius: 43px;
   text-align: center;
   line-height: 35px;
@@ -259,8 +272,8 @@ const FollowAndFollowerText = styled.h5`
   line-height: 109.867%;
   letter-spacing: -0.14px;
   margin-right: 8px;
-  cursor : pointer;
-  &:hover{
+  cursor: pointer;
+  &:hover {
     color: #5f749f;
   }
 `;

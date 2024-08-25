@@ -4,11 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import IntroAndIndexFooter from "../components/bookdetail/IntroAndIndexFooter";
 import ReviewBox from "../components/bookdetail/ReviewBox";
 import axios from "axios";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 const UserBookDetailPage = (props) => {
   const [bookData, setBookData] = useState({
-    "cover": "hi"
+    cover: "hi",
   });
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,21 +23,23 @@ const UserBookDetailPage = (props) => {
     userbid = location.state.userbid;
     bookstate = location.state.bookstate;
     nickname = location.state.nickname;
-  } catch(error) {
+  } catch (error) {
     navigate("/error");
   }
-  const [firstPart, setFirstPart] = useState('');
-  const [secondPart, setSecondPart] = useState('');
+  const [firstPart, setFirstPart] = useState("");
+  const [secondPart, setSecondPart] = useState("");
 
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
   useEffect(() => {
     const BookData = async () => {
       try {
-        const response = await axiosBaseURL.get(`/journals/bookDetailsByISBN/` + isbn);
+        const response = await axiosBaseURL.get(
+          `/journals/bookDetailsByISBN/` + isbn
+        );
         const title = response.data.bookTitle;
         setBookData(response.data);
 
@@ -47,25 +49,25 @@ const UserBookDetailPage = (props) => {
         // "-"가 없는 경우
         if (firstHyphenIndex === -1) {
           setFirstPart(title);
-          setSecondPart('');
+          setSecondPart("");
         } else {
           // 첫 번째 부분 설정
           setFirstPart(title.slice(0, firstHyphenIndex));
 
           // 두 번째 부분 설정 (첫 번째 "-" 이후의 부분)
           setSecondPart(title.slice(firstHyphenIndex));
-        } 
-      } catch (error) {
-          console.error("Error fetching user data", error);
         }
-      };
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
 
-      BookData();
-    }, []);
+    BookData();
+  }, []);
 
-    useEffect(()=>{
-      // console.log(nickname);
-    }, [nickname]);
+  useEffect(() => {
+    // console.log(nickname);
+  }, [nickname]);
 
   return (
     <BookDetailContainer>
@@ -76,26 +78,35 @@ const UserBookDetailPage = (props) => {
             <h2>{firstPart}</h2>
             <h5>{secondPart}</h5>
             <p>{bookData.author}</p>
-            <p className="p2">{bookData.publisher} | {bookData.pubDate}</p>
+            <p className="p2">
+              {bookData.publisher} | {bookData.pubDate}
+            </p>
             <ProgressContainer>
               <DropdownMenu>
                 <DropdownItem>
-                  {(bookstate === 0 ? "독서전" :
-                    bookstate === 1 ? "관심도서" :
-                      bookstate === 2 ? "독서중" :
-                        bookstate === 3 ? "독서완료" : null)}
+                  {bookstate === 0
+                    ? "독서전"
+                    : bookstate === 1
+                    ? "관심도서"
+                    : bookstate === 2
+                    ? "독서중"
+                    : bookstate === 3
+                    ? "독서완료"
+                    : null}
                 </DropdownItem>
               </DropdownMenu>
             </ProgressContainer>
           </BookDetailTextBox>
         </BookDetailInnerContainer>
-        <IntroAndIndexFooter categoryName={bookData.categoryName} description={bookData.description} />
+        <IntroAndIndexFooter
+          categoryName={bookData.categoryName}
+          description={bookData.description}
+        />
       </BookDetailBox>
-      <ReviewBox bookUid={userbid} type={'user'} nickname={nickname} />
+      <ReviewBox bookUid={userbid} type={"user"} nickname={nickname} />
     </BookDetailContainer>
   );
-}
-
+};
 
 export default UserBookDetailPage;
 
@@ -110,7 +121,6 @@ const BookDetailContainer = styled.div`
 
 const BookDetailInnerContainer = styled.div`
   display: flex;
-
 `;
 
 const BookDetailBox = styled.div`
@@ -122,7 +132,8 @@ const BookDetailBox = styled.div`
   width: 30rem;
   background-color: white;
   border-radius: 40px;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
   padding: 45px 55px;
 `;
 
@@ -130,49 +141,48 @@ const BookImg = styled.img`
   margin-right: 1.6rem;
   width: 30%;
   border-radius: 10px;
-`
+`;
 
 const BookDetailTextBox = styled.div`
-margin-top: 6px;
-width: 400px;
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
-> h2 {
-  color: #142343;
-  font-size: 19px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-bottom: 5px;
-}
-> h5 {
-  color: #000;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  margin-bottom: 10px;
-}
-> p {
-  color: #000;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-.p2 {
-  margin-top: 3px;
-}
+  margin-top: 6px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  > h2 {
+    color: #142343;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 5px;
+  }
+  > h5 {
+    color: #000;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 10px;
+  }
+  > p {
+    color: #000;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .p2 {
+    margin-top: 3px;
+  }
 `;
 
 const ProgressContainer = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
-  margin-top : 15px;
+  margin-top: 15px;
   position: relative;
-
 `;
 
 // const ProgressBox = styled.div`
@@ -217,7 +227,7 @@ const DropdownMenu = styled.div`
 `;
 
 const DropdownItem = styled.p`
-  text-align : center;
+  text-align: center;
   padding: 12px 20px;
   margin: 0;
   color: #000;

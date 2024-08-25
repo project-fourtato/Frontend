@@ -13,20 +13,16 @@ const UserPage = (props) => {
   const navigate = useNavigate();
 
   const axiosBaseURL = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
 
   const [myBookList, setMyBookList] = useState([]);
-  useEffect(() => {
-    // console.log(usermessage);
-    // console.log(nickname);
-  }, [usermessage, nickname]);
+  useEffect(() => {}, [usermessage, nickname]);
   useEffect(() => {
     const UserData = async () => {
       try {
         const response = await axiosBaseURL.get(`/booksList?userId=` + p);
-        // console.log(response);
         const data = response.data.result;
 
         setMyBookList(data);

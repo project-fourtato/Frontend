@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { mainBookList } from "../../data/maindata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookOpenReader, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookOpenReader,
+  faCaretUp,
+  faCaretDown,
+} from "@fortawesome/free-solid-svg-icons";
 import "../../App.css";
-import Session from 'react-session-api';
+import Session from "react-session-api";
 import axios from "axios";
 import "../../assets/dropdown.css";
 import { useNavigate } from "react-router-dom";
@@ -12,28 +16,28 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom";
 
 function BookListCard(props) {
-  const urlAddress = 'http://localhost:8080';
+  const urlAddress = "http://localhost:8080";
 
   const setLoginState = useSetRecoilState(loginState);
   const navigate = useNavigate();
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
-  
+
   const pro = sessionStorage.getItem("profile");
   const p = JSON.parse(pro); //session uid 가져오기
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeDropdownId, setActiveDropdownId] = useState(null);
   const [bookListResponse, setBookListResponse] = useState([]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosBaseURL.get('/books');
+        const response = await axiosBaseURL.get("/books");
         setBookListResponse(response.data.result);
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
     };
@@ -41,48 +45,66 @@ function BookListCard(props) {
     fetchData();
   }, []);
 
-
-  const Dropdown = props => {
+  const Dropdown = (props) => {
     const [visibilityAnimation, setVisibilityAnimation] = React.useState(false);
     const [repeat, setRepeat] = React.useState(null);
 
-    React.useEffect(() => {                                 {/* ← add */}
-        if (props.visibility) {
-            clearTimeout(repeat);
-            setRepeat(null);
-            setVisibilityAnimation(true);
-        } else {
-            setTimeout(() => {
-                setVisibilityAnimation(false);
-            }, 400);
-        }
+    React.useEffect(() => {
+      {
+        /* ← add */
+      }
+      if (props.visibility) {
+        clearTimeout(repeat);
+        setRepeat(null);
+        setVisibilityAnimation(true);
+      } else {
+        setTimeout(() => {
+          setVisibilityAnimation(false);
+        }, 400);
+      }
     }, [props.visibility]);
 
     return (
-        <article className={`components-dropdown ${props.visibility ? 'slide-fade-in-dropdown' : 'slide-fade-out-dropdown'}`}>
-            { visibilityAnimation && props.children }       {/* ← modify */}
-        </article>
-    )
+      <article
+        className={`components-dropdown ${
+          props.visibility
+            ? "slide-fade-in-dropdown"
+            : "slide-fade-out-dropdown"
+        }`}
+      >
+        {visibilityAnimation && props.children} {/* ← modify */}
+      </article>
+    );
   };
   const DropDownApp = ({ profiles }) => {
     const [dropdownVisibility, setDropdownVisibility] = useState(false);
-  
+
     const navigate = useNavigate();
     const studyPage = (uid) => {
-      navigate("/studyPage/"+uid);
+      navigate("/studyPage/" + uid);
     };
-    
+
     const hasProfiles = profiles.length > 0;
-  
+
     return (
       <div>
-        <DropdownBox className="app" onClick={() => hasProfiles && setDropdownVisibility(!dropdownVisibility)}>
-          {hasProfiles ? (dropdownVisibility ? '나와 같이 읽는 사람' : '나와 같이 읽는 사람') : '같이 읽는 사람 없음 '}
-          {hasProfiles && (dropdownVisibility ? (
-            <FontAwesomeIcon className="icon-dropdown" icon={faCaretUp} />
-          ) : (
-            <FontAwesomeIcon className="icon-dropdown" icon={faCaretDown} />
-          ))}
+        <DropdownBox
+          className="app"
+          onClick={() =>
+            hasProfiles && setDropdownVisibility(!dropdownVisibility)
+          }
+        >
+          {hasProfiles
+            ? dropdownVisibility
+              ? "나와 같이 읽는 사람"
+              : "나와 같이 읽는 사람"
+            : "같이 읽는 사람 없음 "}
+          {hasProfiles &&
+            (dropdownVisibility ? (
+              <FontAwesomeIcon className="icon-dropdown" icon={faCaretUp} />
+            ) : (
+              <FontAwesomeIcon className="icon-dropdown" icon={faCaretDown} />
+            ))}
         </DropdownBox>
         {hasProfiles && (
           <Dropdown visibility={dropdownVisibility}>
@@ -99,9 +121,7 @@ function BookListCard(props) {
       </div>
     );
   };
-  
-  
-  
+
   const toggleDropdown = (id) => {
     if (activeDropdownId === id) {
       setActiveDropdownId(null);
@@ -109,7 +129,7 @@ function BookListCard(props) {
       setActiveDropdownId(id);
     }
   };
-  
+
   const goDetailPage = (isbn, bookUid, type) => {
     navigate(`/myDetail`, {
       state: { isbn, bookUid, type },
@@ -118,16 +138,31 @@ function BookListCard(props) {
   return (
     <CardContainer>
       <MainTitleContainer>
-        <FontAwesomeIcon icon={faBookOpenReader} className="icon-main-read-book"/>
+        <FontAwesomeIcon
+          icon={faBookOpenReader}
+          className="icon-main-read-book"
+        />
         <CardTitle>읽고 있는 책 목록</CardTitle>
-      </MainTitleContainer>  
+      </MainTitleContainer>
       {bookListResponse.map((book) => (
         <BookListContainer key={book.bookUid}>
-          <BookImage src={book.coverImageUrl} alt="bookimg" onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}/>
+          <BookImage
+            src={book.coverImageUrl}
+            alt="bookimg"
+            onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}
+          />
           <BookDetailContainer>
             <BookListContent>
-              <ContentTitleText onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}>{book.bookTitle}</ContentTitleText>
-              <ContentText onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}>{book.author} | {book.publisher}</ContentText>
+              <ContentTitleText
+                onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}
+              >
+                {book.bookTitle}
+              </ContentTitleText>
+              <ContentText
+                onClick={() => goDetailPage(book.isbn, book.bookUid, "my")}
+              >
+                {book.author} | {book.publisher}
+              </ContentText>
               <SubBtnBox>
                 {/* DropDownApp 구성 요소를 사용자 프로필에 통합 */}
                 <DropDownApp profiles={book.profileList} />
@@ -140,13 +175,13 @@ function BookListCard(props) {
   );
 }
 
-
 export default BookListCard;
 
 const CardContainer = styled.div`
   border-radius: 40px;
   background: white;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
   width: 700px;
   padding: 40px 60px 21px 60px;
   margin-bottom: 50px;
@@ -173,7 +208,7 @@ const BookListContainer = styled.div`
   align-items: start;
   &:hover {
     border-radius: 15px;
-    background: #F8F8F8;
+    background: #f8f8f8;
   }
 `;
 
@@ -184,10 +219,9 @@ const BookImage = styled.img`
   border-radius: 2px;
   cursor: pointer;
   margin-bottom: 15px;
-  margin-top: 15px; 
+  margin-top: 15px;
   margin-left: 15px;
 `;
-
 
 const BookListContent = styled.div`
   display: flex;
@@ -254,11 +288,10 @@ const SubBtn = styled.button`
   cursor: pointer;
 `;
 
-
 const Dropdown = styled.div`
   max-height: 100px;
   overflow-y: auto;
-  margin-left:30px;
+  margin-left: 30px;
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.25);
@@ -284,8 +317,8 @@ const BookDetailContainer = styled.div`
   flex: 1;
   overflow: hidden;
   padding-top: 2px;
-  `;
+`;
 
-  const DropdownBox = styled.div`
-    margin-bottom: 5px;
-  `;
+const DropdownBox = styled.div`
+  margin-bottom: 5px;
+`;

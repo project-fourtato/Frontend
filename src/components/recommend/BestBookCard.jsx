@@ -1,22 +1,25 @@
-import {React, useRef} from "react";
+import { React, useRef } from "react";
 import { useEffect, useState } from "react";
 import { FaBookMedical } from "react-icons/fa";
 import { booksearchList } from "../../data/recommenddata";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookBookmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookBookmark,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import Session from 'react-session-api';
+import Session from "react-session-api";
 
 import "../../App.css";
 
 function BestBookCard(props) {
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://our-booker.site:8080",
     withCredentials: true,
   });
-  
+
   const profile = sessionStorage.getItem("profile");
   const navigate = useNavigate();
   const p = JSON.parse(profile);
@@ -30,8 +33,8 @@ function BestBookCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosBaseURL.get('/bestseller');
-  
+        const response = await axiosBaseURL.get("/bestseller");
+
         // response.data가 이미 배열 형태일 것이므로 추가적인 JSON.parse가 필요하지 않음
         setBooksearchList(response.data.result);
         // console.log("확인");
@@ -40,21 +43,20 @@ function BestBookCard(props) {
         console.log(error);
       }
     };
-  
+
     fetchData();
   }, []);
 
   const goDetailPage = async (uid, isbn) => {
-    try{
-      const response = await axiosBaseURL.get('/readStatus?isbn=' + isbn);
+    try {
+      const response = await axiosBaseURL.get("/readStatus?isbn=" + isbn);
       const responseData = response.data;
       // console.log(responseData);
-      if(responseData.readStatus === -1){
+      if (responseData.readStatus === -1) {
         navigate(`/newDetail`, {
           state: { uid, isbn },
         });
-      }
-      else {
+      } else {
         const bookUid = responseData.bookUid;
         navigate(`/myDetail`, {
           state: { uid, isbn, bookUid },
@@ -70,16 +72,20 @@ function BestBookCard(props) {
         <FontAwesomeIcon icon={faBookBookmark} /> 베스트 셀러
       </TitleText>
 
-      {booksearchList && booksearchList.map((book) => (
-        <BookListBox key={book.isbn} onClick={() => goDetailPage(p.uid, book.isbn)}>
-          <BookImg src={book.coverImageUrl} />
-          <BookInfoOutDiv>
-            <BookTitleText>{book.bookTitle}</BookTitleText>
-            <BookSubText>{book.author}</BookSubText>
-            <BookSubText>{book.publisher}</BookSubText>
-          </BookInfoOutDiv>
-        </BookListBox>
-      ))}
+      {booksearchList &&
+        booksearchList.map((book) => (
+          <BookListBox
+            key={book.isbn}
+            onClick={() => goDetailPage(p.uid, book.isbn)}
+          >
+            <BookImg src={book.coverImageUrl} />
+            <BookInfoOutDiv>
+              <BookTitleText>{book.bookTitle}</BookTitleText>
+              <BookSubText>{book.author}</BookSubText>
+              <BookSubText>{book.publisher}</BookSubText>
+            </BookInfoOutDiv>
+          </BookListBox>
+        ))}
 
       {booksearchList.length === 3 && (
         <FontAwesomeIcon
@@ -104,7 +110,8 @@ const Container = styled.div`
   background-color: white;
   padding: 45px 50px;
   border-radius: 40px;
-  box-shadow: 3px 8px 8px 3px rgba(0,0,0,0.16), 2px 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 3px 8px 8px 3px rgba(0, 0, 0, 0.16),
+    2px 3px 6px rgba(0, 0, 0, 0.23);
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -142,12 +149,12 @@ const BookListBox = styled.div`
 const BookImg = styled.img`
   width: 6rem;
   border-radius: 2px;
-`
+`;
 
 const BookInfoOutDiv = styled.div`
   padding-top: 5px;
   margin-left: 20px;
-`
+`;
 
 const BookTitleText = styled.h5`
   color: #000;
