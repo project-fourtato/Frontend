@@ -29,4 +29,4 @@ jobs:
           aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} --delete
 
       - name: Cloudfront 캐시 무효화
-        run: aws cloudfront create-invalidation --distribution-id E1LU9RST7J360A --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_NAME }} --paths "/*"
