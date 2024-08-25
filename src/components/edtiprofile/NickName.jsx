@@ -9,8 +9,6 @@ import "../../App.css";
 import swal from "sweetalert";
 import axios from "axios";
 function NickName(props) {
-  const urlAddress = "http://localhost:8080";
-
   let tempImage = "";
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [selectedImage, setSelectedImage] = useState("");
@@ -38,7 +36,7 @@ function NickName(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosBaseURL.get(urlAddress + "/profile");
+        const response = await axiosBaseURL.get("/profile");
         setProfileResponse(response.data);
         tempImage = response.data.useriamgeUrl;
       } catch (error) {}
