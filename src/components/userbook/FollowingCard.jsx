@@ -44,7 +44,7 @@ function FollowerCard(props) {
       {followerList.map((follower, index) => (
         <BookListCardContainer
           key={index}
-          onClick={() => studyPage(follower.profileUid)}
+          onClick={() => studyPage(follower.loginId)}
         >
           <ProfileImage src={follower.userimageUrl} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
