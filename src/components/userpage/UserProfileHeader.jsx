@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faUser, faUserLarge, faUserPlus, faUserMinus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPaperPlane,
+  faUser,
+  faUserLarge,
+  faUserPlus,
+  faUserMinus,
+} from "@fortawesome/free-solid-svg-icons";
 import MsgModal from "../common/MsgModal";
 import UserBookListCard from "./UserBookListCard";
 import axios from "axios";
@@ -10,10 +16,7 @@ import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-
 const UserProfileHeader = (props) => {
-  const urlAddress = 'http://localhost:8080';
-
   const navigate = useNavigate();
   const pro = sessionStorage.getItem("profile");
   const pSession = JSON.parse(pro); //session uid 가져오기
@@ -24,98 +27,89 @@ const UserProfileHeader = (props) => {
   const [FollowButtonText, setFollowButtonText] = useState("");
 
   const axiosBaseURL = axios.create({
+    baseURL: "http://localhost:8080",
     withCredentials: true,
-  }
-  );
+  });
 
   const handleButtonClick = async () => {
-    if (FollowButtonText === "팔로잉") { //팔로우 취소를 한다면
+    if (FollowButtonText === "팔로잉") {
+      //팔로우 취소를 한다면
       swal({
         title: "팔로우 취소하시겠습니까?",
         icon: "warning",
-        buttons: ["취소", "확인"]
-      })
-        .then(async (value) => {
-          if (value) {
-            try {
-              const url = 'http://localhost:8080/follow/delete';
-              const response = await axiosBaseURL.post(url,{
-                toUserId : "0", //가짜
-                fromUserId : pSession.uid
-              });
-              // console.log(response);
-              const responseData = response.data;
-              setCount(count + 1);
-            } catch (error) {
-              swal({
-                title: "일시적으로 문제가 생겼습니다",
-                text: "다시 시도해주십시오",
-                icon: "error",
-              });
-            }
-          }
-          else {
+        buttons: ["취소", "확인"],
+      }).then(async (value) => {
+        if (value) {
+          try {
+            const url = "/follow/delete";
+            const response = await axiosBaseURL.post(url, {
+              toUserId: p,
+              fromUserId: pSession.uid,
+            });
+            console.log("팔로우delete" + response);
+            const responseData = response.data;
+            setCount(count + 1);
+          } catch (error) {
             swal({
-              title: "삭제가 취소되었습니다",
-              // text: "삭제가 취소되었습니다.",
+              title: "일시적으로 문제가 생겼습니다",
+              text: "다시 시도해주십시오",
               icon: "error",
             });
           }
-
-        });
-
-    }
-    else { //팔로우를 한다면
+        } else {
+          swal({
+            title: "삭제가 취소되었습니다",
+            // text: "삭제가 취소되었습니다.",
+            icon: "error",
+          });
+        }
+      });
+    } else {
+      //팔로우를 한다면
       swal({
         title: "팔로우 하시겠습니까?",
         icon: "warning",
-        buttons: ["취소", "확인"]
-      })
-        .then(async (value) => {
-          if (value) {
-            try {
-              const url = 'http://localhost:8080/follow/new';
-              const response = await axiosBaseURL.post(url,{
-                toUserId : "0", //가짜
-                fromUserId : pSession.uid
-              });
-              setCount(count + 1);
-            } catch (error) {
-              swal({
-                title: "잠시 후 다시 시도해주세요!",
-                // text: "취소되었습니다.",
-                icon: "error",
-              });
-            }
-          }
-          else {
+        buttons: ["취소", "확인"],
+      }).then(async (value) => {
+        if (value) {
+          try {
+            const url = "/follow/new";
+            console.log(p + "왜죠");
+            const response = await axiosBaseURL.post(url, {
+              toUserId: p,
+              fromUserId: pSession.uid,
+            });
+            setCount(count + 1);
+          } catch (error) {
             swal({
-              title: "팔로우가 취소되었습니다",
+              title: "잠시 후 다시 시도해주세요!",
               // text: "취소되었습니다.",
               icon: "error",
             });
           }
-
-        });
+        } else {
+          swal({
+            title: "팔로우가 취소되었습니다",
+            // text: "취소되었습니다.",
+            icon: "error",
+          });
+        }
+      });
     }
   };
-
-  
-
 
   //팔로우 유무 조회
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axiosBaseURL.post(`http://localhost:8080/follow/followCheck`,{
-          toUserId : "0", //가짜
-          fromUserId : pSession.uid
+        const response = await axiosBaseURL.post(`/follow/followCheck`, {
+          toUserId: p,
+          fromUserId: pSession.uid,
         });
         const data = response.data;
         if (data === true) {
           setFollowButtonText("팔로잉");
-        }
-        else {
+        } else {
           setFollowButtonText("팔로우");
         }
       } catch (error) {
@@ -126,8 +120,7 @@ const UserProfileHeader = (props) => {
     UserData();
   }, [count]);
 
-  useEffect(() => {
-  }, [FollowButtonText]);
+  useEffect(() => {}, [FollowButtonText]);
 
   const [profile, setProfile] = useRecoilState(profileState);
   const [userData, setUserData] = useState(null);
@@ -137,32 +130,31 @@ const UserProfileHeader = (props) => {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axiosBaseURL.get(urlAddress + `/profile/` + p);
+        const response = await axiosBaseURL.get(`/profile/` + p);
         props.setNickname(response.data.nickname);
         setUserData(response.data);
-        if(response.data.length === 0) {
+        if (response.data.length === 0) {
           throw new Error("is Null");
         }
       } catch (error) {
         console.error("Error fetching user data", error);
-        swal("페이지 이동 실패", "유효하지 않은 값입니다.", "error")
-          .then(() => {
+        swal("페이지 이동 실패", "유효하지 않은 값입니다.", "error").then(
+          () => {
             navigate("/");
-          })
+          }
+        );
       }
     };
 
     UserData();
-  }, []);
+  }, [count]);
 
   const followerPage = () => {
     navigate("/follower/" + p);
-    setProfile('aa');
   };
 
   const followingPage = () => {
     navigate("/following/" + p);
-    setProfile('aa');
   };
 
   /*useEffect(() => {
@@ -202,13 +194,16 @@ const UserProfileHeader = (props) => {
               <div>
                 <ProfileNameDirectM>
                   <ProfileName>
-                    <UserNameColor>{userData.nickname}</UserNameColor> 님의 개인서재
+                    <UserNameColor>{userData.nickname}</UserNameColor> 님의
+                    개인서재
                   </ProfileName>
                 </ProfileNameDirectM>
                 <InterestOutDiv>
-                  {userData.interests && userData.interests.map((interest) => (
-                    !!interest && <MyTag key={interest}>{interest}</MyTag>
-                  ))}
+                  {userData.interests &&
+                    userData.interests.map(
+                      (interest) =>
+                        !!interest && <MyTag key={interest}>{interest}</MyTag>
+                    )}
                 </InterestOutDiv>
               </div>
             </ProfileLeftContainer>
@@ -218,17 +213,28 @@ const UserProfileHeader = (props) => {
                   setShowMsgModal(true);
                 }}
               >
-                <FontAwesomeIcon icon={faPaperPlane} className="icon-mypage-paper-plane" />
+                <FontAwesomeIcon
+                  icon={faPaperPlane}
+                  className="icon-mypage-paper-plane"
+                />
                 쪽지 보내기
               </SendMsgButton>
             </div>
           </ProfileSection>
           <FollowAndFollower>
-            <FollowAndFollowerText onClick={followerPage}>팔로워</FollowAndFollowerText>
-            <FollowAndFollowerNumberText>{userData.countFollowers}</FollowAndFollowerNumberText>
+            <FollowAndFollowerText onClick={followerPage}>
+              팔로워
+            </FollowAndFollowerText>
+            <FollowAndFollowerNumberText>
+              {userData.countFollowers}
+            </FollowAndFollowerNumberText>
             <Dot>•</Dot>
-            <FollowAndFollowerText onClick={followingPage}>팔로잉</FollowAndFollowerText>
-            <FollowAndFollowerNumberText>{userData.countFollowings}</FollowAndFollowerNumberText>
+            <FollowAndFollowerText onClick={followingPage}>
+              팔로잉
+            </FollowAndFollowerText>
+            <FollowAndFollowerNumberText>
+              {userData.countFollowings}
+            </FollowAndFollowerNumberText>
           </FollowAndFollower>
           <BookListCardHeader>
             <LeftBox>
@@ -239,10 +245,22 @@ const UserProfileHeader = (props) => {
                 handleButtonClick();
               }}
             >
-              <FontAwesomeIcon icon={ FollowButtonText === "팔로우" ? faUserPlus : faUserMinus } className="icon-mypage-paper-plane" />
-              {FollowButtonText}</FollowButton>
+              <FontAwesomeIcon
+                icon={FollowButtonText === "팔로우" ? faUserPlus : faUserMinus}
+                className="icon-mypage-paper-plane"
+              />
+              {FollowButtonText}
+            </FollowButton>
           </BookListCardHeader>
-          {showMsgModal && <MsgModal setShowMsgModal={setShowMsgModal} msgName={'writeToUser'} userId={userData.uid} nickname={userData.nickname} userimageUrl={userData.imageUrl} />}
+          {showMsgModal && (
+            <MsgModal
+              setShowMsgModal={setShowMsgModal}
+              msgName={"writeToUser"}
+              userId={userData.uid}
+              nickname={userData.nickname}
+              userimageUrl={userData.imageUrl}
+            />
+          )}
         </>
       ) : (
         <div>Loading...</div>
@@ -296,7 +314,7 @@ const ProfileName = styled.h2`
 const DisrectMDiv = styled.div`
   width: 160px;
   height: 35px;
-  border: 1px solid #BABABA;
+  border: 1px solid #bababa;
   border-radius: 43px;
   text-align: center;
   line-height: 35px;
@@ -322,7 +340,7 @@ const MyTag = styled.p`
 const SendFollowButtonOutDiv = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const SendMsgButton = styled.button`
   border-radius: 43px;
@@ -387,8 +405,8 @@ const FollowAndFollowerText = styled.h5`
   line-height: 109.867%; /* 30.763px */
   letter-spacing: -0.14px;
   margin-right: 8px;
-  cursor : pointer;
-  &:hover{
+  cursor: pointer;
+  &:hover {
     color: #5f749f;
   }
 `;

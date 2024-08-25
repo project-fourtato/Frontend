@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import "../../App.css"
+import "../../App.css";
 import { useNavigate } from "react-router-dom";
 
 function FollowerCard(props) {
@@ -12,15 +12,18 @@ function FollowerCard(props) {
   const lastSegment = props.lastSegment; //uid
 
   const axiosBaseURL = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "http://localhost:8080",
     withCredentials: true,
-  }
-  );
+  });
 
   useEffect(() => {
     const fetchFollowerList = async () => {
+      console.log(lastSegment + "확인");
       try {
-        const response = await axiosBaseURL.post("/follow/followersList");
+        const response = await axiosBaseURL.post("/follow/followersList", {
+          toUserId: "0",
+          fromUserId: lastSegment,
+        });
         setFollowerList(response.data);
       } catch (error) {
         // console.error("팔로워 목록을 불러오는 중 오류 발생:", error);
@@ -32,9 +35,8 @@ function FollowerCard(props) {
 
   const studyPage = (uid) => {
     // console.log(uid);
-    navigate("/studyPage/"+uid);
+    navigate("/studyPage/" + uid);
   };
-
 
   return (
     <>
@@ -42,7 +44,10 @@ function FollowerCard(props) {
         <FollowingBox>팔로워</FollowingBox>
       </FollowingContainer>
       {followerList.map((follower, index) => (
-        <BookListCardContainer key={index} onClick={() => studyPage(follower.loginId)}>
+        <BookListCardContainer
+          key={index}
+          onClick={() => studyPage(follower.loginId)}
+        >
           <ProfileImage src={follower.userimageUrl} alt="프로필 사진" />
           <ProfileName>{follower.nickname}</ProfileName>
           <BookListCardHeader>
@@ -62,22 +67,21 @@ const BookListCardContainer = styled.div`
   display: flex; /* Make the container flex */
   width: 1200px;
   // margin-bottom: 30px;
-  padding-top:20px;
-  padding-bottom:10px;
+  padding-top: 20px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #c1c1c1;
   align-items: center; /* Align items vertically */
-  &:hover{
-  background: #fff;
-  cursor: pointer;
-  border-radius : 25px;
-  opacity : 0.8;
-  box-shadow : 2px 2px 2px 2px #dbdbdb;
-
+  &:hover {
+    background: #fff;
+    cursor: pointer;
+    border-radius: 25px;
+    opacity: 0.8;
+    box-shadow: 2px 2px 2px 2px #dbdbdb;
   }
 `;
 
 const ProfileImage = styled.img`
-  min-width:80px;
+  min-width: 80px;
   min-height: 80px;
   width: 80px;
   height: 80px;
@@ -139,15 +143,13 @@ const LeftBoxText = styled.h5`
 `;
 
 const FollowingContainer = styled.div`
-  cursor : default;
+  cursor: default;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 50px;
-  margin-top : -50px;
-  
-  
+  margin-top: -50px;
 `;
 
 const FollowingBox = styled.p`
@@ -164,5 +166,4 @@ const FollowingBox = styled.p`
   line-height: normal;
   margin-right: 10px;
   cursor: default;
-  
 `;

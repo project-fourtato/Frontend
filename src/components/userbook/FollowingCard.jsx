@@ -19,7 +19,9 @@ function FollowerCard(props) {
   useEffect(() => {
     const fetchFollowerList = async () => {
       try {
-        const response = await axiosBaseURL.post("/follow/followingsList");
+        const response = await axiosBaseURL.post("/follow/followingsList", {
+          toUserId: lastSegment,
+        });
         console.log(response.data);
         setFollowerList(response.data);
       } catch (error) {
