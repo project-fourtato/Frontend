@@ -2,7 +2,7 @@
 나만의 작은 서재, Booker
 
 
- ## ~~[BOOKER 바로가기](https://read.our-booker.site/)~~
+ ## [BOOKER 바로가기](https://read.our-booker.site/)
 
 ## 1. 프로젝트 소개 🗒
 
