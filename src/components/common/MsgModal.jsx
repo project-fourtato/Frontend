@@ -96,7 +96,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
                 return msg;
             });
             setReadMsg(updatedReadMsg);
-            console.log(selectedReceivedMessage, selectedSentMessage);
+            
             // mcheck 값을 업데이트하고 쪽지 내용 설정
             if (selectedReceivedMessage) {
                 // 읽은 쪽지일 경우 서버에서 가져온 상태를 변경하여 업데이트
@@ -129,8 +129,7 @@ function MsgModal({ setShowMsgModal, ...props }) {
             const messageToSend = {
                 mcontents: content,
                 mtitle: title,
-                recipientuid: currentMsg.senderuid,
-                senderuid: currentMsg.recipientuid
+                recipientUid: currentMsg.senderUid
             };
 
             const sendMsgResponse = await axiosBaseURL.post('/directmessages/new', messageToSend);
@@ -191,7 +190,6 @@ function MsgModal({ setShowMsgModal, ...props }) {
             mcontents: content,
             mtitle: title,
             recipientuid: userId,
-            senderuid: p.uid,
             userimageUrl : userimageUrl,
             nickname : nickname
         };
@@ -280,9 +278,6 @@ function MsgModal({ setShowMsgModal, ...props }) {
         }
     }
     
-
-
-
     /*const handleReadMsg = (msgId, readState) => { /* readState 상태 변경 함수 -> 함수에서 무한루프 발생 */
     /*setReadMsg(readMsg => ({ ...readMsg, readState: 1 }));
 }*/
