@@ -65,7 +65,7 @@ const UserBookListCard = (props) => {
                 <ActionButton
                   completed1={book.salestate} id='sale'
                 >
-                  {(book.salestate) === 0 ? <FontAwesomeIcon icon={faStoreSlash} /> : <FontAwesomeIcon icon={faStore} />}
+                  {(book.saleStatus) === 0 ? <FontAwesomeIcon icon={faStoreSlash} /> : <FontAwesomeIcon icon={faStore} />}
                 </ActionButton>
               </BookButtonsContainer>
             </BookItem>
