@@ -18,7 +18,7 @@
 
 ## 3. 팀원 소개
 FE - 김정현
-BE - 심예은, 장다연, 최지민
+| BE - 심예은, 장다연, 최지민
 
 ## 4. 프로젝트 시연영상 📌
 [[https://www.youtube.com/watch?v=Lj7Wr-x3Y0](https://youtu.be/1n506S7Sv2E?si=jpLs5GTl-S3bkk4_](https://youtu.be/hfPjoRXsUf4?si=GRK4rM7XXvCf3AsM)
