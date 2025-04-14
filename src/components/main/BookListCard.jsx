@@ -24,7 +24,7 @@ function BookListCard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://10.50.242.254:8080/booksList/' + p.uid;
+        const url = 'http://localhost:8080/booksList/' + p.uid;
         const response = await axios.get(url);
         const responseData = JSON.parse(response.request.responseText).data;
         setBookListResponse(responseData);

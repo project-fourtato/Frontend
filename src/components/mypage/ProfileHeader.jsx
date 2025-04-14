@@ -23,7 +23,7 @@ function ProfileHeader(props) {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://10.50.242.254:8080/profile/`+p.uid);
+        const response = await axios.get(`http://localhost:8080/profile/`+p.uid);
         // console.log(response);
         const data = response.data;
         setUserData(data);
@@ -38,7 +38,7 @@ function ProfileHeader(props) {
   useEffect(() => {
     const FollowingData = async () => {
       try {
-        const response = await axios.get(`http://10.50.242.254:8080/follow/followingsCount/`+p.uid);
+        const response = await axios.get(`http://localhost:8080/follow/followingsCount/`+p.uid);
         // console.log(response);
         const data = response.data;
         setFollowingData(data.fromUserId_Count);
@@ -46,7 +46,7 @@ function ProfileHeader(props) {
         console.error("Error fetching user data", error);
       }
       try {
-        const response = await axios.get(`http://10.50.242.254:8080/follow/followersCount/`+p.uid);
+        const response = await axios.get(`http://localhost:8080/follow/followersCount/`+p.uid);
         // console.log(response);
         const data = response.data;
         setFollowerData(data.toUserId_Count);

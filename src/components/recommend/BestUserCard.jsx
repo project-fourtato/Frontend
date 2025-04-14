@@ -17,7 +17,7 @@ function BestUserCard() {
     const fetchData = async () => {
       try {
         // console.log('p.uid:', p.uid);
-        const url = 'http://10.50.242.254:8080/profile/interests/' + p.uid;
+        const url = 'http://localhost:8080/profile/interests/' + p.uid;
         const response = await axios.get(url);
         // console.log(response);
         setUsersearchList(response.data.data);

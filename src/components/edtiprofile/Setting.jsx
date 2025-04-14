@@ -65,7 +65,7 @@ const handleSuccess = () => {
       })
     } else {
       try {
-        const url = "http://10.50.242.254:8080/profile/" + props.uid + "/new";
+        const url = "http://localhost:8080/profile/" + props.uid + "/new";
         props.formData.append("uid", props.uid);
         props.formData.append("nickname", props.nickname);
         props.formData.append("usermessage", props.userMessage);
@@ -102,7 +102,7 @@ const handleSuccess = () => {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const url = "http://10.50.242.254:8080/profile/find/interests/" + p.uid;
+      const url = "http://localhost:8080/profile/find/interests/" + p.uid;
       const response = await axios.get(url);
       const responseData = JSON.parse(response.request.responseText);
       const temp = Object.values(responseData);
@@ -120,7 +120,7 @@ useEffect(() => {
 
 const handleEditSuccess = async () => {
   try {
-    const url = "http://10.50.242.254:8080/profile/" + p.uid + "/edit";
+    const url = "http://localhost:8080/profile/" + p.uid + "/edit";
     props.formData.append("uid", p.uid);
     props.formData.append("usermessage", props.userMessage);
     if (selectedTags[0]) {

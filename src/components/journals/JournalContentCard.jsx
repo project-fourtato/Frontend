@@ -86,7 +86,7 @@ function JournalContentCard(props) {
                 })
             } else {
                 try {
-                    const url = "http://10.50.242.254:8080/journals/new";
+                    const url = "http://localhost:8080/journals/new";
                     image.append("ptitle", title);
                     image.append("userbid", userbid);
                     image.append("pcontents", contents);
@@ -119,7 +119,7 @@ function JournalContentCard(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = "http://10.50.242.254:8080/journals/" + jid;
+                const url = "http://localhost:8080/journals/" + jid;
                 const response = await axios.get(url);
                 setJournalResponse(response.data);
             } catch (error) {
@@ -140,7 +140,7 @@ function JournalContentCard(props) {
 
     const handleUpdateJournal = async () => {
         try {
-            const url = "http://10.50.242.254:8080/journals/" + jid + "/edit";
+            const url = "http://localhost:8080/journals/" + jid + "/edit";
             if (title) {
                 image.append("ptitle", title);
             }

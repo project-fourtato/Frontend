@@ -17,7 +17,7 @@ function SearchUserCard(props) {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const url = 'http://10.50.242.254:8080/books/sale/isbn/' +lastSegment;
+            const url = 'http://localhost:8080/books/sale/isbn/' +lastSegment;
             // console.log(url);
             const response = await axios.get(url);
             const responseData = JSON.parse(response.request.responseText);

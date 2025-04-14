@@ -83,7 +83,7 @@ function SignUpCard(props) {
           swal("경고", "닉네임에 띄어쓰기를 사용할 수 없어요.", "error");
           return;
         }
-        const url = 'http://10.50.242.254:8080/login/checkId/'+idValue;
+        const url = 'http://localhost:8080/login/checkId/'+idValue;
         const response = await axios.get(url);
         posts = response.data.data;
         
@@ -148,7 +148,7 @@ function SignUpCard(props) {
       else { //로그인 성공
       try{
         // console.log(emailCheck);
-        const url = 'http://10.50.242.254:8080/login/new';
+        const url = 'http://localhost:8080/login/new';
         // console.log(url);
         const response = await axios.post(url, {
           uid : idValue,

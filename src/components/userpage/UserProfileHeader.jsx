@@ -32,7 +32,7 @@ const UserProfileHeader = (props) => {
         .then(async (value) => {
           if (value) {
             try {
-              const url = 'http://10.50.242.254:8080/follow/delete?toUserId=' + p + '&fromUserId=' + pSession.uid;
+              const url = 'http://localhost:8080/follow/delete?toUserId=' + p + '&fromUserId=' + pSession.uid;
               const response = await axios.post(url);
               // console.log(response);
               const responseData = response.data;
@@ -61,7 +61,7 @@ const UserProfileHeader = (props) => {
         .then(async (value) => {
           if (value) {
             try {
-              const url = 'http://10.50.242.254:8080/follow/new?toUserId=' + p + '&fromUserId=' + pSession.uid;
+              const url = 'http://localhost:8080/follow/new?toUserId=' + p + '&fromUserId=' + pSession.uid;
               const response = await axios.post(url);
               // console.log(response);
               const responseData = response.data;
@@ -89,7 +89,7 @@ const UserProfileHeader = (props) => {
     const UserData = async () => {
       try {
         // console.log("userdata 제발 ㅗ디라~~");
-        const response = await axios.get(`http://10.50.242.254:8080/follow/followCheck/toUserId=` + p + `&fromUserId=` + pSession.uid);
+        const response = await axios.get(`http://localhost:8080/follow/followCheck/toUserId=` + p + `&fromUserId=` + pSession.uid);
         // console.log(response);
         const data = response.data.data;
         // console.log(data);
@@ -120,7 +120,7 @@ const UserProfileHeader = (props) => {
   useEffect(() => {
     const UserData = async () => {
       try {
-        const response = await axios.get(`http://10.50.242.254:8080/profile/` + p);
+        const response = await axios.get(`http://localhost:8080/profile/` + p);
         // console.log(response);
         const data = response.data;
         setUserData(data);
@@ -152,7 +152,7 @@ const UserProfileHeader = (props) => {
   useEffect(() => {
     const FollowingData = async () => {
       try {
-        const response = await axios.get(`http://10.50.242.254:8080/follow/followingsCount/` + p);
+        const response = await axios.get(`http://localhost:8080/follow/followingsCount/` + p);
         // console.log(response);
         const data = response.data;
         setFollowingData(data.fromUserId_Count);
@@ -160,7 +160,7 @@ const UserProfileHeader = (props) => {
         console.error("Error fetching user data", error);
       }
       try {
-        const response = await axios.get(`http://10.50.242.254:8080/follow/followersCount/` + p);
+        const response = await axios.get(`http://localhost:8080/follow/followersCount/` + p);
         // console.log(response);
         const data = response.data;
         setFollowerData(data.toUserId_Count);

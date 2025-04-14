@@ -27,7 +27,7 @@ function NickName(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = 'http://10.50.242.254:8080/profile/' + p.uid;
+        const url = 'http://localhost:8080/profile/' + p.uid;
         const response = await axios.get(url);
         setProfileResponse(response.data);
         tempImage = response.data.useriamgeUrl;
