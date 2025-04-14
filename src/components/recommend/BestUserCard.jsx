@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 function BestUserCard() {
   const navigate = useNavigate();
 
+  const domain = process.env.REACT_APP_API_DOMAIN;
   const axiosBaseURL = axios.create({
-    baseURL: "https://www.our-booker.site:8080",
+    baseURL: domain,
     withCredentials: true,
   });
   // 프로필 정보는 세션 스토리지에서 가져오기

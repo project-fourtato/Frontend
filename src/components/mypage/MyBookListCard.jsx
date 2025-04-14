@@ -14,10 +14,11 @@ import {
 import axios from "axios";
 
 // 완료
-const axiosBaseURL = axios.create({
-  baseURL: "https://www.our-booker.site:8080",
-  withCredentials: true,
-});
+const domain = process.env.REACT_APP_API_DOMAIN;
+  const axiosBaseURL = axios.create({
+    baseURL: domain,
+    withCredentials: true,
+  });
 
 const MyBookListCard = (props) => {
   const navigate = useNavigate();

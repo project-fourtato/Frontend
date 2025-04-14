@@ -25,8 +25,9 @@ const NewBookDetailPage = (props) => {
   const [firstPart, setFirstPart] = useState("");
   const [secondPart, setSecondPart] = useState("");
 
+  const domain = process.env.REACT_APP_API_DOMAIN;
   const axiosBaseURL = axios.create({
-    baseURL: "https://www.our-booker.site:8080",
+    baseURL: domain,
     withCredentials: true,
   });
 

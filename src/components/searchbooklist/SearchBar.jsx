@@ -12,8 +12,9 @@ function ExchangeSearchBar(props) {
     setSearch(event.target.value);
   };
 
+  const domain = process.env.REACT_APP_API_DOMAIN;
   const axiosBaseURL = axios.create({
-    baseURL: "https://www.our-booker.site:8080",
+    baseURL: domain,
     withCredentials: true,
   });
 

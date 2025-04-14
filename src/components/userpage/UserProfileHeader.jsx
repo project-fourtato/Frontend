@@ -26,8 +26,9 @@ const UserProfileHeader = (props) => {
   const [count, setCount] = useState(0);
   const [FollowButtonText, setFollowButtonText] = useState("");
 
+  const domain = process.env.REACT_APP_API_DOMAIN;
   const axiosBaseURL = axios.create({
-    baseURL: "https://www.our-booker.site:8080",
+    baseURL: domain,
     withCredentials: true,
   });
 

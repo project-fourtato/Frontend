@@ -6,8 +6,9 @@ import Session from "react-session-api";
 import { useNavigate } from "react-router-dom";
 
 function UserSearchList(props) {
+  const domain = process.env.REACT_APP_API_DOMAIN;
   const axiosBaseURL = axios.create({
-    baseURL: "https://www.our-booker.site:8080",
+    baseURL: domain,
     withCredentials: true,
   });
 

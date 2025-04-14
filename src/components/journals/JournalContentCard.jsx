@@ -8,8 +8,9 @@ import axios from "axios";
 import journalBasis from "../../assets/journal-basis.png";
 
 function JournalContentCard(props) {
+  const domain = process.env.REACT_APP_API_DOMAIN;
   const axiosBaseURL = axios.create({
-    baseURL: "https://www.our-booker.site:8080",
+    baseURL: domain,
     withCredentials: true,
   });
 

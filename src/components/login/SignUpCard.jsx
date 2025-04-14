@@ -11,8 +11,9 @@ import { MdOutlineDateRange } from "react-icons/md";
 import swal from "sweetalert";
 import axios from "axios";
 function SignUpCard(props) {
+  const domain = process.env.REACT_APP_API_DOMAIN;
   const axiosBaseURL = axios.create({
-    baseURL: "https://www.our-booker.site:8080",
+    baseURL: domain,
     withCredentials: true,
   });
   //api
