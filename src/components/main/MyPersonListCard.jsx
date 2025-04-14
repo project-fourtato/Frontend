@@ -22,7 +22,7 @@ function MyPersonListCard(props) {
     const fetchData = async () => {
       try {
         const url = "/follow/followingsLatestJournals";
-        const response = await axiosBaseURL.post(url);
+        const response = await axiosBaseURL.get(url);
         setProfileResponse(response.data);
       } catch (error) {
         console.log(error);
