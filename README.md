@@ -39,7 +39,7 @@ https://capable-oboe-cce.notion.site/WORKFLOW-3a1e6afa67ea496584673b33ad937ef6?p
 [https://capable-oboe-cce.notion.site/API-d0eb912b8e5b4c42b01dc3b36499b4aa?pvs=4](https://verbose-goat-48e.notion.site/API-_ver2-d06ab402a650472a8184096474e90642?pvs=4)
 
 ## 10. ERD 🗂
-![ERD](https://github.com/user-attachments/assets/75b312a2-af39-49d6-b16e-6db69e56c515)
+![ERD](https://github.com/user-attachments/assets/699b840c-5f1c-4813-9607-348db37c9f0d)
 
 ## 11. UI
 https://capable-oboe-cce.notion.site/UI-51f2bd25ef814651b13dfead020686ae?pvs=4
